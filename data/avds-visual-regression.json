@@ -1,0 +1,75 @@
+{
+  "schema_version": "disarm-avds-visual-regression-v1",
+  "consumer": "https://disarm.qdev.run/",
+  "status": "implemented",
+  "capture": {
+    "tool": "Playwright CLI",
+    "source": "production browser rendering",
+    "browser_state": "fresh named session, default institutional theme and RU locale",
+    "scale": "css",
+    "baseline_date": "2026-08-12"
+  },
+  "procedure": {
+    "capture": "Open the declared route in a fresh Playwright CLI session, resize to the declared viewport, then run screenshot.",
+    "verify": "python3 scripts/check_visual_regression.py --actual <id>=<fresh.png> for every baseline ID",
+    "threshold_rule": "Zero changed pixels and zero mean channel delta; a deliberate visual update requires a reviewed baseline replacement and new SHA-256 values."
+  },
+  "baselines": [
+    {
+      "id": "overview-1440",
+      "route": "/?tab=overview",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "file": "output/playwright/avds-visual-regression/baseline/overview-1440/.playwright-cli/page-2026-08-12T13-36-28-748Z.png",
+      "sha256": "c2518ddf61647d4727938496a4a4ec3b8574afc95260cd859ef15a869157c434",
+      "limits": {
+        "max_changed_pixels": 0,
+        "max_mean_channel_delta": 0
+      }
+    },
+    {
+      "id": "overview-320",
+      "route": "/?tab=overview",
+      "viewport": {
+        "width": 320,
+        "height": 900
+      },
+      "file": "output/playwright/avds-visual-regression/baseline/overview-320/.playwright-cli/page-2026-08-12T13-37-06-633Z.png",
+      "sha256": "ea0015984d0fb03abb70b3d635490b547706cf3799874c30db0379a633055232",
+      "limits": {
+        "max_changed_pixels": 0,
+        "max_mean_channel_delta": 0
+      }
+    },
+    {
+      "id": "red-1440",
+      "route": "/?tab=red",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "file": "output/playwright/avds-visual-regression/baseline/red-1440/.playwright-cli/page-2026-08-12T13-37-43-309Z.png",
+      "sha256": "2309c82e0d5d2aecf2282c0ef8136295b5c34784079a962c8801360af436847a",
+      "limits": {
+        "max_changed_pixels": 0,
+        "max_mean_channel_delta": 0
+      }
+    },
+    {
+      "id": "red-320",
+      "route": "/?tab=red",
+      "viewport": {
+        "width": 320,
+        "height": 900
+      },
+      "file": "output/playwright/avds-visual-regression/baseline/red-320/.playwright-cli/page-2026-08-12T13-38-02-459Z.png",
+      "sha256": "e248130e263f48115cc9636047ff75487d7a21a61bf4e233424ac73f66e212c2",
+      "limits": {
+        "max_changed_pixels": 0,
+        "max_mean_channel_delta": 0
+      }
+    }
+  ]
+}

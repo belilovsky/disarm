@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "avds-anti-generative-audit-v1",
+  "evidenceBoundary": "Human review of the local candidate; screenshots are produced by the matching local browser acceptance run.",
+  "cells": [
+    {"route":"overview","role":"overview","state":"ready","viewport":"desktop-1440","findings":[{"pattern":"duplicate-navigation-and-equal-feature-cards","selector":"#overview-quick-links, .overview-fwcards","screenshot":"output/playwright/full-cycle-20260823/before/overview-1440.png","semanticTest":"The primary task must lead directly from observation to attack matrix, defence matrix and response plan without duplicate navigation.","replacement":"Removed the duplicate quick-link rail and equal attack/defence feature cards; retained one ordered working route.","status":"resolved"}]},
+    {"route":"overview","role":"overview","state":"ready","viewport":"mobile-390","findings":[{"pattern":"stacked-card-fatigue","selector":".overview-workflow, .avds-kpi-grid","screenshot":"output/playwright/full-cycle-20260823/after/acceptance/overview__overview__ready__mobile-390.png","semanticTest":"Compact reading order must preserve direct actions before the data summary.","replacement":"The working route is a three-row action list and the metrics are a compact token-separated grid.","status":"resolved"}]},
+    {"route":"red","role":"attack-matrix","state":"ready","viewport":"desktop-1440","findings":[]},
+    {"route":"red","role":"attack-matrix","state":"ready","viewport":"mobile-390","findings":[]},
+    {"route":"blue","role":"defence-matrix","state":"ready","viewport":"desktop-1440","findings":[]},
+    {"route":"blue","role":"defence-matrix","state":"ready","viewport":"mobile-390","findings":[]},
+    {"route":"search","role":"search","state":"ready","viewport":"desktop-1440","findings":[]},
+    {"route":"search","role":"search","state":"ready","viewport":"mobile-390","findings":[]},
+    {"route":"incidents","role":"incident-catalog","state":"ready","viewport":"desktop-1440","findings":[]},
+    {"route":"incidents","role":"incident-catalog","state":"ready","viewport":"mobile-390","findings":[]},
+    {"route":"playbook","role":"response-plan","state":"ready","viewport":"desktop-1440","findings":[{"pattern":"decorative-emoji-call-to-action","selector":"#pb-permalink","screenshot":"output/playwright/full-cycle-20260823/before/playbook-390.png","semanticTest":"A text action must name its outcome without a decorative glyph.","replacement":"Changed the control label to «Скопировать ссылку».","status":"resolved"}]},
+    {"route":"playbook","role":"response-plan","state":"ready","viewport":"mobile-390","findings":[]},
+    {"route":"about","role":"methodology","state":"ready","viewport":"desktop-1440","findings":[]},
+    {"route":"about","role":"methodology","state":"ready","viewport":"mobile-390","findings":[]}
+  ]
+}

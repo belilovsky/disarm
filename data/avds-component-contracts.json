@@ -1,0 +1,108 @@
+{
+  "schema_version": "disarm-avds-component-contracts-v1",
+  "consumer": "https://disarm.qdev.run/",
+  "adapter_version": "1.3.5",
+  "source": "AVDS 4.7.0 semantic primitives adapted for a static consumer",
+  "components": [
+    {
+      "id": "masthead",
+      "selector": ".avds-masthead.site-masthead",
+      "required_markup": ["class=\"avds-masthead site-masthead\""],
+      "variants": ["default", "compact-density"],
+      "states": ["default"],
+      "size": { "logo_px": [36, 40, 48], "content_max": "var(--disarm-content-max)" },
+      "keyboard": "Contains standard links only; no composite keyboard behavior.",
+      "allowed_children": ["brand", "metadata strip", "introductory text"]
+    },
+    {
+      "id": "pill-tabs",
+      "selector": ".avds-pill-tabs",
+      "required_markup": ["role=\"tablist\"", "class=\"avds-pill-tab active\"", "role=\"tab\"", "aria-controls=\"panel-overview\""],
+      "variants": ["default", "horizontal-scroll compact"],
+      "states": ["selected", "focus-visible", "hover", "disabled"],
+      "size": { "touch_target_min_px": 44, "gap": "var(--space-2)" },
+      "keyboard": "ArrowLeft, ArrowRight, Home and End move selection; digits 1–7 provide workspace shortcuts.",
+      "allowed_children": ["tab buttons only"]
+    },
+    {
+      "id": "control-panel",
+      "selector": ".avds-control-panel",
+      "required_markup": ["class=\"workspace-toolbar avds-control-panel\""],
+      "variants": ["workspace", "export"],
+      "states": ["default", "compact-density", "focus-within"],
+      "size": { "min_height": "var(--disarm-control-min-height)", "radius": "var(--radius-md)" },
+      "keyboard": "Native controls retain their semantic keyboard behavior.",
+      "allowed_children": ["search", "actions", "filter controls"]
+    },
+    {
+      "id": "data-state",
+      "selector": ".avds-data-state",
+      "required_markup": ["id=\"data-state\"", "role=\"status\"", "aria-live=\"polite\"", "id=\"data-retry\""],
+      "variants": ["loading", "ready", "stale", "offline", "error"],
+      "states": ["loading", "success", "degraded with retry", "offline", "error", "retry-enabled", "retry-disabled"],
+      "size": { "min_height": "var(--disarm-control-min-height)", "indicator_px": 8 },
+      "keyboard": "Retry is a native button and is disabled while a request is in progress.",
+      "allowed_children": ["status indicator", "status text", "retry button"]
+    },
+    {
+      "id": "theme-picker",
+      "selector": ".avds-theme-picker",
+      "required_markup": ["id=\"theme-select\"", "aria-label=\"Тема представления AVDS\""],
+      "variants": ["institutional", "editorial", "analytics", "map", "dark", "print"],
+      "states": ["default", "focus-visible", "selected"],
+      "size": { "control_min_height_px": 32 },
+      "keyboard": "Native select keyboard behavior; selected theme persists locally.",
+      "allowed_children": ["label", "select options"]
+    },
+    {
+      "id": "surface-card",
+      "selector": ".avds-surface-card",
+      "required_markup": ["class=\"about-section avds-surface-card\""],
+      "variants": ["reading", "summary", "playbook", "provenance"],
+      "states": ["default", "hover when interactive"],
+      "size": { "radius": "var(--radius-md)", "shadow": "var(--shadow-xs)" },
+      "keyboard": "Interactive cards use native links or buttons; noninteractive cards do not enter tab order.",
+      "allowed_children": ["heading", "body", "optional action"]
+    },
+    {
+      "id": "search",
+      "selector": ".avds-search-hero",
+      "required_markup": ["id=\"global-search\"", "class=\"avds-search-hero__input\""],
+      "variants": ["workspace", "global", "matrix filter"],
+      "states": ["empty", "query", "no-results", "focused"],
+      "size": { "touch_target_min_px": 44, "reading_max": "var(--disarm-reading-max)" },
+      "keyboard": "Slash focuses workspace search; Enter transfers a workspace query to global search.",
+      "allowed_children": ["search input", "filter controls", "result status"]
+    },
+    {
+      "id": "filter-chip",
+      "selector": ".mini-pill",
+      "required_markup": ["class=\"mini-filter-pills\""],
+      "variants": ["phase", "year", "country", "tactic", "type"],
+      "states": ["default", "active", "hover", "focus-visible", "disabled"],
+      "size": { "padding": "6px 10px", "radius": "var(--radius-full)" },
+      "keyboard": "Native button behavior; active state is exposed through visual state and product filtering output.",
+      "allowed_children": ["text label"]
+    },
+    {
+      "id": "modal",
+      "selector": ".modal",
+      "required_markup": ["id=\"modal\"", "role=\"dialog\"", "aria-modal=\"true\"", "aria-labelledby=\"modal-title\"", "aria-describedby=\"modal-content\"", "class=\"modal-close\""],
+      "variants": ["object detail", "annotation detail"],
+      "states": ["closed", "open", "focus-visible"],
+      "size": { "layer": "var(--z-modal)", "radius": "var(--radius-lg)" },
+      "keyboard": "Opening moves focus to the labelled close button; Tab is trapped inside the dialog; Escape closes and restores the invoking control.",
+      "allowed_children": ["backdrop", "dialog card", "close button", "body"]
+    },
+    {
+      "id": "coverage-badge",
+      "selector": ".avds-coverage-badge",
+      "required_markup": ["id=\"avds-coverage-badge\"", "href=\".well-known/avds-adoption.json\"", "data-avds-badge-contract=\"avds-adoption-badge-v1\""],
+      "variants": ["footer evidence link"],
+      "states": ["loaded", "fallback", "focus-visible"],
+      "size": { "min_height_px": 18, "font_size_px": 9, "font": "var(--font-mono)", "base_opacity": 0.58 },
+      "keyboard": "Native link opens machine-readable maturity evidence.",
+      "allowed_children": ["text label"]
+    }
+  ]
+}

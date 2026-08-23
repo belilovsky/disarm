@@ -1,0 +1,434 @@
+{
+  "schema_version": "disarm-release-identity-v1",
+  "project_id": "disarm",
+  "public_url": "https://disarm.qdev.run/",
+  "release_id": "content-4ca54f8de7cb5db80894c4fe",
+  "revision_kind": "content_sha256_manifest",
+  "source_revision": null,
+  "source_revision_status": "unverifiable: checkout has no Git metadata",
+  "artifact_manifest_sha256": "4ca54f8de7cb5db80894c4fec802a91855eebeedd4aa5d6e832e0475ffff5db7",
+  "generated_at": "2026-08-23T18:04:58Z",
+  "deployment_contract": {
+    "mode": "immutable-static-files",
+    "required_targets": [
+      "edge",
+      "origin"
+    ],
+    "required_publish_files": [
+      "release.json",
+      "health.json"
+    ],
+    "root_auth_boundary": "302 /login",
+    "rollback": "timestamped snapshot before any write on both targets"
+  },
+  "avds": {
+    "version": "4.7.0",
+    "adapter_version": "1.3.5",
+    "coverage_percent": 97
+  },
+  "manifest": {
+    "project_id": "disarm",
+    "artifacts": [
+      {
+        "path": ".well-known/avds-adoption.json",
+        "bytes": 1341,
+        "sha256": "aa4a25141046f5309b0dd33d0a7065df3aef81a060e5f9f29bd3cd75bf7a1d88"
+      },
+      {
+        "path": "assets/app.js",
+        "bytes": 149677,
+        "sha256": "eacccf04d0e251d752f688f76421397c330414b88e55b1f7d8ad92c7d3c44564"
+      },
+      {
+        "path": "assets/avds-disarm-adapter.css",
+        "bytes": 102438,
+        "sha256": "3f21495f3a22774434f3a381cec401856e9baaebf389e9d923f477c4d7e51858"
+      },
+      {
+        "path": "assets/avds-static-preview-bundle.css",
+        "bytes": 65836,
+        "sha256": "b062b7dfda2b940457236cb5a8558728f5a3d59b40b7aeb5f4ae2440e6504ef4"
+      },
+      {
+        "path": "assets/avds-static-token-contract.css",
+        "bytes": 11439,
+        "sha256": "b3135d07c6935c570910782ef4d513cda34d3405c36e69f6a292e0b0c8595772"
+      },
+      {
+        "path": "data/avds-adapter.json",
+        "bytes": 1097,
+        "sha256": "37d365c09f3e64f36f8dea1f0312e70198776c5394bb566b00a876f14db007ad"
+      },
+      {
+        "path": "data/avds-component-contracts.json",
+        "bytes": 5769,
+        "sha256": "67db35b0c0ef5eb21393a861c8d2e39eedc065a125e0d944a0fdd832debba22a"
+      },
+      {
+        "path": "data/avds-coverage.json",
+        "bytes": 12019,
+        "sha256": "e14da0e37c85ef95d6fc8c90884535082c2f7b97889ffdbf6586c166b92dd491"
+      },
+      {
+        "path": "data/avds-data-visualization-contract.json",
+        "bytes": 3251,
+        "sha256": "2f68557276c8f85f14f52858add067ef87bc60fd70eee654ae163e0957b565af"
+      },
+      {
+        "path": "data/avds-locale-contract.json",
+        "bytes": 2114,
+        "sha256": "f61067c2cff30e3f7bf2667aa331e0549abc3815d72e3035a4869d204b596869"
+      },
+      {
+        "path": "data/avds-responsive-contract.json",
+        "bytes": 3000,
+        "sha256": "d3780086f56ae440198eab05d70d810eee5568f8d3ab587b32e60d3c6eab6084"
+      },
+      {
+        "path": "data/avds-system-contract.json",
+        "bytes": 16069,
+        "sha256": "3ffb22053fe9381fbdc6fd853c31344d0d128dc26f2b48c7eba5c471a303767f"
+      },
+      {
+        "path": "data/avds-visual-regression.json",
+        "bytes": 2614,
+        "sha256": "b6c0cae997276c2fe2094a01902914c5f3b3db09330bd24625db53e5b03df7f5"
+      },
+      {
+        "path": "data/disarm-provenance.json",
+        "bytes": 1473,
+        "sha256": "09ed5f2dc6297f763f63ede135356e0fe787f144d0198730c4a3973e7be050be"
+      },
+      {
+        "path": "data/disarm.json",
+        "bytes": 378904,
+        "sha256": "3328a55357b0d14831abd2860c6df152408cddb79d09b33f7f06a82a59c3eb66"
+      },
+      {
+        "path": "data/platform-capabilities.json",
+        "bytes": 6016,
+        "sha256": "80adf9137b9a9b8069d0012b1eab1f8a7ed9e42056a2313d413054f89c5136c4"
+      },
+      {
+        "path": "favicon.ico",
+        "bytes": 17470,
+        "sha256": "6509876df78230d63f1f4196a476880cef9ae1adddbc6a99801c81dd8ad9f407"
+      },
+      {
+        "path": "favicon.svg",
+        "bytes": 370,
+        "sha256": "5aa333c73cff1d583b33bfff8e704f61f1a3c3430d0b02fbe151d5fac50de564"
+      },
+      {
+        "path": "fonts/avds/avds-fonts.css",
+        "bytes": 36847,
+        "sha256": "f116b64e8cdd39b1b05858e891f3dfb24c5efb61123e696b9f17c419defbacd1"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-mono-027.woff2",
+        "bytes": 4348,
+        "sha256": "c6f09ee0e0a24b7c85ecb2a601eb99332f65b1f6b37c31e0bbe73fb307625eca"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-mono-028.woff2",
+        "bytes": 5476,
+        "sha256": "7b59d6bf7f8b8408ac28f27d01dca9a890abeae77045d343b1d8ccb089a92e54"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-mono-029.woff2",
+        "bytes": 4000,
+        "sha256": "0a8b854cc18641bd1b8222afa7ec82a75e59bc6501f777744ec87db1b6cd7a2c"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-mono-030.woff2",
+        "bytes": 8860,
+        "sha256": "f1050dc5317b43434c0aeda599d4624c774ffc162e87a8cf204b949b6a85816d"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-mono-031.woff2",
+        "bytes": 10052,
+        "sha256": "c36f509c0a8f9f85f29cb44bc8701d8a9e0b14c499e77a884f789ead7093a7ac"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-mono-032.woff2",
+        "bytes": 4336,
+        "sha256": "311098be73eac339128f0b5a6e33d72645b6f87488541fdf467c402152d297fd"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-mono-033.woff2",
+        "bytes": 5500,
+        "sha256": "d524dc8ff6dbf7ed69772f3b2ff4affaf5a89b5762b270e36c3f21da0d4e39f5"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-mono-034.woff2",
+        "bytes": 4036,
+        "sha256": "b2529fba93fd07a50ffb8fc3d103eb04b0c298d4f6564d2833c44fde286de7e4"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-mono-035.woff2",
+        "bytes": 8848,
+        "sha256": "77f03e26f981c582bdba3a7abed4baa2d3149211c01366bb3ab3ba7622ec4ae5"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-mono-036.woff2",
+        "bytes": 10060,
+        "sha256": "a76f53ca6612e7b3828eec2311098675b7f9849ae4169a8bcef6302aec02a6c0"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-mono-037.woff2",
+        "bytes": 4320,
+        "sha256": "f746246b6b0b641f99d9e26e0bf4e42197bde692126857857f0195a94362d52a"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-mono-038.woff2",
+        "bytes": 5548,
+        "sha256": "b814a03d7e57b0626a906f76911b9361d173a1aabc5544c40f72d6a35a1e4940"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-mono-039.woff2",
+        "bytes": 4116,
+        "sha256": "69744cabbccc9faf77516ce9b744361e1e6be7f8081400006035a153797d2965"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-mono-040.woff2",
+        "bytes": 8960,
+        "sha256": "1b6b18fd0fd240bc6d5850f4df621484722d4b5d3650ebdd1e3a8bbd81c75854"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-mono-041.woff2",
+        "bytes": 10120,
+        "sha256": "ad4580d8cb4b5f627c2d18457656732f7f7b070f7837fbc380e08054157e6f6c"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-mono-042.woff2",
+        "bytes": 4344,
+        "sha256": "c7fa87a1d7be5a6f94a1039b4c43d8ac2e8af035280dabcc5734d0da9f6afcf2"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-mono-043.woff2",
+        "bytes": 5540,
+        "sha256": "bb7642ad6085595ee4d28c89965450943c78e9772403e79e655d4e347a293d12"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-mono-044.woff2",
+        "bytes": 4064,
+        "sha256": "429a912c8121ee6755458dc215abed11c9e783d6ce0fea883f699823bdd0a62a"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-mono-045.woff2",
+        "bytes": 8748,
+        "sha256": "099842414ddad0cb366cf984641b14e75c01a2c6e3f42fa13a6e89d1f4c3fc20"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-mono-046.woff2",
+        "bytes": 10128,
+        "sha256": "9e1455e6e9c5866f607e464fffb7855486dcf575b7e69b83a3d234e587fce41b"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-sans-001.woff2",
+        "bytes": 19684,
+        "sha256": "c01b3de8c8058462caadd044a6b874a9f4d7098d7d71d6c70e6a278096b8640e"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-sans-002.woff2",
+        "bytes": 25408,
+        "sha256": "5bac72520e0a9a5669e08b15fa1e15be6f4da74aa0b2d4315a97c11e1465120a"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-sans-003.woff2",
+        "bytes": 16296,
+        "sha256": "a29d4e6345cdb7e2b6daabf4961a6dcafcbc7ed1eac26186ca4a004cd32d64d8"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-sans-004.woff2",
+        "bytes": 9612,
+        "sha256": "526a4dd36c3af41f73a623e852302d8947d7fd4c00ee3026d82ef1f24a412fcd"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-sans-005.woff2",
+        "bytes": 25868,
+        "sha256": "ae1d854fefa1167a79071f1afe01d4d51b60c5840c1be36dd74bd5fe7375b405"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-sans-006.woff2",
+        "bytes": 40240,
+        "sha256": "056e4e2459f57a0033c8c9c844ff19d6e42ac8602027803d4345823bcc939818"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-serif-007.woff2",
+        "bytes": 5860,
+        "sha256": "9f0e702f54f5f3a94ef7d8aedaf3474a47138be0c2a74b3df7ed5597a688d8de"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-serif-008.woff2",
+        "bytes": 8824,
+        "sha256": "c6bed351ac68c2ab6b25c9df088600b0f8d4f132d920d22fd894743d674f53f0"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-serif-009.woff2",
+        "bytes": 4532,
+        "sha256": "29eb1d0dc65c8eda668c3b2e66090b9e5c20abc528e2e4723a12b25bb8edd68a"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-serif-010.woff2",
+        "bytes": 10868,
+        "sha256": "836fd31988bd9b826397032af618e906bfdc80e0c6c25b102e8b9e03353ed5e0"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-serif-011.woff2",
+        "bytes": 14916,
+        "sha256": "9fbb32c4c07037bc1e9107ee9cbf3a84662449cb36511138d5adb80e195b9302"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-serif-012.woff2",
+        "bytes": 5756,
+        "sha256": "86a276e17b9e1575e453f726b68f8475b6997c9a7a978106420d08e98a8e1503"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-serif-013.woff2",
+        "bytes": 8692,
+        "sha256": "34f3e225fcaad2b494704942fea392b41004d13f0ca6feffc020fea72237ccc6"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-serif-014.woff2",
+        "bytes": 4536,
+        "sha256": "7263e3b66ea66b3351a363063011e312562435cb5dab6879ea1096e12488b1d2"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-serif-015.woff2",
+        "bytes": 10892,
+        "sha256": "d7979b2d625aecc084dffef14d65ce1c592b50924bd06716f0860bda87ba057f"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-serif-016.woff2",
+        "bytes": 15528,
+        "sha256": "9750299e80ac5c1f06df6d9ede8272e5b6fc906c9835a0d5dc0447493952ed55"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-serif-017.woff2",
+        "bytes": 5808,
+        "sha256": "3d7d82e060e2090ddad3528f2e65869b507a0359f20ba6e012bdf5df9a52ad54"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-serif-018.woff2",
+        "bytes": 8684,
+        "sha256": "d24ca59d8dbc2a7df46649f768f570caa4f3b0eaf05a704c0956ec7d7d4bad35"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-serif-019.woff2",
+        "bytes": 4532,
+        "sha256": "1b2afc36f96adef9c2abb0474532b0e8b0b12471910b1f05d1de5158e2e44aa4"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-serif-020.woff2",
+        "bytes": 10864,
+        "sha256": "af27611d0c9c02988ad1edda0c575d0f31394bd6877e4064b6b6f1247c231144"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-serif-021.woff2",
+        "bytes": 15580,
+        "sha256": "d8bf89a58f34027c1ee0b24d4bd66f19a782887980e3ce149519c2c527cac3ce"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-serif-022.woff2",
+        "bytes": 5660,
+        "sha256": "b00b9d70a4e826bb52df76e361812756a5f5fb777d7e04a6c484c64d576df022"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-serif-023.woff2",
+        "bytes": 8412,
+        "sha256": "1f9fccb56af049831ba63366d7331bcd4a83f4ca8898bcfb42d9f027a121eae6"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-serif-024.woff2",
+        "bytes": 4536,
+        "sha256": "2a3916b3ba4f1df6d55455fb4a0d43678481a595506f12bb092a1b4bcd013b44"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-serif-025.woff2",
+        "bytes": 10740,
+        "sha256": "c0d6feef8e1f7b546b275e2b5601bcefc080fc1aea2e197e09ba535328cda433"
+      },
+      {
+        "path": "fonts/avds/ibm-plex-serif-026.woff2",
+        "bytes": 14936,
+        "sha256": "8d256fda8c12db0d7bbde004f3e844ba23cfaa3e764880b24056d6f0b79d70dd"
+      },
+      {
+        "path": "fonts/avds/inter-047.woff2",
+        "bytes": 25844,
+        "sha256": "fccca918fea40089dacadc7045861314d1a6bc91f1f323cc1eeb22ebcdb321b5"
+      },
+      {
+        "path": "fonts/avds/inter-048.woff2",
+        "bytes": 18744,
+        "sha256": "aebf2ab4a4ce6810d73c1ac7be7cafb4e5ec4cee2d6db5fb3e09691747ec4bd6"
+      },
+      {
+        "path": "fonts/avds/inter-049.woff2",
+        "bytes": 11272,
+        "sha256": "a2e2c783ca6f9c20486e81e72a279203e86730bbf8f01ff6a5ee9dbd09e1c271"
+      },
+      {
+        "path": "fonts/avds/inter-050.woff2",
+        "bytes": 19044,
+        "sha256": "46dd4cdca58c26ae87cc6927657bf83b2e8abfc39ffd0ab176e301a8d28d22bf"
+      },
+      {
+        "path": "fonts/avds/inter-051.woff2",
+        "bytes": 10280,
+        "sha256": "8db00ff46c67b22cda8bed865acf7077651cac8d2841d5b40980556b48961931"
+      },
+      {
+        "path": "fonts/avds/inter-052.woff2",
+        "bytes": 85272,
+        "sha256": "a28eb6d3ccb534ae0c94ca999371df024aab60b08c3c8a5720ee9e32fa0faaa2"
+      },
+      {
+        "path": "fonts/avds/inter-053.woff2",
+        "bytes": 48432,
+        "sha256": "c940764593d0fe5d596be327ca7558855e018039fb78509aa21921fd3644c3e4"
+      },
+      {
+        "path": "fonts/avds/onest-054.woff2",
+        "bytes": 2252,
+        "sha256": "b550f5a9fd72af459f724f4e8afcf2c7298267580fd38df71179c30f3cb746d0"
+      },
+      {
+        "path": "fonts/avds/onest-055.woff2",
+        "bytes": 14184,
+        "sha256": "b9789c755abcdfecb7ac55eebc52f90e58b23b3084b9add44b748f13e8833707"
+      },
+      {
+        "path": "fonts/avds/onest-056.woff2",
+        "bytes": 15940,
+        "sha256": "b796cb9f9b4b70ba743f9139f8f7711e9bb9fcbb30c9cefdc6538344987e56e2"
+      },
+      {
+        "path": "fonts/avds/onest-057.woff2",
+        "bytes": 32256,
+        "sha256": "3b422208ffa279f8d2584584b443b3acf6b404c8a046763b7cbf7d7c0e66bfb4"
+      },
+      {
+        "path": "index.html",
+        "bytes": 41669,
+        "sha256": "bdfe030657d8bdf803c92fd185b469afe89d33008e6bee6c2aafcc8e68c3e318"
+      },
+      {
+        "path": "qdev-project.json",
+        "bytes": 3195,
+        "sha256": "b9616ec0b394d3a68f4fe969ebf8fe053d94206d81b94553b1a15f7858284104"
+      },
+      {
+        "path": "robots.txt",
+        "bytes": 69,
+        "sha256": "7d78a17678e159e1a9f909592519ee06b032fdd9dd06b738cbdc7aa82ce2b2a6"
+      },
+      {
+        "path": "sitemap.xml",
+        "bytes": 266,
+        "sha256": "2e2919777df12549aff783e8cfe6fdfb5169134b09429bc440a53bf220457526"
+      }
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schema_version": "disarm-provenance-v1",
+  "product": "DISARM Explorer",
+  "public_surface": "https://disarm.qdev.run/",
+  "dataset": {
+    "name": "DISARM 1.7.0 core matrix",
+    "source": "https://github.com/DISARMFoundation/DISARMframeworks-17",
+    "verified_at": "2026-07-16",
+    "license": "CC-BY-SA-4.0",
+    "language_layer": "Russian interface and localized display layer; original technical artefacts remain English where machine interoperability requires it."
+  },
+  "coverage": {
+    "phases": 4,
+    "tactics": 13,
+    "techniques": 71,
+    "counters": 140,
+    "incidents": 63,
+    "metatechniques": 14,
+    "detections": 95,
+    "tools": 151,
+    "tasks": 42
+  },
+  "interpretation_rules": [
+    "Technique frequency in this corpus is not a probability, prevalence estimate or risk score.",
+    "A technique-to-countermeasure relationship expresses structural applicability, not proven effectiveness in a specific context.",
+    "Analyst-entered priority values are local browser state and are not source data.",
+    "DISARM 2.0 Observations and Assessments are separate models and are not merged into the 1.7 matrix."
+  ],
+  "known_limits": [
+    "The full source corpus has not been manually literary-translated into Russian.",
+    "Two upstream references to absent technique T0005 are intentionally excluded from the local matrix.",
+    "This public explorer does not determine legal, ethical or operational suitability of a countermeasure."
+  ]
+}

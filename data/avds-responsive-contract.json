@@ -1,0 +1,17 @@
+{
+  "schema_version": "disarm-avds-responsive-contract-v1",
+  "consumer": "https://disarm.qdev.run/",
+  "line_length": { "max": "var(--disarm-reading-max)", "container": "var(--disarm-content-max)" },
+  "density": { "modes": ["comfortable", "compact"], "default": "compact", "storage_key": "disarm-ui-density" },
+  "viewports": [
+    { "width": 320, "height": 844, "regime": "compact", "composition": "single column; tabs and filter chips remain scrollable rails; matrices become stacked cards", "order": ["masthead", "tabs", "workspace", "active panel", "footer"], "rails": "horizontal scroll for tabs and filters only", "status": "verified-local" },
+    { "width": 390, "height": 844, "regime": "compact", "composition": "single column; compact masthead and two-column skeleton cards", "order": ["masthead", "tabs", "workspace", "active panel", "footer"], "rails": "horizontal scroll for tabs and filters only", "status": "verified-local" },
+    { "width": 768, "height": 1024, "regime": "tablet", "composition": "bounded single-column content with full controls and matrix columns", "order": ["masthead", "tabs", "workspace", "active panel", "footer"], "rails": "matrix may scroll only within its labelled wrapper", "status": "verified-local" },
+    { "width": 820, "height": 1180, "regime": "tablet", "composition": "bounded single-column content; metadata and reading cards stack", "order": ["masthead", "tabs", "workspace", "active panel", "footer"], "rails": "matrix may scroll only within its labelled wrapper", "status": "verified-local" },
+    { "width": 1024, "height": 900, "regime": "desktop", "composition": "bounded content frame; reading and playbook grids are composed for available width", "order": ["masthead", "tabs", "workspace", "active panel", "footer"], "rails": "no page-level horizontal overflow", "status": "verified-local" },
+    { "width": 1440, "height": 960, "regime": "wide", "composition": "two-column reading and playbook compositions inside bounded line length", "order": ["masthead", "tabs", "workspace", "active panel", "footer"], "rails": "controls remain in-flow; no empty side rail", "status": "verified-local" },
+    { "width": 1920, "height": 1080, "regime": "expanded", "composition": "centered bounded content canvas preserves reading length and avoids decorative empty space", "order": ["masthead", "tabs", "workspace", "active panel", "footer"], "rails": "no artificial content rail", "status": "verified-local" },
+    { "width": 3840, "height": 2160, "regime": "canvas", "composition": "centered bounded content canvas; density remains readable instead of stretching cards", "order": ["masthead", "tabs", "workspace", "active panel", "footer"], "rails": "no page-level horizontal overflow", "status": "verified-local" }
+  ],
+  "proof": { "verified_at": "2026-08-12", "browser": "Playwright CLI", "checks": ["one active panel", "skeleton hidden after load", "ready data state", "no page-level horizontal overflow", "bounded container at ultra-wide"] }
+}

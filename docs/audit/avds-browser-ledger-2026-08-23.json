@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "avds-browser-acceptance-ledger-v1",
+  "evidenceBoundary": "local candidate only; source_revision is the SHA-256 of index.html, not a Git revision because this checkout has no .git metadata",
+  "sourceRevisionKind": "content_sha256_not_git",
+  "sourceRevision": "ee3cace7e342ea5e01b83c37f54f17af5ce7566f054a1c422e9933dd298b8c1b",
+  "preflight": {
+    "health": "/health.json",
+    "requiredPaths": ["/", "/data/disarm.json", "/assets/app.js", "/assets/avds-disarm-adapter.css"],
+    "optionalThirdPartyHosts": []
+  },
+  "viewports": [
+    {"id": "desktop-1440", "width": 1440, "height": 960},
+    {"id": "mobile-390", "width": 390, "height": 844}
+  ],
+  "routes": [
+    {"id": "overview", "path": "/?tab=overview", "role": "overview", "states": [{"id": "ready", "fixtureKind": "production-like"}]},
+    {"id": "red", "path": "/?tab=red", "role": "attack-matrix", "states": [{"id": "ready", "fixtureKind": "production-like"}]},
+    {"id": "blue", "path": "/?tab=blue", "role": "defence-matrix", "states": [{"id": "ready", "fixtureKind": "production-like"}]},
+    {"id": "search", "path": "/?tab=search", "role": "search", "states": [{"id": "ready", "fixtureKind": "production-like"}]},
+    {"id": "incidents", "path": "/?tab=incidents", "role": "incident-catalog", "states": [{"id": "ready", "fixtureKind": "production-like"}]},
+    {"id": "playbook", "path": "/?tab=playbook", "role": "response-plan", "states": [{"id": "ready", "fixtureKind": "production-like"}]},
+    {"id": "about", "path": "/?tab=about", "role": "methodology", "states": [{"id": "ready", "fixtureKind": "production-like"}]}
+  ],
+  "visualCraft": {
+    "required": true,
+    "targets": [
+      {"id": "masthead", "selector": ".site-masthead", "role": "container"},
+      {"id": "tabs", "selector": ".tabbar-row", "role": "container"},
+      {"id": "workspace", "selector": ".workspace-toolbar", "role": "control"}
+    ],
+    "spacing": [
+      {"from": "masthead", "to": "tabs", "axis": "vertical", "minGapPx": 0, "maxGapPx": 96, "avdsContract": "spacing.0–spacing.24"},
+      {"from": "tabs", "to": "workspace", "axis": "vertical", "minGapPx": 0, "maxGapPx": 64, "avdsContract": "spacing.0–spacing.16"}
+    ],
+    "voidZones": [],
+    "allowedFontFamilies": ["onest", "inter", "ibm plex mono", "ibm plex serif"]
+  }
+}

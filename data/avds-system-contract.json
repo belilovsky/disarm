@@ -1,0 +1,500 @@
+{
+  "schema_version": "disarm-avds-system-contract-v1",
+  "consumer": "https://disarm.qdev.run/",
+  "synced_at": "2026-08-23",
+  "upstream": {
+    "canonical_surface": "https://avds.digital/",
+    "release_version": "4.7.0",
+    "source_commit": "79342b07b061938c14101a213d1dd0c7a412d689",
+    "build_id": "79342b07b061",
+    "built_at": "2026-08-22T12:43:37.047Z",
+    "artifact_sha256": "c770ea8a7a9d21a5af4fc92d0dc274fb9a3d6f434ba4e8e523d947a6eefac7a9",
+    "design_package": "@sgeo/ui-kit@4.5.1",
+    "development_contract_version": "0.5.0",
+    "source_documents": [
+      {
+        "url": "https://avds.digital/release.json",
+        "sha256": "ede22bf56c6ccfc06654265edffcb73b89af7b0452d971bb3dd6ad0244e5183e"
+      },
+      {
+        "url": "https://avds.digital/.well-known/avds-ui-contract.json",
+        "sha256": "c733eb7faaccd5d638d1b1a578e7028a647a149cb372e5652c6b655596fe90d6"
+      },
+      {
+        "url": "https://avds.digital/.well-known/avds-development-system.json",
+        "sha256": "34020f98c656a927e9c718a6796e873f5bf721295d6417a731fcd2468f3ad941"
+      }
+    ]
+  },
+  "connected_files": [
+    {
+      "url": "https://disarm.qdev.run/_avds/avds.css",
+      "sha256": "6eab517697d002975a015ff7799a88632992aef0a3268b506bd03c80a784590e",
+      "bytes": 176420,
+      "source_commit_mapping": "not-proven"
+    },
+    {
+      "path": "assets/avds-disarm-adapter.css",
+      "sha256": "3f21495f3a22774434f3a381cec401856e9baaebf389e9d923f477c4d7e51858"
+    },
+    {
+      "path": "assets/avds-static-token-contract.css",
+      "sha256": "b3135d07c6935c570910782ef4d513cda34d3405c36e69f6a292e0b0c8595772",
+      "source_commit": "bda50683b32f924f80d5705072d2aab9df3840ef",
+      "source_path": "packages/ui-kit/src/tokens/variables.css",
+      "purpose": "exact upstream token export for static consumers"
+    },
+    {
+      "path": "assets/avds-static-preview-bundle.css",
+      "sha256": "b062b7dfda2b940457236cb5a8558728f5a3d59b40b7aeb5f4ae2440e6504ef4",
+      "purpose": "local preview bridge for the hash-pinned public AVDS component CSS"
+    },
+    {
+      "path": "fonts/avds/avds-fonts.css",
+      "sha256": "f116b64e8cdd39b1b05858e891f3dfb24c5efb61123e696b9f17c419defbacd1"
+    },
+    {
+      "path": "fonts/avds/licenses/IBM-Plex-LICENSE.txt",
+      "sha256": "7e6b2818edbd8f6a01ae80641cc8f16a51080d08fb4e532be3a0b6f74adb07da"
+    },
+    {
+      "path": "fonts/avds/licenses/Inter-LICENSE.txt",
+      "sha256": "262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a"
+    },
+    {
+      "path": "fonts/avds/licenses/Onest-OFL.txt",
+      "sha256": "071195d8806e226faeee60259c28ca67b458227af5195a73f5cfcab06e3003bc"
+    },
+    {
+      "path": "fonts/avds/*.woff2",
+      "sha256_manifest": "ee9821273b11170071e67968b11c4223a7cbb2e2a4c4f8ae4cea10ee065f7266",
+      "file_count": 57
+    },
+    {
+      "path": "assets/app.js",
+      "sha256": "eacccf04d0e251d752f688f76421397c330414b88e55b1f7d8ad92c7d3c44564"
+    },
+    {
+      "path": "index.html",
+      "sha256": "bdfe030657d8bdf803c92fd185b469afe89d33008e6bee6c2aafcc8e68c3e318"
+    },
+    {
+      "path": "data/avds-adapter.json",
+      "sha256": "37d365c09f3e64f36f8dea1f0312e70198776c5394bb566b00a876f14db007ad"
+    },
+    {
+      "path": "data/avds-coverage.json",
+      "sha256": "e14da0e37c85ef95d6fc8c90884535082c2f7b97889ffdbf6586c166b92dd491"
+    },
+    {
+      "path": "data/avds-component-contracts.json",
+      "sha256": "67db35b0c0ef5eb21393a861c8d2e39eedc065a125e0d944a0fdd832debba22a"
+    },
+    {
+      "path": "data/avds-responsive-contract.json",
+      "sha256": "d3780086f56ae440198eab05d70d810eee5568f8d3ab587b32e60d3c6eab6084"
+    },
+    {
+      "path": "data/disarm-provenance.json",
+      "sha256": "09ed5f2dc6297f763f63ede135356e0fe787f144d0198730c4a3973e7be050be"
+    },
+    {
+      "path": "data/avds-locale-contract.json",
+      "sha256": "f61067c2cff30e3f7bf2667aa331e0549abc3815d72e3035a4869d204b596869"
+    },
+    {
+      "path": "data/avds-data-visualization-contract.json",
+      "sha256": "2f68557276c8f85f14f52858add067ef87bc60fd70eee654ae163e0957b565af"
+    },
+    {
+      "path": "data/avds-visual-regression.json",
+      "sha256": "b6c0cae997276c2fe2094a01902914c5f3b3db09330bd24625db53e5b03df7f5"
+    },
+    {
+      "path": ".well-known/avds-adoption.json",
+      "sha256": "aa4a25141046f5309b0dd33d0a7065df3aef81a060e5f9f29bd3cd75bf7a1d88"
+    }
+  ],
+  "local_deviations": [
+    "Static HTML/CSS/JavaScript adapter instead of direct @sgeo/ui-kit runtime components.",
+    "Theme picker maps institutional, editorial, data/analytics, map and dark roles; product still has one data content language.",
+    "DISARM-specific tab shell, matrices, playbook and modal compositions remain product-owned.",
+    "Unicode glyphs and inline SVG are used instead of a complete named AVDS icon registry.",
+    "KK and EN cover the navigation/workspace chrome and data-state copy; DISARM object names, summaries and deep panel copy remain Russian.",
+    "Incident geography uses a disclosed external country-reference-point layer; DISARM supplies country labels only, so the map never asserts exact event locations and World remains list-only.",
+    "The shared /_avds/avds.css dependency is hash-pinned, but its deployed bytes are not mapped to AVDS 4.7.0 source commit; the local static token export remains pinned to the earlier bda50683 source because an exact 79342b07 export was not available from an authoritative source.",
+    "The requested qz.energy deviation list is outside this consumer contract; qz.energy must have its own manifest and evidence."
+  ],
+  "tokens": {
+    "colors": {
+      "primitive_source": "/_avds/avds.css",
+      "semantic_roles": {
+        "background": "var(--color-bg)",
+        "surface": "var(--color-surface)",
+        "surface_subtle": "var(--color-bg-subtle)",
+        "text": "var(--color-text)",
+        "text_muted": "var(--color-text-muted)",
+        "border": "var(--color-border)",
+        "accent": "var(--color-accent)",
+        "success": "var(--color-success)",
+        "warning": "var(--color-warning)",
+        "danger": "var(--color-danger)",
+        "focus": "var(--color-focus-ring)",
+        "chart": "var(--chart-1 .. --chart-8)"
+      },
+      "local_rule": "Consumer CSS may compose semantic roles with color-mix; literal color values are prohibited in the active adapter."
+    },
+    "typography": {
+      "families": {
+        "sans": "var(--font-sans)",
+        "serif": "var(--font-serif)",
+        "mono": "var(--font-mono)"
+      },
+      "sizes": {
+        "2xs": "11px",
+        "xs": "12px",
+        "sm": "13px",
+        "md": "14px",
+        "base": "15px",
+        "lg": "17px",
+        "xl": "20px",
+        "2xl": "24px",
+        "3xl": "30px",
+        "4xl": "36px",
+        "5xl": "48px"
+      },
+      "weights": [
+        400,
+        500,
+        600,
+        700,
+        800
+      ],
+      "line_heights": {
+        "tight": 1.2,
+        "snug": 1.35,
+        "normal": 1.5,
+        "relaxed": 1.7
+      }
+    },
+    "spacing": {
+      "0": "0",
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "5": "20px",
+      "6": "24px",
+      "8": "32px",
+      "10": "40px",
+      "12": "48px",
+      "16": "64px",
+      "20": "80px",
+      "24": "96px"
+    },
+    "radii": {
+      "none": "0",
+      "xs": "2px",
+      "sm": "4px",
+      "md": "8px",
+      "lg": "12px",
+      "xl": "16px",
+      "2xl": "24px",
+      "full": "9999px"
+    },
+    "shadows": {
+      "xs": "var(--shadow-xs)",
+      "sm": "var(--shadow-sm)",
+      "md": "var(--shadow-md)",
+      "lg": "var(--shadow-lg)",
+      "xl": "var(--shadow-xl)",
+      "focus": "var(--shadow-focus)"
+    },
+    "sizes": {
+      "touch_target_min": "44px",
+      "control_min_height": "40px",
+      "logo": [
+        "36px",
+        "40px",
+        "48px"
+      ],
+      "matrix_mobile_column": "minmax(210px, 230px)"
+    },
+    "animation": {
+      "instant": "80ms",
+      "fast": "140ms",
+      "base": "200ms",
+      "slow": "320ms",
+      "slower": "500ms",
+      "easing": "AVDS standard/emphasised curves",
+      "reduced_motion": "all animations and transitions collapse to .01ms"
+    },
+    "z_index": {
+      "base": 0,
+      "raised": 10,
+      "dropdown": 1000,
+      "sticky": 1100,
+      "drawer": 1200,
+      "modal": 1300,
+      "popover": 1400,
+      "toast": 1500,
+      "tooltip": 1600
+    },
+    "breakpoints": {
+      "compact": "0–767px",
+      "tablet": "768–1023px",
+      "desktop": "1024–1439px",
+      "wide": "1440–1919px",
+      "expanded": "1920–2559px",
+      "canvas": "2560px+",
+      "consumer_media_queries": [
+        "760px",
+        "1100px"
+      ]
+    },
+    "layout": {
+      "container_max": "1280px",
+      "reading_max": "80ch",
+      "grid": "CSS grid/flex with minmax(0, 1fr); cards do not stretch to ultra-wide viewport",
+      "rails": "only tabs, filters and matrix wrappers may scroll horizontally",
+      "consumer_scalar_bridge": "--disarm-unit and --disarm-motion-unit govern all local pixel and motion values; --disarm-z-* governs local stacking. Literal 760px and 1100px media query thresholds are retained because CSS custom properties cannot parameterize media features."
+    },
+    "covered": [
+      "semantic colors",
+      "typography",
+      "spacing",
+      "radii",
+      "shadows",
+      "element sizes",
+      "animation",
+      "z-index",
+      "breakpoints",
+      "container and grid"
+    ]
+  },
+  "fonts_and_icons": {
+    "font_families": [
+      "IBM Plex Sans",
+      "IBM Plex Serif",
+      "IBM Plex Mono",
+      "Inter",
+      "Onest"
+    ],
+    "approved_weights": [
+      400,
+      500,
+      600,
+      700,
+      800
+    ],
+    "application_rules": {
+      "body": "Inter/IBM Plex Sans",
+      "headings": "AVDS display role with serif in institutional/editorial themes",
+      "technical_ids": "IBM Plex Mono",
+      "machine_artifacts": "retain source technical spelling"
+    },
+    "font_source": "fonts/avds/avds-fonts.css",
+    "font_license_status": "local-license-evidence-present",
+    "font_licenses": [
+      {
+        "families": [
+          "IBM Plex Sans",
+          "IBM Plex Serif",
+          "IBM Plex Mono"
+        ],
+        "license": "SIL Open Font License 1.1",
+        "file": "fonts/avds/licenses/IBM-Plex-LICENSE.txt",
+        "source": "https://github.com/IBM/plex"
+      },
+      {
+        "families": [
+          "Inter"
+        ],
+        "license": "SIL Open Font License 1.1",
+        "file": "fonts/avds/licenses/Inter-LICENSE.txt",
+        "source": "https://github.com/rsms/inter"
+      },
+      {
+        "families": [
+          "Onest"
+        ],
+        "license": "SIL Open Font License 1.1",
+        "file": "fonts/avds/licenses/Onest-OFL.txt",
+        "source": "https://github.com/simpals/onest"
+      }
+    ],
+    "icon_contract_status": "partial",
+    "icons": {
+      "brand": "inline SVG DISARM mark, 40px viewBox, 2px stroke",
+      "search": "text glyph ⌕, aria-hidden",
+      "close": "text glyph × with labelled button",
+      "status": "CSS semantic dot, 8px",
+      "icon_registry": "not-yet-published"
+    },
+    "icon_gap": "A complete named icon registry with local files and licenses remains open."
+  },
+  "themes": {
+    "institutional": {
+      "status": "verified-local",
+      "intent": "paper/ink civic surface",
+      "accent": "editorial navy",
+      "font": "IBM Plex Serif headings"
+    },
+    "editorial": {
+      "status": "verified-local",
+      "intent": "warm paper reading surface",
+      "accent": "gold/terracotta",
+      "font": "IBM Plex Serif headings"
+    },
+    "data-analytics": {
+      "status": "verified-local",
+      "intent": "neutral data surface",
+      "accent": "chart-1",
+      "palette": "chart-1..chart-8"
+    },
+    "map": {
+      "status": "verified-local",
+      "intent": "geospatial semantic roles",
+      "accent": "layer-hydro",
+      "palette": "layer-* roles"
+    },
+    "dark": {
+      "status": "verified-local",
+      "intent": "low-light high-contrast surface",
+      "accent": "blue-500",
+      "contrast": "dark AVDS semantic roles"
+    },
+    "print": {
+      "status": "verified-local",
+      "intent": "ink-safe document output",
+      "rules": "hide interactive chrome, preserve active panel, remove shadows"
+    }
+  },
+  "component_contracts": {
+    "implemented": [
+      "masthead",
+      "pill tabs",
+      "page header",
+      "surface card",
+      "control panel",
+      "search",
+      "status chip",
+      "modal"
+    ],
+    "machine_readable_registry": true,
+    "registry": "/data/avds-component-contracts.json",
+    "complete_variants_states_sizes_nesting": true
+  },
+  "state_contract": {
+    "implemented": [
+      "hover",
+      "focus",
+      "active",
+      "selected",
+      "disabled",
+      "loading",
+      "skeleton",
+      "empty",
+      "error",
+      "degraded",
+      "offline",
+      "stale-data",
+      "success"
+    ],
+    "not_proven": []
+  },
+  "compositions": {
+    "implemented": [
+      "masthead",
+      "footer",
+      "catalog",
+      "analytics panel",
+      "matrix table",
+      "filters",
+      "publication-like detail",
+      "methodology links",
+      "country reference-point map with a textual list alternative"
+    ],
+    "scoped_out": [],
+    "not_proven": [],
+    "provenance": "/data/disarm-provenance.json"
+  },
+  "responsive_contract": {
+    "upstream_regimes": [
+      "compact",
+      "tablet",
+      "desktop",
+      "wide",
+      "expanded",
+      "canvas"
+    ],
+    "verified_widths": [
+      390,
+      768,
+      1280,
+      1440,
+      1920,
+      2560
+    ],
+    "required_unverified_widths": [],
+    "recomposition_manifest": true,
+    "contract": "/data/avds-responsive-contract.json"
+  },
+  "data_visualization_contract": {
+    "semantic_palette": "verified-local",
+    "scales_legends_axes_units": "verified-local",
+    "missing_values": "verified-local",
+    "period_comparison": "verified-local: source year_started comparison with signed absolute and rounded relative delta, semantic table alternative and catalogue-only boundary",
+    "maps": "verified-local: incident country reference-point map with list alternative",
+    "tabular_alternatives": "verified-local",
+    "contract": "/data/avds-data-visualization-contract.json"
+  },
+  "accessibility_contract": {
+    "covered": [
+      "focus-visible",
+      "tab order for primary tabs",
+      "landmarks",
+      "ARIA tabs",
+      "reduced motion",
+      "forced colors",
+      "screen-reader transcript for matrix and modal",
+      "modal focus trap and restoration",
+      "automated WCAG AA semantic contrast report across five AVDS themes",
+      "persisted user-controlled text scale from 100 to 200 percent"
+    ],
+    "not_proven": [
+      "browser-native zoom beyond the product text-scale control"
+    ],
+    "partial": []
+  },
+  "content_standard": {
+    "active_locale": "ru",
+    "required_locales": [
+      "ru",
+      "kk",
+      "en"
+    ],
+    "kk_status": "partial",
+    "en_status": "partial",
+    "number_date_unit_rules": "formalized",
+    "error_empty_copy": "formalized-ru",
+    "contract": "/data/avds-locale-contract.json"
+  },
+  "quality_contract": {
+    "route_ledger": "embedded-in-static-and-browser-checks",
+    "state_tests": "partial",
+    "accessibility_checks": "verified-local-and-public: semantic contrast gate plus 200 percent text-scale browser proof",
+    "reference_screenshots": "implemented",
+    "visual_regression": "implemented",
+    "visual_regression_contract": "/data/avds-visual-regression.json",
+    "untracked_local_style_gate": "hard-coded-colors-plus-contract-markers",
+    "update_procedure": [
+      "Run scripts/check_avds_update.py --check; use --write for the bounded upstream identity migration.",
+      "Fetch and hash AVDS release and contract documents.",
+      "Update pinned identity and connected-file hashes.",
+      "Recalculate all ten categories fail closed.",
+      "Run static, browser and accessibility checks.",
+      "Deploy immutable changed files and verify public hashes and badge."
+    ]
+  }
+}

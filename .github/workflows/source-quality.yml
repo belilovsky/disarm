@@ -1,0 +1,28 @@
+name: DISARM source quality
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate static product and Platform boundary contracts
+        run: ./scripts/smoke_static.sh
+      - name: Validate AVDS adoption arithmetic
+        run: python3 scripts/build_avds_adoption.py --check
+      - name: Validate content-addressed release receipt
+        run: python3 scripts/build_release_receipt.py --check

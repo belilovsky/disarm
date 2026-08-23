@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://disarm.qdev.run/sitemap.xml

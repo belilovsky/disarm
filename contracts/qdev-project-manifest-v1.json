@@ -1,0 +1,348 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://platform.qdev.run/schemas/qdev-project-manifest-v1.json",
+  "title": "QDev Project Manifest",
+  "description": "Portable project profile for Belilovsky Platform consumers.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project_id",
+    "profile",
+    "lifecycle",
+    "owners",
+    "runtime",
+    "capabilities",
+    "quality",
+    "operations"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri"
+    },
+    "schema_version": {
+      "const": "qdev-project-manifest-v1"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "profile": {
+      "enum": [
+        "public-web",
+        "service-api",
+        "platform-service",
+        "data-pipeline",
+        "compute-service",
+        "geo-product",
+        "shared-library",
+        "internal-tool"
+      ]
+    },
+    "lifecycle": {
+      "enum": [
+        "planned",
+        "alpha",
+        "beta",
+        "production",
+        "deprecated"
+      ]
+    },
+    "owners": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "product",
+        "technical"
+      ],
+      "properties": {
+        "product": {
+          "type": "string",
+          "minLength": 1
+        },
+        "technical": {
+          "type": "string",
+          "minLength": 1
+        },
+        "data": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "language"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "python",
+            "node",
+            "static",
+            "container",
+            "library",
+            "mixed"
+          ]
+        },
+        "language": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "qazstack",
+        "avds",
+        "data",
+        "compute",
+        "geo",
+        "identity"
+      ],
+      "properties": {
+        "qazstack": {
+          "$ref": "#/definitions/adoption"
+        },
+        "avds": {
+          "$ref": "#/definitions/adoption"
+        },
+        "data": {
+          "$ref": "#/definitions/dataAdoption"
+        },
+        "compute": {
+          "$ref": "#/definitions/adoption"
+        },
+        "geo": {
+          "$ref": "#/definitions/adoption"
+        },
+        "identity": {
+          "$ref": "#/definitions/adoption"
+        }
+      }
+    },
+    "quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "workflow",
+        "coverage_minimum",
+        "commands",
+        "required_documents"
+      ],
+      "properties": {
+        "workflow": {
+          "type": "string",
+          "minLength": 1
+        },
+        "coverage_minimum": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "commands": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "install",
+            "lint",
+            "typecheck",
+            "test",
+            "build",
+            "security"
+          ],
+          "properties": {
+            "install": {
+              "type": "string"
+            },
+            "lint": {
+              "type": "string"
+            },
+            "typecheck": {
+              "type": "string"
+            },
+            "test": {
+              "type": "string"
+            },
+            "build": {
+              "type": "string"
+            },
+            "security": {
+              "type": "string"
+            }
+          }
+        },
+        "required_documents": {
+          "type": "array",
+          "minItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "operations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "health_path",
+        "readiness_path",
+        "release_revision_path",
+        "deploy_mode"
+      ],
+      "properties": {
+        "health_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "readiness_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "release_revision_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "deploy_mode": {
+          "enum": [
+            "none",
+            "static",
+            "container",
+            "systemd",
+            "library",
+            "external"
+          ]
+        }
+      }
+    },
+    "exceptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "gate",
+          "reason",
+          "owner",
+          "expires"
+        ],
+        "properties": {
+          "gate": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 8
+          },
+          "owner": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expires": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "adoption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "version",
+        "contracts"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "required",
+            "optional",
+            "not-applicable",
+            "planned"
+          ]
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "contracts": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "dataAdoption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "version",
+        "contracts",
+        "qazpipe",
+        "qazlake"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "required",
+            "optional",
+            "not-applicable",
+            "planned"
+          ]
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "contracts": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "qazpipe": {
+          "type": "boolean"
+        },
+        "qazlake": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

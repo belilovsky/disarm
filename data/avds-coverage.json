@@ -1,0 +1,360 @@
+{
+  "schema_version": "disarm-avds-maturity-v2",
+  "generated_at": "2026-08-23",
+  "avds_version": "4.7.0",
+  "measurement": "system-contract-maturity",
+  "coverage_percent": 97,
+  "scoring": {
+    "category_weight_percent": 10,
+    "evidence_values": {
+      "pass": 1,
+      "partial": 0.5,
+      "fail": 0
+    },
+    "rule": "Each of ten categories has equal weight. Unverified requirements fail closed; partial evidence receives half credit."
+  },
+  "route_coverage": {
+    "coverage_percent": 100,
+    "passed": 20,
+    "total": 20,
+    "note": "Legacy basic-contract coverage; retained as a subordinate metric and not used as the overall badge value."
+  },
+  "summary": {
+    "score": 97,
+    "maximum": 100,
+    "categories": 10
+  },
+  "contract": "/data/avds-system-contract.json",
+  "evidence_layers": {
+    "source": "local candidate plus pinned public AVDS documents",
+    "local": {
+      "status": "verified",
+      "verified_at": "2026-08-23",
+      "checks": [
+        "INTEGRITY_OK",
+        "SMOKE_OK",
+        "local browser acceptance: 14/14 route × viewport cells without horizontal overflow, console errors or visual-craft blockers",
+        "local modal source boundary and locale-specific missing-attribution projection"
+      ]
+    },
+    "public": {
+      "status": "requires-release-verification",
+      "checks": [
+        "Public evidence is release-specific and is intentionally not reused for a changed local candidate.",
+        "After separately authorized promotion, require check_runtime_evidence.py, smoke_live.sh and browser proof against the exact release identity."
+      ]
+    }
+  },
+  "categories": [
+    {
+      "id": "routes",
+      "score": 100,
+      "checks": [
+        {
+          "id": "route-ledger",
+          "status": "pass",
+          "evidence": "seven tabs and seven panels are statically enumerated"
+        },
+        {
+          "id": "route-runtime",
+          "status": "pass",
+          "evidence": "all seven tab states verified in browser"
+        },
+        {
+          "id": "single-active-route",
+          "status": "pass",
+          "evidence": "exactly one active panel verified"
+        },
+        {
+          "id": "deep-links",
+          "status": "pass",
+          "evidence": "tab and entity URL state implemented"
+        },
+        {
+          "id": "public-route-smoke",
+          "status": "pass",
+          "evidence": "public and protected-path smoke contract exists"
+        }
+      ]
+    },
+    {
+      "id": "tokens-and-themes",
+      "score": 100,
+      "checks": [
+        {
+          "id": "semantic-colors",
+          "status": "pass",
+          "evidence": "adapter contains no hard-coded color literals"
+        },
+        {
+          "id": "typography-tokens",
+          "status": "pass",
+          "evidence": "AVDS font tokens and local font stylesheet are connected"
+        },
+        {
+          "id": "layout-token-completeness",
+          "status": "pass",
+          "evidence": "adapter scalar bridge governs local spacing, sizing, radii, motion and z-index values; only CSS media feature thresholds remain literal by platform constraint"
+        },
+        {
+          "id": "theme-profiles",
+          "status": "pass",
+          "evidence": "institutional, editorial, analytics, map and dark mappings are selectable in the consumer"
+        },
+        {
+          "id": "print-theme",
+          "status": "pass",
+          "evidence": "print media contract removes interactive chrome and preserves semantic ink/surface roles"
+        }
+      ]
+    },
+    {
+      "id": "components",
+      "score": 100,
+      "checks": [
+        {
+          "id": "html-class-api",
+          "status": "pass",
+          "evidence": "active component classes and attributes are statically guarded"
+        },
+        {
+          "id": "keyboard-api",
+          "status": "pass",
+          "evidence": "tab keyboard contract is implemented and checked"
+        },
+        {
+          "id": "variants-and-sizes",
+          "status": "pass",
+          "evidence": "ten consumer components declare variants, states and size rules"
+        },
+        {
+          "id": "nesting-rules",
+          "status": "pass",
+          "evidence": "each component declares allowed children and the integrity gate checks required markup"
+        },
+        {
+          "id": "component-registry",
+          "status": "pass",
+          "evidence": "machine-readable registry is published at data/avds-component-contracts.json"
+        }
+      ]
+    },
+    {
+      "id": "compositions",
+      "score": 100,
+      "checks": [
+        {
+          "id": "shell",
+          "status": "pass",
+          "evidence": "masthead, workspace navigation and footer are present"
+        },
+        {
+          "id": "catalog-table-filters",
+          "status": "pass",
+          "evidence": "catalog, matrix/table and filtering compositions are present"
+        },
+        {
+          "id": "analytics",
+          "status": "pass",
+          "evidence": "overview and comparison compositions are present"
+        },
+        {
+          "id": "map-list",
+          "status": "pass",
+          "evidence": "incident country labels are rendered as an explicit equirectangular reference-point map with a keyboard-operable list alternative; the UI states that points are country references, not event locations"
+        },
+        {
+          "id": "evidence-methodology",
+          "status": "pass",
+          "evidence": "provenance composition links a machine-readable DISARM data passport and interpretation limits"
+        }
+      ]
+    },
+    {
+      "id": "states",
+      "score": 100,
+      "checks": [
+        {
+          "id": "interaction-states",
+          "status": "pass",
+          "evidence": "hover, focus, active and selected are implemented"
+        },
+        {
+          "id": "empty-error",
+          "status": "pass",
+          "evidence": "empty results and load error states are implemented"
+        },
+        {
+          "id": "success",
+          "status": "pass",
+          "evidence": "success status treatment is implemented"
+        },
+        {
+          "id": "loading-skeleton-disabled",
+          "status": "pass",
+          "evidence": "skeleton, loading indicator and disabled retry control are implemented"
+        },
+        {
+          "id": "degraded-offline-stale",
+          "status": "pass",
+          "evidence": "cached fallback, offline and stale states have explicit status messaging"
+        }
+      ]
+    },
+    {
+      "id": "responsiveness",
+      "score": 100,
+      "checks": [
+        {
+          "id": "regime-runtime",
+          "status": "pass",
+          "evidence": "390, 768, 1280, 1440, 1920 and 2560 browser regimes verified"
+        },
+        {
+          "id": "no-overflow",
+          "status": "pass",
+          "evidence": "horizontal overflow guard passed across verified regimes"
+        },
+        {
+          "id": "required-widths",
+          "status": "pass",
+          "evidence": "320, 390, 768, 820, 1024, 1440, 1920 and 3840 were checked in browser"
+        },
+        {
+          "id": "recomposition-order",
+          "status": "pass",
+          "evidence": "responsive contract declares stable masthead-tabs-workspace-panel-footer order"
+        },
+        {
+          "id": "density-rails-line-length",
+          "status": "pass",
+          "evidence": "compact density, bounded 80ch reading length, 1280px container and rail rules are declared"
+        }
+      ]
+    },
+    {
+      "id": "accessibility",
+      "score": 100,
+      "checks": [
+        {
+          "id": "landmarks-aria",
+          "status": "pass",
+          "evidence": "landmarks, tab roles, labels and live regions are present"
+        },
+        {
+          "id": "keyboard",
+          "status": "pass",
+          "evidence": "tabs and primary navigation have keyboard behavior"
+        },
+        {
+          "id": "focus-forced-colors",
+          "status": "pass",
+          "evidence": "focus-visible and forced-colors guards are present"
+        },
+        {
+          "id": "reduced-motion",
+          "status": "pass",
+          "evidence": "reduced-motion behavior verified in browser"
+        },
+        {
+          "id": "contrast-screenreader-zoom",
+          "status": "pass",
+          "evidence": "screen-reader transcript and modal focus are verified; check_avds_accessibility.py validates 15 public semantic text pairs at WCAG AA 4.5:1; the persisted 100–200% text-scale control is verified in browser at 200% on 320 and 1440 widths without overflow"
+        }
+      ]
+    },
+    {
+      "id": "localization",
+      "score": 80,
+      "checks": [
+        {
+          "id": "ru-interface",
+          "status": "pass",
+          "evidence": "Russian interface is the active locale"
+        },
+        {
+          "id": "kk-interface",
+          "status": "partial",
+          "evidence": "KK picker covers navigation, workspace controls and data-state copy; DISARM content remains Russian"
+        },
+        {
+          "id": "en-interface",
+          "status": "partial",
+          "evidence": "EN picker covers navigation, workspace controls and data-state copy; DISARM content remains Russian"
+        },
+        {
+          "id": "numbers-dates-units",
+          "status": "pass",
+          "evidence": "locale number, date and unit rules are published"
+        },
+        {
+          "id": "wrapping-errors-empty-copy",
+          "status": "pass",
+          "evidence": "empty, error, stale and offline copy plus wrapping rules are published"
+        }
+      ]
+    },
+    {
+      "id": "data-visualization",
+      "score": 100,
+      "checks": [
+        {
+          "id": "semantic-palettes",
+          "status": "pass",
+          "evidence": "visual status colors use semantic AVDS roles"
+        },
+        {
+          "id": "scales-legends-axes-units",
+          "status": "pass",
+          "evidence": "comparison bars expose an explicit 0-to-visible-maximum axis, unit label and printed value"
+        },
+        {
+          "id": "missing-incomplete-values",
+          "status": "pass",
+          "evidence": "missing values render as visible text and unfilled bars, never silent zero"
+        },
+        {
+          "id": "period-comparison",
+          "status": "pass",
+          "evidence": "the incident catalogue exposes a two-period comparison by source year_started, with signed absolute and rounded relative delta, zero-base handling, explicit snapshot-coverage boundary, selectors and a semantic table alternative; it does not infer change outside the catalogue"
+        },
+        {
+          "id": "maps-table-alternatives",
+          "status": "pass",
+          "evidence": "matrix, comparison rows and the incident point map retain labelled, keyboard-operable textual alternatives"
+        }
+      ]
+    },
+    {
+      "id": "version-discipline",
+      "score": 90,
+      "checks": [
+        {
+          "id": "upstream-identity",
+          "status": "partial",
+          "gap": "AVDS release identity is pinned, but the shared deployed CSS has no source-commit mapping"
+        },
+        {
+          "id": "connected-file-hashes",
+          "status": "pass",
+          "evidence": "adapter, font stylesheet, font bundle and app hashes are recorded"
+        },
+        {
+          "id": "local-deviations",
+          "status": "pass",
+          "evidence": "DISARM-specific deviations and scope mismatch are recorded"
+        },
+        {
+          "id": "update-procedure",
+          "status": "pass",
+          "evidence": "scripts/check_avds_update.py --check fetches and hashes the three AVDS documents; --write performs a bounded identity migration before integrity checks"
+        },
+        {
+          "id": "visual-regression-style-drift",
+          "status": "pass",
+          "evidence": "four production baselines (overview and attack matrix at 320/1440) are checksum-pinned and verified by a fail-closed zero-tolerance pixel-diff gate"
+        }
+      ]
+    }
+  ]
+}

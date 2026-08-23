@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "avds-visual-craft-audit-v1",
+  "evidenceBoundary": "Local-candidate browser evidence; no claim about production or a Git source revision.",
+  "cells": [
+    {"route":"overview","role":"overview","state":"ready","viewport":"desktop-1440","geometry":[],"radii":[],"typography":[],"space":[]},
+    {"route":"overview","role":"overview","state":"ready","viewport":"mobile-390","geometry":[],"radii":[],"typography":[],"space":[]},
+    {"route":"red","role":"attack-matrix","state":"ready","viewport":"desktop-1440","geometry":[],"radii":[],"typography":[],"space":[]},
+    {"route":"red","role":"attack-matrix","state":"ready","viewport":"mobile-390","geometry":[],"radii":[],"typography":[],"space":[]},
+    {"route":"blue","role":"defence-matrix","state":"ready","viewport":"desktop-1440","geometry":[],"radii":[],"typography":[],"space":[]},
+    {"route":"blue","role":"defence-matrix","state":"ready","viewport":"mobile-390","geometry":[],"radii":[],"typography":[],"space":[]},
+    {"route":"search","role":"search","state":"ready","viewport":"desktop-1440","geometry":[],"radii":[],"typography":[],"space":[]},
+    {"route":"search","role":"search","state":"ready","viewport":"mobile-390","geometry":[],"radii":[],"typography":[],"space":[]},
+    {"route":"incidents","role":"incident-catalog","state":"ready","viewport":"desktop-1440","geometry":[],"radii":[],"typography":[],"space":[]},
+    {"route":"incidents","role":"incident-catalog","state":"ready","viewport":"mobile-390","geometry":[],"radii":[],"typography":[],"space":[]},
+    {"route":"playbook","role":"response-plan","state":"ready","viewport":"desktop-1440","geometry":[],"radii":[],"typography":[],"space":[]},
+    {"route":"playbook","role":"response-plan","state":"ready","viewport":"mobile-390","geometry":[],"radii":[],"typography":[],"space":[]},
+    {"route":"about","role":"methodology","state":"ready","viewport":"desktop-1440","geometry":[],"radii":[],"typography":[],"space":[]},
+    {"route":"about","role":"methodology","state":"ready","viewport":"mobile-390","geometry":[],"radii":[],"typography":[],"space":[]}
+  ]
+}

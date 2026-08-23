@@ -1,0 +1,44 @@
+{
+  "schema_version": "avds-adoption-badge-v1",
+  "project_id": "disarm",
+  "version": "4.7.0",
+  "coverage": {
+    "scope": "disarm-ten-category-system-contract-maturity",
+    "basis": "evidenced_check_points_over_required_check_points_floor",
+    "required": 100,
+    "implemented": 97,
+    "percent": 97
+  },
+  "work": {
+    "status": "in_progress",
+    "remaining": 3,
+    "items": [
+      {
+        "id": "localization:kk-interface",
+        "title": "Complete evidence for kk-interface",
+        "status": "remaining",
+        "units": 1
+      },
+      {
+        "id": "localization:en-interface",
+        "title": "Complete evidence for en-interface",
+        "status": "remaining",
+        "units": 1
+      },
+      {
+        "id": "version-discipline:upstream-identity",
+        "title": "AVDS release identity is pinned, but the shared deployed CSS has no source-commit mapping",
+        "status": "remaining",
+        "units": 1
+      }
+    ],
+    "details_url": "https://disarm.qdev.run/data/avds-coverage.json"
+  },
+  "evidence": {
+    "revision_kind": "content_sha1",
+    "source_revision": "cfd02e0a7d879b4d60140d6ded8a44c05aa20e14",
+    "runtime_revision": "cfd02e0a7d879b4d60140d6ded8a44c05aa20e14",
+    "verified_at": "2026-08-23T00:00:00Z",
+    "checks_url": "https://disarm.qdev.run/.well-known/avds-adoption.json"
+  }
+}

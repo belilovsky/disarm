@@ -1,0 +1,99 @@
+{
+  "$schema": "https://platform.qdev.run/schemas/qdev-project-manifest-v1.json",
+  "schema_version": "qdev-project-manifest-v1",
+  "project_id": "disarm",
+  "profile": "public-web",
+  "lifecycle": "production",
+  "owners": {
+    "product": "qdev",
+    "technical": "qdev",
+    "data": "DISARM Foundation"
+  },
+  "runtime": {
+    "kind": "static",
+    "language": "HTML, CSS and JavaScript",
+    "version": "content-addressed-static"
+  },
+  "capabilities": {
+    "qazstack": {
+      "mode": "optional",
+      "version": null,
+      "contracts": [
+        "data/platform-capabilities.json"
+      ]
+    },
+    "avds": {
+      "mode": "required",
+      "version": "4.7.0",
+      "contracts": [
+        "data/avds-adapter.json",
+        "data/avds-system-contract.json",
+        ".well-known/avds-adoption.json"
+      ]
+    },
+    "data": {
+      "mode": "optional",
+      "version": "disarm-provenance-v1",
+      "contracts": [
+        "data/disarm-provenance.json",
+        "data/platform-capabilities.json"
+      ],
+      "qazpipe": false,
+      "qazlake": false
+    },
+    "compute": {
+      "mode": "not-applicable",
+      "version": null,
+      "contracts": [
+        "data/platform-capabilities.json"
+      ]
+    },
+    "geo": {
+      "mode": "not-applicable",
+      "version": null,
+      "contracts": [
+        "data/platform-capabilities.json"
+      ]
+    },
+    "identity": {
+      "mode": "optional",
+      "version": "server-pin-session-boundary",
+      "contracts": [
+        "data/platform-capabilities.json",
+        "health.json"
+      ]
+    }
+  },
+  "quality": {
+    "workflow": "content-addressed-static-release-gate",
+    "coverage_minimum": 97,
+    "commands": {
+      "install": "No package installation; system Python 3 and Node.js are required.",
+      "lint": "node --check assets/app.js",
+      "typecheck": "Not applicable: the static JavaScript surface has no typed build step.",
+      "test": "python3 -m unittest discover -s tests -p 'test_*.py'",
+      "build": "python3 scripts/build_avds_adoption.py --check && python3 scripts/build_release_receipt.py --check",
+      "security": "python3 scripts/check_integrity.py && ./scripts/smoke_live.sh https://disarm.qdev.run"
+    },
+    "required_documents": [
+      "README.md",
+      "docs/OFFICIAL_SOURCE_SYNC_2026-06-12.md",
+      "docs/FINAL_QA_PASS_2026-06-12.md",
+      "docs/audits/platform-integration-2026-08-23.md"
+    ]
+  },
+  "operations": {
+    "health_path": "/health.json",
+    "readiness_path": "/health.json",
+    "release_revision_path": "/release.json",
+    "deploy_mode": "static"
+  },
+  "exceptions": [
+    {
+      "gate": "platform-identity-oidc",
+      "reason": "The current static product uses a server-side PIN session boundary and has no accounts, roles or mutations. Platform Identity/OIDC is required before any account or role flow.",
+      "owner": "qdev",
+      "expires": "2026-11-23"
+    }
+  ]
+}

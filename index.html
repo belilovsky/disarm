@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>DISARM · обозреватель дезинформационных тактик и контрмер</title>
+<meta name="description" content="Локализованный обозреватель фреймворка DISARM: матрица атак, матрица защиты, техники, контрмеры, инциденты и конструктор плана реагирования. Источник — DISARM Foundation (CC-BY-SA-4.0).">
+<link rel="canonical" href="https://disarm.qdev.run/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://disarm.qdev.run/">
+<meta property="og:title" content="DISARM · обозреватель дезинформационных тактик и контрмер">
+<meta property="og:description" content="Локализованный обозреватель фреймворка DISARM: матрица атак, матрица защиты, техники, контрмеры, инциденты и конструктор плана реагирования.">
+<meta property="og:image" content="https://disarm.qdev.run/favicon.svg">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="/fonts/avds/avds-fonts.css">
+<link rel="stylesheet" href="assets/avds-static-token-contract.css?v=4.7.0-bda50683b32f">
+<link rel="stylesheet" href="assets/avds-static-preview-bundle.css?v=20260821-local-preview">
+    <link rel="stylesheet" href="assets/avds-disarm-adapter.css?v=1.3.5">
+</head>
+<body>
+<a class="skip-link" id="skip-link" href="#main-content">Перейти к содержанию</a>
+
+<!-- ============================================================ -->
+<!-- MASTHEAD                                                       -->
+<!-- ============================================================ -->
+<header class="avds-masthead site-masthead">
+  <div class="container">
+    <div class="masthead-brand-row">
+      <div class="masthead-brand">
+        <svg class="masthead-logo" viewBox="0 0 40 40" role="img" aria-label="DISARM" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="34" height="34" rx="3"/>
+          <path d="M10 20 L20 28 L30 12" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="20" cy="20" r="14" stroke-dasharray="2 3" opacity=".5"/>
+        </svg>
+        <div>
+          <h1 class="masthead-title">DISARM <span class="masthead-vs" id="masthead-vs">Фреймворк</span></h1>
+        </div>
+      </div>
+      <div class="masthead-meta-strip" id="masthead-stats">
+        <div class="meta-item"><span class="meta-label">Этапов</span><span class="meta-val" id="m-phases">—</span></div>
+        <div class="meta-item"><span class="meta-label">Тактик</span><span class="meta-val" id="m-tactics">—</span></div>
+        <div class="meta-item"><span class="meta-label">Техник</span><span class="meta-val" id="m-techs">—</span></div>
+        <div class="meta-item"><span class="meta-label">Контрмер</span><span class="meta-val" id="m-counters">—</span></div>
+        <div class="meta-item"><span class="meta-label">Инцидентов</span><span class="meta-val" id="m-incidents">—</span></div>
+      </div>
+    </div>
+    <p class="masthead-lede">
+      <b>DISARM</b> (Disinformation Analysis and Risk Management) — открытый фреймворк для описания и
+      противодействия инцидентам дезинформации. Построен по образцу <b>MITRE ATT&amp;CK</b>: систематизирует
+      тактики, техники и процедуры (TTP) злоумышленников и сопоставляет им контрмеры. Поддерживается
+      некоммерческой <a href="https://www.disarm.foundation/" target="_blank" rel="noopener noreferrer">DISARM Foundation</a>
+      под лицензией <span class="mono">CC-BY-SA-4.0</span>.
+    </p>
+  </div>
+</header>
+
+<main class="container site-main" id="main-content" tabindex="-1">
+
+  <!-- Tabs (canonical AV DS pill-tabs) -->
+  <div class="tabbar-row">
+    <div class="avds-pill-tabs" id="tabs" role="tablist">
+      <button class="avds-pill-tab active" id="tab-overview" data-tab="overview" role="tab" aria-selected="true" aria-controls="panel-overview" tabindex="0" title="Открыть обзор DISARM">Обзор</button>
+      <button class="avds-pill-tab" id="tab-red" data-tab="red" role="tab" aria-selected="false" aria-controls="panel-red" tabindex="-1" title="Открыть матрицу атакующих">Матрица атак</button>
+      <button class="avds-pill-tab" id="tab-blue" data-tab="blue" role="tab" aria-selected="false" aria-controls="panel-blue" tabindex="-1" title="Открыть матрицу контрмер">Матрица защиты</button>
+      <button class="avds-pill-tab" id="tab-search" data-tab="search" role="tab" aria-selected="false" aria-controls="panel-search" tabindex="-1" title="Открыть универсальный поиск">Поиск</button>
+      <button class="avds-pill-tab" id="tab-incidents" data-tab="incidents" role="tab" aria-selected="false" aria-controls="panel-incidents" tabindex="-1" title="Открыть каталог инцидентов">Инциденты</button>
+      <button class="avds-pill-tab" id="tab-playbook" data-tab="playbook" role="tab" aria-selected="false" aria-controls="panel-playbook" tabindex="-1" title="Открыть конструктор реагирования">План реагирования</button>
+      <button class="avds-pill-tab" id="tab-about" data-tab="about" role="tab" aria-selected="false" aria-controls="panel-about" tabindex="-1" title="Открыть справку о DISARM">Справка</button>
+    </div>
+    <span class="avds-theme-chip avds-theme-chip--success" id="status-badge">данные загружаются…</span>
+  </div>
+
+  <section class="workspace-toolbar avds-control-panel" aria-label="Рабочая панель">
+    <div class="workspace-search">
+      <span class="workspace-search__icon" aria-hidden="true">⌕</span>
+      <input type="search" id="workspace-search" placeholder="Быстрый поиск: T0049, нарратив, контрмера…" autocomplete="off">
+      <kbd>/</kbd>
+    </div>
+    <div class="workspace-actions">
+      <div class="avds-data-state" id="data-state" role="status" aria-live="polite" data-state="loading">
+        <span class="avds-data-state__dot" aria-hidden="true"></span>
+        <span id="data-state-copy">Загрузка проверенного среза DISARM…</span>
+        <button type="button" class="workspace-action avds-data-state__retry" id="data-retry" disabled hidden>Повторить</button>
+      </div>
+      <button type="button" class="workspace-action" id="density-toggle" aria-pressed="false">Компактно</button>
+      <label class="avds-theme-picker" for="theme-select">
+        <span>Тема</span>
+        <select id="theme-select" aria-label="Тема представления AVDS">
+          <option value="institutional">Институциональная</option>
+          <option value="editorial">Редакционная</option>
+          <option value="analytics">Данные</option>
+          <option value="map">Карта</option>
+          <option value="dark">Тёмная</option>
+        </select>
+      </label>
+      <label class="avds-locale-picker" for="locale-select">
+        <span>Язык</span>
+        <select id="locale-select" aria-label="Язык интерфейса">
+          <option value="ru">RU</option>
+          <option value="kk">KK</option>
+          <option value="en">EN</option>
+        </select>
+      </label>
+      <label class="avds-text-scale-picker" for="text-scale-select">
+        <span>Масштаб текста</span>
+        <select id="text-scale-select" aria-label="Масштаб текста">
+          <option value="100">100%</option>
+          <option value="125">125%</option>
+          <option value="150">150%</option>
+          <option value="200">200%</option>
+        </select>
+      </label>
+      <span class="workspace-shortcuts">Вкладки 1–7 · Enter — поиск</span>
+    </div>
+  </section>
+
+  <section class="avds-loading-skeleton avds-surface-card" id="app-loading" aria-label="Загрузка данных DISARM" aria-live="polite">
+    <div class="avds-loading-skeleton__line avds-loading-skeleton__line--title"></div>
+    <div class="avds-loading-skeleton__line"></div>
+    <div class="avds-loading-skeleton__line avds-loading-skeleton__line--short"></div>
+    <div class="avds-loading-skeleton__grid" aria-hidden="true">
+      <span></span><span></span><span></span><span></span>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- TAB: OVERVIEW                                                 -->
+  <!-- ============================================================ -->
+  <section class="tabpanel active" id="panel-overview" data-panel="overview" role="tabpanel" aria-labelledby="tab-overview">
+
+    <header class="avds-page-header">
+      <div class="avds-page-header__text">
+        <h2>«Таблица Менделеева» для информационных операций</h2>
+        <p class="avds-page-header__subtitle">Систематизирует поведение акторов влияния так же, как MITRE ATT&amp;CK систематизирует кибератаки. Аналитики получают <b>общий язык</b>: вместо размытых формулировок — стандартные коды техник (T0001, T0002…), привязанные к этапам кампании и сопоставленные с контрмерами (C00001, C00002…).</p>
+      </div>
+    </header>
+
+    <section class="overview-workflow" aria-labelledby="overview-workflow-title">
+      <header class="overview-workflow__head">
+        <div>
+          <h3 id="overview-workflow-title">Перейдите от наблюдения к ответу</h3>
+        </div>
+        <p>Три опорные точки для первичного разбора: выбрать поведение, проверить ответные меры и собрать следующий шаг.</p>
+      </header>
+      <ol class="overview-workflow__steps">
+        <li><a href="#red"><span class="overview-workflow__index" aria-hidden="true">01</span><span><strong>Выберите тактику</strong><small>Найдите наблюдаемое поведение в матрице атак.</small></span><b>Матрица атак →</b></a></li>
+        <li><a href="#blue"><span class="overview-workflow__index" aria-hidden="true">02</span><span><strong>Проверьте контрмеры</strong><small>Сопоставьте технику с действиями защиты.</small></span><b>Матрица защиты →</b></a></li>
+        <li><a href="#playbook"><span class="overview-workflow__index" aria-hidden="true">03</span><span><strong>Соберите план</strong><small>Сохраните компактный набор действий команды.</small></span><b>План реагирования →</b></a></li>
+      </ol>
+    </section>
+
+    <!-- KPI metrics -->
+    <div class="avds-kpi-grid" id="phase-stats"></div>
+
+    <div class="overview-reading-grid">
+      <div class="overview-reading-card avds-surface-card" id="overview-reading-guide">
+        <h3>Путь от фазы к технике и контрмере</h3>
+        <div class="overview-phase-rail" id="overview-phase-rail"></div>
+        <p class="overview-reading-copy">Сначала смотрите фазу кампании, затем тактику, после этого — технику и связанные контрмеры. Частота связей помогает навигации по корпусу, но не заменяет оценку риска, источников и контекста.</p>
+      </div>
+      <div class="overview-reading-card avds-surface-card" id="overview-data-meta">
+        <h3>Источник данных</h3>
+        <div class="overview-meta-stack" id="overview-meta-stack"></div>
+      </div>
+    </div>
+
+    <!-- Phases -->
+    <header class="avds-section-head">
+      <div>
+        <h3 class="avds-section-head__title">Четыре фазы кампании</h3>
+      </div>
+    </header>
+    <ol class="phase-list" id="phase-list"></ol>
+
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- TAB: RED MATRIX                                                -->
+  <!-- ============================================================ -->
+  <section class="tabpanel" id="panel-red" data-panel="red" role="tabpanel" aria-labelledby="tab-red">
+    <header class="avds-page-header avds-page-header--with-export">
+      <div class="avds-page-header__text">
+        <div class="avds-section-head__kicker">DISARM Red — поведение атакующих</div>
+        <h2>Матрица тактик и техник акторов дезинформации</h2>
+        <p class="avds-page-header__subtitle">Колонки — <b>тактические этапы</b>, упорядоченные слева направо по фазам планирования, подготовки, исполнения и оценки. Внутри колонки — <b>техники</b> (TTP). Кликните по технике, чтобы открыть карточку с описанием, контрмерами и связанными инцидентами.</p>
+      </div>
+      <div class="avds-export-bar avds-control-panel">
+        <input type="search" id="red-filter" placeholder="фильтр по тексту…" class="ds-input">
+        <div class="mini-filter-pills" id="red-phase-pills" aria-label="Фильтр по фазе"></div>
+        <button id="red-heatmap-toggle" class="avds-export-btn" title="Раскрасить техники по числу задокументированных инцидентов"><span class="dot"></span> Тепловая карта</button>
+        <button id="red-export-navigator" class="avds-export-btn" title="JSON-слой для DISARM Navigator">↓ JSON-слой навигатора</button>
+      </div>
+    </header>
+    <div class="compare-card-grid" id="red-compare-grid"></div>
+    <div class="filter-insight-bar" id="red-insight-bar"></div>
+    <div id="red-legend" class="matrix-legend" hidden></div>
+    <p id="red-matrix-help" class="avds-sr-only">Матрица интерактивна: Tab перемещает фокус по техникам, Enter или пробел открывает карточку, Escape закрывает карточку и возвращает фокус.</p>
+    <div class="matrix-wrap" aria-describedby="red-matrix-help">
+      <div class="matrix" id="red-matrix" role="grid" aria-label="Матрица техник DISARM"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- TAB: BLUE MATRIX                                               -->
+  <!-- ============================================================ -->
+  <section class="tabpanel" id="panel-blue" data-panel="blue" role="tabpanel" aria-labelledby="tab-blue">
+    <header class="avds-page-header avds-page-header--with-export">
+      <div class="avds-page-header__text">
+        <div class="avds-section-head__kicker">DISARM Blue — поведение защитников</div>
+        <h2>Матрица контрмер по тактическим этапам</h2>
+        <p class="avds-page-header__subtitle">Контрмеры (C00…) сгруппированы по самой ранней тактике, в которой их уместно применять. Кликните, чтобы посмотреть, к каким техникам привязана данная контрмера.</p>
+      </div>
+      <div class="avds-export-bar avds-control-panel">
+        <input type="search" id="blue-filter" placeholder="фильтр по тексту…" class="ds-input">
+        <div class="mini-filter-pills" id="blue-phase-pills" aria-label="Фильтр контрмер по фазе"></div>
+      </div>
+    </header>
+    <div class="compare-card-grid" id="blue-compare-grid"></div>
+    <div class="filter-insight-bar" id="blue-insight-bar"></div>
+    <p id="blue-matrix-help" class="avds-sr-only">Матрица интерактивна: Tab перемещает фокус по контрмерам, Enter или пробел открывает карточку, Escape закрывает карточку и возвращает фокус.</p>
+    <div class="matrix-wrap" aria-describedby="blue-matrix-help">
+      <div class="matrix" id="blue-matrix" role="grid" aria-label="Матрица контрмер DISARM"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- TAB: SEARCH                                                    -->
+  <!-- ============================================================ -->
+  <section class="tabpanel" id="panel-search" data-panel="search" role="tabpanel" aria-labelledby="tab-search">
+    <header class="avds-page-header">
+      <div class="avds-page-header__text">
+        <div class="avds-section-head__kicker">Универсальный поиск</div>
+        <h2>Поиск по всем объектам DISARM</h2>
+        <p class="avds-page-header__subtitle">Поиск работает по ID, названию и описанию всех типов объектов: техники, контрмеры, инциденты, тактики, инструменты, индикаторы и задачи. Релевантность учитывает совпадения в идентификаторе и названии.</p>
+      </div>
+    </header>
+
+    <div class="avds-search-hero">
+      <div class="avds-search-hero__bar">
+        <span class="avds-search-hero__icon">⌕</span>
+        <input type="search" id="global-search" class="avds-search-hero__input" placeholder="ID, название или фраза… например: T0049, нарратив, инфлюенсер">
+      </div>
+      <div class="avds-search-hero__filters" id="search-type-list">
+        <label class="search-type-chip"><input type="checkbox" value="technique" checked><span>Техники</span></label>
+        <label class="search-type-chip"><input type="checkbox" value="counter" checked><span>Контрмеры</span></label>
+        <label class="search-type-chip"><input type="checkbox" value="incident" checked><span>Инциденты</span></label>
+        <label class="search-type-chip"><input type="checkbox" value="tactic" checked><span>Тактики</span></label>
+        <label class="search-type-chip"><input type="checkbox" value="tool"><span>Инструменты</span></label>
+        <label class="search-type-chip"><input type="checkbox" value="detection"><span>Индикаторы</span></label>
+        <label class="search-type-chip"><input type="checkbox" value="task"><span>Задачи</span></label>
+      </div>
+      <div class="search-inline-hint" id="search-status">Введите ID, термин или фразу. Активные фильтры влияют на выдачу.</div>
+      <div class="avds-popular-queries">
+        <div class="avds-popular-queries__title">Популярные запросы</div>
+        <div class="avds-popular-queries__chips">
+          <button class="popular-q" data-q="нарратив">нарратив</button>
+          <button class="popular-q" data-q="бот">бот</button>
+          <button class="popular-q" data-q="инфлюенсер">инфлюенсер</button>
+          <button class="popular-q" data-q="фейк">фейковый аккаунт</button>
+          <button class="popular-q" data-q="хэштег">хэштег</button>
+          <button class="popular-q" data-q="T0049">T0049</button>
+          <button class="popular-q" data-q="C00012">C00012</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="search-results" class="search-results"></div>
+    <div class="search-results-more" id="search-results-more"></div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- TAB: INCIDENTS                                                 -->
+  <!-- ============================================================ -->
+  <section class="tabpanel" id="panel-incidents" data-panel="incidents" role="tabpanel" aria-labelledby="tab-incidents">
+    <header class="avds-page-header avds-page-header--with-export">
+      <div class="avds-page-header__text">
+        <div class="avds-section-head__kicker">Каталог инцидентов</div>
+        <h2>Реальные кампании с разбором по техникам DISARM</h2>
+        <p class="avds-page-header__subtitle">Инциденты упорядочены по году. Каждая карточка содержит атрибуцию, страну и список использованных техник.</p>
+      </div>
+      <div class="avds-export-bar avds-control-panel">
+        <input type="search" id="incident-filter" placeholder="страна, год, ключевое слово…" class="ds-input">
+      </div>
+    </header>
+    <div class="summary-strip" id="incident-summary-strip"></div>
+    <section class="incident-period-comparison avds-surface-card" aria-labelledby="incident-period-title" data-viz="period-comparison" data-table-alternative="true">
+      <div class="incident-period-comparison__head">
+        <div>
+          <div class="avds-section-head__kicker">Сравнение периодов</div>
+          <h3 id="incident-period-title">Инциденты по году начала</h3>
+        </div>
+        <p>Сравниваются записи текущего корпуса DISARM по полю <span class="mono">year_started</span>. Это не оценка реальной частоты кампаний вне покрытия каталога.</p>
+      </div>
+      <div class="incident-period-comparison__controls">
+        <label>Первый год <select id="incident-period-a" aria-label="Первый год для сравнения"></select></label>
+        <label>Второй год <select id="incident-period-b" aria-label="Второй год для сравнения"></select></label>
+      </div>
+      <div class="incident-period-comparison__result" id="incident-period-result" aria-live="polite"></div>
+      <table class="incident-period-comparison__table">
+        <caption>Табличная альтернатива сравнения периодов</caption>
+        <thead><tr><th scope="col">Год</th><th scope="col">Записей</th><th scope="col">Изменение</th><th scope="col">Отн. изменение</th></tr></thead>
+        <tbody id="incident-period-table"></tbody>
+      </table>
+      <p class="incident-period-comparison__source">Источник: DISARM 1.7.0 · <a href="data/disarm-provenance.json">паспорт данных</a> · пропущенный год не трактуется как ноль вне корпуса.</p>
+    </section>
+    <div class="incident-filter-pills avds-control-panel">
+      <div class="mini-filter-pills incident-filter-group" id="incident-year-pills" aria-label="Фильтр по году" data-label="Год"></div>
+      <div class="mini-filter-pills incident-filter-group" id="incident-country-pills" aria-label="Фильтр по стране" data-label="Страна"></div>
+      <div class="mini-filter-pills incident-filter-group" id="incident-tactic-pills" aria-label="Фильтр по тактике" data-label="Тактика"></div>
+      <button class="avds-export-btn" id="incident-clear-filters" title="Сбросить фильтры каталога">Сбросить фильтры</button>
+    </div>
+    <div class="filter-insight-bar incident-status" id="incident-status">Показаны все инциденты каталога.</div>
+    <section class="incident-map-list avds-surface-card" aria-labelledby="incident-map-title">
+      <div class="incident-map-list__head">
+        <div>
+          <div class="avds-section-head__kicker">География корпуса</div>
+          <h3 id="incident-map-title">Страны, отмеченные в инцидентах</h3>
+        </div>
+        <p>Точка показывает страну из записи DISARM, а не место события. Координата — справочная точка страны; записи «Мир» остаются только в списке.</p>
+      </div>
+      <div class="incident-map-list__body">
+        <div id="incident-geo-map" class="incident-geo-map" aria-live="polite"></div>
+        <div id="incident-geo-list" class="incident-geo-list" aria-label="Страны и число инцидентов"></div>
+      </div>
+    </section>
+    <div id="incident-list" class="incident-grid"></div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- TAB: PLAYBOOK CONSTRUCTOR                                      -->
+  <!-- ============================================================ -->
+  <section class="tabpanel" id="panel-playbook" data-panel="playbook" role="tabpanel" aria-labelledby="tab-playbook">
+    <header class="avds-page-header avds-page-header--with-export">
+      <div class="avds-page-header__text">
+        <div class="avds-section-head__kicker">Конструктор плейбука</div>
+        <h2>Соберите план реагирования по выбранным техникам</h2>
+        <p class="avds-page-header__subtitle">Отметьте наблюдаемые техники — модуль покажет связанные контрмеры и рассчитает компактный опорный набор по структурному покрытию. Связь не является доказательством эффективности; состав сохраняется автоматически и передаётся по ссылке.</p>
+      </div>
+      <div class="avds-export-bar avds-control-panel pb-toolbar">
+        <button id="pb-permalink" class="avds-export-btn" title="Скопировать ссылку с состоянием плейбука">Скопировать ссылку</button>
+        <button id="pb-clear" class="avds-export-btn">Очистить</button>
+        <button id="pb-export" class="avds-export-btn">Текстовый отчёт</button>
+        <button id="pb-export-navigator" class="avds-export-btn" title="JSON-слой для DISARM Navigator">JSON-слой навигатора</button>
+        <button id="pb-export-stix" class="avds-export-btn" title="STIX 2.1 bundle для MISP/OpenCTI">STIX 2.1</button>
+      </div>
+    </header>
+
+    <div id="pb-coverage" class="pb-coverage-bar avds-surface-card empty">Техники не выбраны</div>
+    <div id="pb-selected" class="pb-selected empty" aria-live="polite" hidden></div>
+
+    <div class="playbook-grid">
+      <div class="pb-col avds-surface-card">
+        <div class="pb-col-head">
+          <span class="avds-section-head__kicker">Шаг 1</span>
+          <h4>Выберите техники атаки</h4>
+        </div>
+        <input type="search" id="pb-tech-filter" placeholder="фильтр по ID, названию, описанию…" class="ds-input">
+        <div id="pb-tech-list" class="pb-list"></div>
+      </div>
+      <div class="pb-col avds-surface-card">
+        <div class="pb-col-head">
+          <span class="avds-section-head__kicker">Шаг 2</span>
+          <h4>Связанные контрмеры</h4>
+        </div>
+        <div id="pb-counters" class="pb-counters"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- TAB: ABOUT                                                     -->
+  <!-- ============================================================ -->
+  <section class="tabpanel" id="panel-about" data-panel="about" role="tabpanel" aria-labelledby="tab-about">
+    <header class="avds-page-header">
+      <div class="avds-page-header__text">
+        <div class="avds-section-head__kicker">Справка</div>
+        <h2>История, состав и версии DISARM</h2>
+      </div>
+    </header>
+
+    <div class="quick-links-rail quick-links-rail--wrap" id="about-quick-links" aria-label="Ссылки по версиям и источникам DISARM"></div>
+
+    <div class="about-content">
+      <div class="about-hero avds-surface-card">
+        <div>
+          <div class="avds-section-head__kicker">Справка</div>
+          <h3>Что лежит внутри этого обозревателя</h3>
+          <p>DISARM описывает информационные операции как цепочку фаз, тактик, техник и защитных мер. Этот модуль переводит официальный корпус DISARM 1.7.0 в рабочий русский слой: матрицы, поиск, каталог кейсов и конструктор плейбука.</p>
+        </div>
+        <dl class="about-facts">
+          <div><dt>Основной режим</dt><dd>DISARM 1.7.0</dd></div>
+          <div><dt>Сверка источников</dt><dd>16 июля 2026</dd></div>
+          <div><dt>Лицензия</dt><dd>CC-BY-SA-4.0</dd></div>
+          <div><dt>Режим</dt><dd>Публичная справочная витрина</dd></div>
+        </dl>
+      </div>
+
+      <section class="about-section avds-surface-card">
+        <h3>Коротко об истории</h3>
+        <p>Фреймворк появился в 2018 году как AMITT, затем был объединён с близкими инициативами MITRE и FIU SPICE и переименован в DISARM. Сейчас корпус поддерживает DISARM Foundation, а практики используются исследователями, гражданскими командами, журналистами и защитниками информационной среды.</p>
+      </section>
+
+      <section class="about-section avds-surface-card">
+        <h3>Структура объектов</h3>
+        <div class="about-object-grid">
+          <article><b>Фазы</b><span>Планирование, подготовка, исполнение и оценка кампании.</span></article>
+          <article><b>Тактики</b><span>Высокоуровневые цели атакующего на каждом этапе.</span></article>
+          <article><b>Техники</b><span>Конкретные действия, через которые достигается тактика.</span></article>
+          <article><b>Контрмеры</b><span>Защитные меры, сопоставленные с техниками и тактиками.</span></article>
+          <article><b>Индикаторы</b><span>Наблюдаемые признаки, по которым можно заметить технику.</span></article>
+          <article><b>Инциденты</b><span>Задокументированные кампании с привязкой к техникам.</span></article>
+          <article><b>Инструменты и группы</b><span>Экосистема ресурсов, источников и связанных объектов.</span></article>
+        </div>
+      </section>
+
+      <section class="about-section about-section--split avds-surface-card">
+        <div>
+          <h3>Лицензия и обновления</h3>
+          <p>Данные распространяются по лицензии <span class="mono">CC-BY-SA-4.0</span>. Текущий интерфейс покрывает рабочую матрицу DISARM 1.7.0: 71 технику, 140 контрмер, 63 инцидента и связанные объекты из официальной SQLite-базы. DISARM 2.0 Observations и Assessments остаются отдельными моделями данных и не смешиваются с матрицей 1.7.</p>
+          <p><b>Граница интерпретации:</b> частота техники в корпусе не является вероятностью или оценкой риска; пользовательская шкала 0–100 — ручной приоритет аналитика; связь техники с контрмерой показывает структурную применимость, но не подтверждённую эффективность. Перед использованием мер обязательна проверка источников, этичности, законности, пропорциональности и локального контекста.</p>
+        </div>
+      </section>
+
+      <section class="about-section about-section--split avds-surface-card">
+        <div>
+          <div class="avds-section-head__kicker">Методология и происхождение</div>
+          <h3>Паспорт данных и границы вывода</h3>
+          <p>Срез строится по официальному репозиторию DISARM Foundation версии 1.7.0. Лицензия, дата сверки, состав объектов, известные исключения и границы интерпретации опубликованы отдельно в машиночитаемом паспорте.</p>
+          <p><a class="about-provenance-link" href="data/disarm-provenance.json">Открыть паспорт происхождения данных (JSON)</a></p>
+        </div>
+      </section>
+
+      <section class="about-section avds-surface-card">
+        <h3>Актуальные линии DISARM</h3>
+        <div class="version-grid">
+          <article>
+            <b>DISARM 1.7.0</b>
+            <span>Текущая рабочая матрица сайта. Локальный срез сверен с официальной SQLite-базой: 4 фазы, 13 тактик, 71 техника, 140 контрмер и 63 инцидента. Две upstream-связи с отсутствующей техникой T0005 намеренно исключены.</span>
+          </article>
+          <article>
+            <b>DISARM 2.0 Observations (Наблюдения)</b>
+            <span>Бета-модель наблюдаемых признаков FIMI. Это не текущая цепочка техник, поэтому она не должна механически сливаться с матрицей 1.x.</span>
+          </article>
+          <article>
+            <b>DISARM 2.0 Assessments (Оценки)</b>
+            <span>Отдельная модель оценочных выводов по наблюдениям. Для неё нужен отдельный экран анализа, а не подмена матриц Red/Blue.</span>
+          </article>
+        </div>
+      </section>
+
+      <div class="links-grid">
+        <a class="avds-tool-card" href="https://github.com/DISARMFoundation/DISARMframeworks-17" target="_blank" rel="noopener noreferrer">
+          <div>
+            <div class="card-title">DISARM 1.7.0</div>
+            <div class="card-desc">Официальный репозиторий текущей рабочей матрицы</div>
+          </div>
+        </a>
+        <a class="avds-tool-card" href="https://github.com/DISARMFoundation/DISARMframeworks" target="_blank" rel="noopener noreferrer">
+          <div>
+            <div class="card-title">DISARM 1.x archive</div>
+            <div class="card-desc">Предыдущая линия корпуса для исторической сверки</div>
+          </div>
+        </a>
+        <a class="avds-tool-card" href="https://github.com/DISARMFoundation/DISARMframeworks-20-observable" target="_blank" rel="noopener noreferrer">
+          <div>
+            <div class="card-title">DISARM 2.0 Observations (Наблюдения)</div>
+            <div class="card-desc">Бета-модель наблюдаемых признаков</div>
+          </div>
+        </a>
+        <a class="avds-tool-card" href="https://github.com/DISARMFoundation/DISARMframeworks-20-assessments" target="_blank" rel="noopener noreferrer">
+          <div>
+            <div class="card-title">DISARM 2.0 Assessments (Оценки)</div>
+            <div class="card-desc">Отдельная модель аналитических оценок</div>
+          </div>
+        </a>
+        <a class="avds-tool-card" href="https://github.com/DISARMFoundation/disarm-navigator-mv" target="_blank" rel="noopener noreferrer">
+          <div>
+            <div class="card-title">Мультиверсионный навигатор</div>
+            <div class="card-desc">Официальный навигатор для нескольких версий</div>
+          </div>
+        </a>
+        <a class="avds-tool-card" href="https://www.disarm.foundation/" target="_blank" rel="noopener noreferrer">
+          <div>
+            <div class="card-title">DISARM Foundation</div>
+            <div class="card-desc">Официальный сайт фонда</div>
+          </div>
+        </a>
+        <a class="avds-tool-card" href="https://www.misp-project.org/galaxy.html" target="_blank" rel="noopener noreferrer">
+          <div>
+            <div class="card-title">MISP Galaxy</div>
+            <div class="card-desc">DISARM встроен в MISP</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================ -->
+<!-- FOOTER                                                         -->
+<!-- ============================================================ -->
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-col">
+      <div class="footer-brand">DISARM обозреватель</div>
+      <div class="footer-meta">Данные: DISARM Foundation · CC-BY-SA-4.0 · режим 1.7.0 · сверено 16 июля 2026</div>
+      <div class="footer-links">
+        <a href="https://github.com/DISARMFoundation/DISARMframeworks-17" target="_blank" rel="noopener noreferrer">Репозиторий</a>
+        <a href="https://www.disarm.foundation/" target="_blank" rel="noopener noreferrer">disarm.foundation</a>
+        <a class="avds-coverage-badge" id="avds-coverage-badge" href=".well-known/avds-adoption.json" data-avds-badge-contract="avds-adoption-badge-v1" data-avds-coverage="97" aria-label="AVDS 4.7.0, зрелость системного контракта 97 процентов" title="AVDS 4.7.0 · зрелость 97% · осталось 3 единицы">AVDS 4.7.0-97</a>
+        <a href="https://qdev.run/" target="_blank" rel="noopener noreferrer">qdev.run</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Источники и форматы</div>
+      <nav class="ecosystem-nav" aria-label="Источники DISARM">
+        <a href="https://github.com/DISARMFoundation/DISARMframeworks-17" target="_blank" rel="noopener noreferrer">1.7.0</a>
+        <a href="https://github.com/DISARMFoundation/DISARMframeworks" target="_blank" rel="noopener noreferrer">1.x archive</a>
+        <a href="https://github.com/DISARMFoundation/DISARMframeworks-20-observable" target="_blank" rel="noopener noreferrer">2.0 Observations (Наблюдения)</a>
+        <a href="https://github.com/DISARMFoundation/disarm-navigator-mv" target="_blank" rel="noopener noreferrer">Navigator</a>
+        <a href="https://www.disarm.foundation/" target="_blank" rel="noopener noreferrer">DISARM Foundation</a>
+        <a href="https://www.misp-project.org/galaxy.html" target="_blank" rel="noopener noreferrer">MISP Galaxy</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<!-- Modal -->
+<div id="modal" class="modal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-content">
+    <button class="modal-close" data-close aria-label="Закрыть">×</button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+<div id="a11y-transcript" class="avds-sr-only" aria-live="polite" aria-atomic="true"></div>
+
+<script src="assets/analysis-core.js?v=20260716-math1"></script>
+<script src="assets/app.js?v=20260823-edpol-source-boundary"></script>
+</body>
+</html>

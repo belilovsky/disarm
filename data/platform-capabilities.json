@@ -1,0 +1,107 @@
+{
+  "schema_version": "disarm-platform-capability-boundaries-v1",
+  "project": {
+    "id": "disarm",
+    "name": "DISARM Explorer",
+    "canonical_source": "content-addressed static checkout; VCS revision is unavailable in this checkout",
+    "public_entrypoint": "https://disarm.qdev.run/",
+    "lifecycle": "production"
+  },
+  "reviewed_at": "2026-08-23",
+  "owner": {
+    "role": "DISARM product owner",
+    "escalation": "Qdev Platform owner for manifest, catalog and shared-capability registration"
+  },
+  "platform_manifest": {
+    "state": "present",
+    "path": "qdev-project.json",
+    "schema": "https://platform.qdev.run/schemas/qdev-project-manifest-v1.json",
+    "meaning": "This boundary contract supplies product-local evidence to the root manifest. The Platform registry remains the bilateral acceptance authority."
+  },
+  "capabilities": [
+    {
+      "id": "qazstack",
+      "state": "not_applicable",
+      "owner": "DISARM product owner",
+      "rationale": "The product is a static read-only explorer and ships no QazStack primitive, session, queue, service or backend runtime.",
+      "boundary": "A future server-side workflow, account, mutation or shared primitive requires a QazStack consumer contract before implementation.",
+      "review_by": "before any non-static runtime change"
+    },
+    {
+      "id": "avds",
+      "state": "documented",
+      "owner": "DISARM product owner",
+      "contract": "/data/avds-adapter.json",
+      "evidence": [
+        "/data/avds-system-contract.json",
+        "/data/avds-coverage.json",
+        "/.well-known/avds-adoption.json"
+      ],
+      "boundary": "The local candidate uses AVDS 4.7.0 with adapter 1.3.5. Runtime proof is release-specific: every changed candidate requires separately authorized promotion plus check_runtime_evidence.py, smoke_live.sh and public browser evidence before parity is claimed.",
+      "review_by": "at every AVDS or release change"
+    },
+    {
+      "id": "qazpipe",
+      "state": "not_applicable",
+      "owner": "DISARM product owner",
+      "rationale": "No collection, queue, ingestion service or QazPipe endpoint is used; the verified DISARM matrix is committed as a static public projection.",
+      "boundary": "Any automated source intake must declare provenance, failure semantics and a QazPipe contract before use.",
+      "review_by": "before adding automated ingestion"
+    },
+    {
+      "id": "qazlake",
+      "state": "not_applicable",
+      "owner": "DISARM product owner",
+      "rationale": "The browser reads only data/disarm.json and makes no QazLake query.",
+      "boundary": "A QazLake-backed projection needs freshness, access, retention and degraded-mode evidence before publication.",
+      "review_by": "before adding a data service"
+    },
+    {
+      "id": "qazcompute",
+      "state": "not_applicable",
+      "owner": "DISARM product owner",
+      "rationale": "There is no compute job, model invocation or server-side execution in this static product.",
+      "boundary": "Any permitted compute workload must declare its interface, non-mutation rule, timeout and fallback.",
+      "review_by": "before adding compute"
+    },
+    {
+      "id": "qazgeo",
+      "state": "not_applicable",
+      "owner": "DISARM product owner",
+      "rationale": "The incident view uses disclosed local country reference points and a list alternative; it does not call a QazGeo API or dataset.",
+      "boundary": "A geographic service integration must document its dataset, precision and fallback before use.",
+      "review_by": "before replacing the local reference-point layer"
+    },
+    {
+      "id": "identity",
+      "state": "documented",
+      "owner": "DISARM product owner",
+      "rationale": "The deployed entrypoint is protected by a server-side PIN session boundary. The static source has no user accounts, roles, mutations or identity SDK.",
+      "boundary": "This is not evidence of Platform Identity/OIDC adoption. Any account, role or mutation flow requires a manifest and an identity integration contract.",
+      "review_by": "before changing the authentication or mutation boundary"
+    }
+  ],
+  "data_and_privacy": {
+    "classification": "public framework data and public documentation metadata only",
+    "source_contract": "/data/disarm-provenance.json",
+    "processing_boundary": "All product data is loaded in the browser from static files. Browser preferences, annotations and selected playbook items stay in browser localStorage and are not uploaded by this product.",
+    "private_data": "No credentials, personal data, private endpoints or protected source text are included in the static data contract.",
+    "retention": "The product has no server-side application database; local browser storage is controlled by the user agent.",
+    "degraded_state": "The interface exposes loading, stale, degraded, offline and error states when the static data fetch cannot complete."
+  },
+  "routes_and_delivery": {
+    "route_ledger": "seven tab panels: overview, red, blue, search, incidents, playbook and about",
+    "source_gates": [
+      "./scripts/smoke_static.sh",
+      "python3 scripts/build_avds_adoption.py --check",
+      "python3 scripts/check_ci_contract.py",
+      "python3 scripts/build_release_receipt.py --check"
+    ],
+    "release_gates": [
+      "python3 scripts/check_runtime_evidence.py --base-url https://disarm.qdev.run",
+      "./scripts/smoke_live.sh https://disarm.qdev.run"
+    ],
+    "runtime_boundary": "The unauthenticated root is expected to redirect to /login; explicitly allowlisted public contracts remain readable. The edge serves those contracts locally and proxies the protected document root to the serving origin, so both hosts must be aligned. A release is not proven without fresh source-to-runtime identity parity. check_runtime_evidence.py must pass before live smoke can be treated as release proof.",
+    "rollback_boundary": "The deployment procedure requires a timestamped snapshot before public files are changed."
+  }
+}

@@ -1,0 +1,27 @@
+name: DISARM release evidence
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: Public origin of the just-published release
+        required: true
+        default: https://disarm.qdev.run
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  public-parity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify source-to-runtime contract parity
+        run: python3 scripts/check_runtime_evidence.py --base-url '${{ inputs.base_url }}'
+      - name: Verify protected runtime surface
+        run: ./scripts/smoke_live.sh '${{ inputs.base_url }}'
