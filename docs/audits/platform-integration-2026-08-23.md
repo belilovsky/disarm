@@ -98,3 +98,50 @@ The project-owned `/login` browser surface requested `/favicon.ico` and received
 - Only `favicon.ico`, `release.json` and `health.json` changed on the serving roots. All 81 allowlisted artifacts match local SHA-256 on both edge and origin.
 - `RUNTIME_EVIDENCE_OK` and `LIVE_SMOKE_OK` passed after promotion; public `favicon.ico` is `200 image/x-icon`; root remains `302 /login` and `health.status` is `ok`.
 - Fresh browser evidence at `1440×960` and `390×844` reaches `/login`, has the expected H1/PIN boundary and reports zero console/page errors. No PIN was entered, so authenticated product-route acceptance remains an external P1.
+
+## Remediation re-audit — 2026-08-23T18:30Z
+
+**Verdict: `attention` for the final local candidate; the prior public receipt remains the only live release proof until transport recovers.**
+
+The canonical source blocker is closed in the product scope. DISARM now has root
+`qdev-project.json`, the exact vendored Platform schema, a public canonical
+repository at `https://github.com/belilovsky/disarm` on `master`, and a
+receipt-bound source revision. The candidate is
+`content-5879d3b42cb8bf48b2057b7f` at Git `6013d0b604e52c0f36d19d5d8caf85185f65d247`
+(receipt source revision `981dc63e556b1259cc6bfd85c11487505226e2df`). It passes
+integrity, Platform/CI contracts, three unit tests and full static smoke.
+
+Platform source was also reconciled in the authorized Platform checkout: the
+DISARM card carries the canonical repository, QazStack source registry has the
+static boundary, and the QazLake decision is `not-applicable` / `approved`.
+All corresponding generators and validators pass locally. Its latest local
+commit is `107e5bdb`; publication is awaiting the same transient outbound
+transport fault.
+
+| State | Count | Current meaning |
+| --- | ---: | --- |
+| covered | 1 | The already-published AVDS/static receipt remains fresh and verified. |
+| documented | 9 | Manifest, VCS, capability modes, privacy, UI and delivery contracts are now explicit and locally validated; Platform/runtime publication is pending. |
+| missing | 0 | No product-side required contract is absent. |
+| stale | 0 | No accepted local evidence is expired. |
+| conflicting | 0 | No product/candidate contradiction was found. |
+| not_applicable | 4 | QazPipe, QazLake, QazCompute and QazGeo have explicit static-product boundaries. |
+| unverifiable | 1 | Authenticated product-route browser journey remains intentionally unobserved without a PIN. |
+
+### Release hold and closure proof
+
+At `2026-08-23T18:29Z`, TCP/22 to both declared serving hosts
+`148.230.117.131` and `187.55.228.239` timed out. The allowlisted static
+promotion was therefore not attempted without the required two-host snapshots
+and hash-parity check. GitHub HTTPS also reset during pushes after the initial
+repository publication; the current DISARM checkout is one commit ahead of its
+remote and the authorized Platform checkout has one local reconciliation
+commit awaiting push. This is a transport observation, not a release claim.
+
+Closure requires: successful source pushes; timestamped snapshots on edge and
+origin; allowlisted artifact sync without deletion; identical SHA-256 manifests
+on both serving roots; public `release.json`, `health.json` and
+`qdev-project.json` matching `content-5879d3b42cb8bf48b2057b7f`; then
+`check_runtime_evidence.py`, `smoke_live.sh`, accessibility and fresh desktop /
+mobile browser evidence. The authenticated-route evidence remains a separate
+controlled boundary and is not bypassed by this remediation.
