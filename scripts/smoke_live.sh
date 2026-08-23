@@ -5,7 +5,7 @@ BASE_URL="${1:-https://disarm.qdev.run}"
 # The public projection includes a ~380 KB JSON corpus.  Advertise gzip and
 # allow the edge a little more time for a cold/static-file transfer so the
 # smoke gate measures availability rather than an uncompressed transport race.
-CURL_ARGS=(--http1.1 --compressed --connect-timeout 5 --max-time 20 --retry 2 --retry-delay 1 --retry-all-errors -ks)
+CURL_ARGS=(--http1.1 --compressed --connect-timeout 10 --max-time 45 --retry 5 --retry-delay 2 --retry-all-errors -ks)
 
 echo "== DISARM live smoke =="
 echo "base=$BASE_URL"
