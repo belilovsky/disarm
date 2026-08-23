@@ -3,7 +3,7 @@
   "project": {
     "id": "disarm",
     "name": "DISARM Explorer",
-    "canonical_source": "content-addressed static checkout; VCS revision is unavailable in this checkout",
+        "canonical_source": "https://github.com/belilovsky/disarm (master); immutable public release receipt binds the allowlisted static artifact set",
     "public_entrypoint": "https://disarm.qdev.run/",
     "lifecycle": "production"
   },
