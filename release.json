@@ -2,12 +2,12 @@
   "schema_version": "disarm-release-identity-v1",
   "project_id": "disarm",
   "public_url": "https://disarm.qdev.run/",
-  "release_id": "content-4ca54f8de7cb5db80894c4fe",
+  "release_id": "content-a707a6d4ff7728930fba7567",
   "revision_kind": "content_sha256_manifest",
-  "source_revision": null,
-  "source_revision_status": "unverifiable: checkout has no Git metadata",
-  "artifact_manifest_sha256": "4ca54f8de7cb5db80894c4fec802a91855eebeedd4aa5d6e832e0475ffff5db7",
-  "generated_at": "2026-08-23T18:04:58Z",
+  "source_revision": "952beb5ba90f67ebdb8a7384b03c9539c58ba790",
+  "source_revision_status": "git-commit",
+  "artifact_manifest_sha256": "a707a6d4ff7728930fba75675efb5963cdb41a514d25e9d1e0d76894127006d7",
+  "generated_at": "2026-08-23T18:22:29Z",
   "deployment_contract": {
     "mode": "immutable-static-files",
     "required_targets": [
@@ -416,8 +416,8 @@
       },
       {
         "path": "qdev-project.json",
-        "bytes": 3195,
-        "sha256": "b9616ec0b394d3a68f4fe969ebf8fe053d94206d81b94553b1a15f7858284104"
+        "bytes": 2902,
+        "sha256": "b4e2ed8d56148eaf586435191a7a06ddfd1bd15b5a855fc2a0f5d82dccc20ab1"
       },
       {
         "path": "robots.txt",
