@@ -13,6 +13,7 @@ import hashlib
 import json
 import re
 import sys
+import time
 import urllib.request
 from datetime import date
 from pathlib import Path
@@ -36,11 +37,19 @@ def fail(message: str) -> None:
 
 def fetch(url: str) -> tuple[dict, str]:
     request = urllib.request.Request(url, headers={"Accept": "application/json"})
-    try:
-        with urllib.request.urlopen(request, timeout=20) as response:
-            raw = response.read()
-    except Exception as exc:  # pragma: no cover - network failure path
-        fail(f"cannot fetch {url}: {exc}")
+    error: Exception | None = None
+    for attempt in range(1, 4):
+        try:
+            with urllib.request.urlopen(request, timeout=20) as response:
+                raw = response.read()
+            break
+        except Exception as exc:  # pragma: no cover - network failure path
+            error = exc
+            if attempt == 3:
+                fail(f"cannot fetch {url} after {attempt} attempts: {exc}")
+            time.sleep(attempt)
+    else:  # pragma: no cover - loop either returns data or exits through fail
+        fail(f"cannot fetch {url}: {error}")
     try:
         return json.loads(raw.decode("utf-8")), hashlib.sha256(raw).hexdigest()
     except Exception as exc:
