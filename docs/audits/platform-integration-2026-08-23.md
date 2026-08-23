@@ -101,7 +101,8 @@ The project-owned `/login` browser surface requested `/favicon.ico` and received
 
 ## Remediation re-audit — 2026-08-23T18:30Z
 
-**Verdict: `attention` for the final local candidate; the prior public receipt remains the only live release proof until transport recovers.**
+**Verdict: `attention`. The final local candidate is published and has fresh
+two-host/runtime proof; Platform-wide registry publication remains pending.**
 
 The canonical source blocker is closed in the product scope. DISARM now has root
 `qdev-project.json`, the exact vendored Platform schema, a public canonical
@@ -128,20 +129,29 @@ transport fault.
 | not_applicable | 4 | QazPipe, QazLake, QazCompute and QazGeo have explicit static-product boundaries. |
 | unverifiable | 1 | Authenticated product-route browser journey remains intentionally unobserved without a PIN. |
 
-### Release hold and closure proof
+### Published release proof and remaining closure
 
-At `2026-08-23T18:29Z`, TCP/22 to both declared serving hosts
-`148.230.117.131` and `187.55.228.239` timed out. The allowlisted static
-promotion was therefore not attempted without the required two-host snapshots
-and hash-parity check. GitHub HTTPS also reset during pushes after the initial
-repository publication; the current DISARM checkout is one commit ahead of its
-remote and the authorized Platform checkout has one local reconciliation
-commit awaiting push. This is a transport observation, not a release claim.
+Transport recovered and the release was promoted at `2026-08-23T18:37:33Z`.
+Snapshots were created before write at
+`/var/www/disarm.qdev.run-backups/20260823T183733Z-content-5879d3b42cb8bf48b2057b7f/current-root`
+and
+`/srv/www/disarm.qdev.run-backups/20260823T183733Z-content-5879d3b42cb8bf48b2057b7f/current-root`.
+Only the receipt allowlist was synchronized, without deletion; edge and origin
+SHA-256 manifests match the source. Public `release.json`, `health.json` and
+`qdev-project.json` identify `content-5879d3b42cb8bf48b2057b7f`; health is
+`ok`, the root remains `302 /login`, and `check_runtime_evidence.py` returns
+`RUNTIME_EVIDENCE_OK`.
 
-Closure requires: successful source pushes; timestamped snapshots on edge and
-origin; allowlisted artifact sync without deletion; identical SHA-256 manifests
-on both serving roots; public `release.json`, `health.json` and
-`qdev-project.json` matching `content-5879d3b42cb8bf48b2057b7f`; then
-`check_runtime_evidence.py`, `smoke_live.sh`, accessibility and fresh desktop /
-mobile browser evidence. The authenticated-route evidence remains a separate
-controlled boundary and is not bypassed by this remediation.
+Fresh browser captures at `1440×960` and `390×844` are stored in
+`output/playwright/release-20260823/final-public-login-desktop-1440.png` and
+`output/playwright/release-20260823/final-public-login-mobile-390.png`; the
+protected login boundary had zero browser console errors. A client-side
+`smoke_live.sh` retry encountered an intermittent TLS transport reset after
+the independent runtime receipt had passed; it is reported as a transient
+shared-edge observation, not converted into a false `LIVE_SMOKE_OK` claim.
+
+The remaining action is Platform-wide: publish the already reconciled Platform
+catalog/QazStack sources after the unrelated `gg-echolot` QazLake decision is
+added by its owner, then validate its public registry receipt. The
+authenticated-route evidence remains a separate controlled boundary and is not
+bypassed by this remediation.
