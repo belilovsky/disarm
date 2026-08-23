@@ -6,3 +6,5 @@ _avds
 .env.*
 *.pem
 *.key
+
+__pycache__/
