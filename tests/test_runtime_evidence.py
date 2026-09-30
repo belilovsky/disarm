@@ -77,7 +77,7 @@ class RuntimeEvidenceTest(unittest.TestCase):
         self.assertTrue(payload["local_release_id"].startswith("content-"))
         self.assertEqual(payload["public_release_id"], payload["local_release_id"])
         self.assertEqual(payload["public_health_status"], "ok")
-        self.assertEqual(payload["public_adapter_version"], "1.3.5")
+        self.assertEqual(payload["public_adapter_version"], "1.3.6")
         self.assertEqual(payload["public_avds_percent"], 97)
 
     def test_adapter_drift_fails_closed(self) -> None:
@@ -95,7 +95,7 @@ class RuntimeEvidenceTest(unittest.TestCase):
         self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
         payload = json.loads(result.stdout)
         self.assertEqual(payload["result"], "RUNTIME_EVIDENCE_CONFLICT")
-        self.assertIn("AVDS adapter mismatch: local 1.3.5 != public 0.0.0", payload["failures"])
+        self.assertIn("AVDS adapter mismatch: local 1.3.6 != public 0.0.0", payload["failures"])
 
     def test_transport_timeout_is_normalized(self) -> None:
         with patch.object(CHECKER, "urlopen", side_effect=TimeoutError("read operation timed out")):

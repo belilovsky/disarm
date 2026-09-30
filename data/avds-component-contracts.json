@@ -1,7 +1,7 @@
 {
   "schema_version": "disarm-avds-component-contracts-v1",
   "consumer": "https://disarm.qdev.run/",
-  "adapter_version": "1.3.5",
+  "adapter_version": "1.3.10",
   "source": "AVDS 4.7.0 semantic primitives adapted for a static consumer",
   "components": [
     {
@@ -97,12 +97,15 @@
     {
       "id": "coverage-badge",
       "selector": ".avds-coverage-badge",
-      "required_markup": ["id=\"avds-coverage-badge\"", "href=\".well-known/avds-adoption.json\"", "data-avds-badge-contract=\"avds-adoption-badge-v1\""],
-      "variants": ["footer evidence link"],
-      "states": ["loaded", "fallback", "focus-visible"],
+      "required_markup": [],
+      "variants": ["retired; no reader-facing rendering"],
+      "states": ["retired; no interaction"],
       "size": { "min_height_px": 18, "font_size_px": 9, "font": "var(--font-mono)", "base_opacity": 0.58 },
-      "keyboard": "Native link opens machine-readable maturity evidence.",
-      "allowed_children": ["text label"]
+      "keyboard": "Not applicable: component is retired.",
+      "allowed_children": ["none"],
+      "status": "retired",
+      "forbidden_markup": ["id=\"avds-coverage-badge\"", "href=\".well-known/avds-adoption.json\"", "data-avds-badge-contract=\"avds-adoption-badge-v1\"", "AVDS 4.7.0-97"],
+      "retired_reason": "The maturity score is retained as machine-readable AVDS adoption evidence, not reader-facing navigation or product content."
     }
   ]
 }

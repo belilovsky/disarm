@@ -118,18 +118,39 @@ def main() -> None:
     build_id = str(release.get("buildId", ""))
     built_at = str(release.get("builtAt", ""))
     artifact_sha = str(release.get("artifactDigest", {}).get("sha256", ""))
+    packages = ui.get("packages", {})
+    logical_package = packages.get("logical", {})
     source_package = ui.get("source_package", {})
-    package_version = str(source_package.get("version", ""))
-    package_name = str(source_package.get("name", "@sgeo/ui-kit"))
+    package_version = str(logical_package.get("version", source_package.get("version", "")))
+    package_name = str(logical_package.get("name", source_package.get("name", "@sgeo/ui-kit")))
     package_identity = f"{package_name}@{package_version}"
     development_version = str(development.get("contractVersion", ""))
-    if not re.fullmatch(r"4\.\d+\.\d+", version):
+    version_match = re.fullmatch(r"(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)", version)
+    if version_match is None:
         fail(f"invalid upstream AVDS version: {version}")
     if not re.fullmatch(r"[0-9a-f]{40}", source_commit):
         fail("upstream sourceSha is not a 40-character commit")
     for label, value in [("buildId", build_id), ("builtAt", built_at), ("artifact sha256", artifact_sha), ("ui package", package_identity), ("development contract", development_version)]:
         if not value:
             fail(f"upstream {label} is missing")
+
+    consumer_version = str(adapter.get("avds_release_version", ""))
+    consumer_match = re.fullmatch(r"(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)", consumer_version)
+    if consumer_match is None:
+        fail(f"invalid pinned consumer AVDS version: {consumer_version}")
+    if int(version_match.group(1)) != int(consumer_match.group(1)):
+        compatibility = packages.get("compatibility", {})
+        delivery = packages.get("delivery", {})
+        migration = development.get("migration", {})
+        print("UPSTREAM_MIGRATION_REQUIRED")
+        print(f"- latest AVDS release: {version} ({source_commit}, build {build_id})")
+        print(f"- latest logical UI package: {package_identity}")
+        print(f"- pinned DISARM adapter: AVDS {consumer_version}, package @sgeo/ui-kit@{adapter.get('design_package_version')}")
+        print(f"- legacy package contract: {compatibility.get('logicalName', 'unknown')} {compatibility.get('version', 'unknown')}; supportedThrough={compatibility.get('supportedThrough', 'unknown')}")
+        print(f"- distribution: mode={delivery.get('mode', 'unknown')}, published={delivery.get('published', 'unknown')}, registry={delivery.get('registry', 'unknown')}")
+        print("- migration: " + ", ".join(f"{key}={migration.get(key, 'unknown')}" for key in ("goldenPaths", "portfolioPilots", "stableSystem")))
+        print("- refusing to rewrite the consumer pin: current local files do not prove this major-version migration")
+        raise SystemExit(2)
 
     upstream = system.get("upstream", {})
     mismatches = []

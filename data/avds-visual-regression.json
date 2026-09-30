@@ -3,11 +3,12 @@
   "consumer": "https://disarm.qdev.run/",
   "status": "implemented",
   "capture": {
-    "tool": "Playwright CLI",
-    "source": "production browser rendering",
+    "tool": "Playwright (Python) with system Chrome 154",
+    "source": "Owner-authored baseline committed before the subsequent DISARM page-content edits.",
     "browser_state": "fresh named session, default institutional theme and RU locale",
     "scale": "css",
-    "baseline_date": "2026-08-12"
+    "baseline_date": "2026-09-28",
+    "source_revision": "ac0b05b5463d3ee35bc4541cab8e92d9ffb6e8a5"
   },
   "procedure": {
     "capture": "Open the declared route in a fresh Playwright CLI session, resize to the declared viewport, then run screenshot.",
@@ -22,8 +23,8 @@
         "width": 1440,
         "height": 1000
       },
-      "file": "output/playwright/avds-visual-regression/baseline/overview-1440/.playwright-cli/page-2026-08-12T13-36-28-748Z.png",
-      "sha256": "c2518ddf61647d4727938496a4a4ec3b8574afc95260cd859ef15a869157c434",
+      "file": "output/playwright/avds-visual-regression/baseline/overview-1440/baseline-2026-09-28.png",
+      "sha256": "9fe45d5f7b93ba04c1c649079473c8c5c5e7216f07b3c5afcd7c448ac916a964",
       "limits": {
         "max_changed_pixels": 0,
         "max_mean_channel_delta": 0
@@ -36,8 +37,8 @@
         "width": 320,
         "height": 900
       },
-      "file": "output/playwright/avds-visual-regression/baseline/overview-320/.playwright-cli/page-2026-08-12T13-37-06-633Z.png",
-      "sha256": "ea0015984d0fb03abb70b3d635490b547706cf3799874c30db0379a633055232",
+      "file": "output/playwright/avds-visual-regression/baseline/overview-320/baseline-2026-09-28.png",
+      "sha256": "da1a99e60d44f24749fef3cb9a7e64493ac3b9a5f5e9dc6c4d8f45a73b547469",
       "limits": {
         "max_changed_pixels": 0,
         "max_mean_channel_delta": 0
@@ -50,8 +51,8 @@
         "width": 1440,
         "height": 1000
       },
-      "file": "output/playwright/avds-visual-regression/baseline/red-1440/.playwright-cli/page-2026-08-12T13-37-43-309Z.png",
-      "sha256": "2309c82e0d5d2aecf2282c0ef8136295b5c34784079a962c8801360af436847a",
+      "file": "output/playwright/avds-visual-regression/baseline/red-1440/baseline-2026-09-28.png",
+      "sha256": "f29a914978720fbb9d9966282b17f8c6885e96152bbe61a37c5bf3d01e7c1ca4",
       "limits": {
         "max_changed_pixels": 0,
         "max_mean_channel_delta": 0
@@ -64,8 +65,8 @@
         "width": 320,
         "height": 900
       },
-      "file": "output/playwright/avds-visual-regression/baseline/red-320/.playwright-cli/page-2026-08-12T13-38-02-459Z.png",
-      "sha256": "e248130e263f48115cc9636047ff75487d7a21a61bf4e233424ac73f66e212c2",
+      "file": "output/playwright/avds-visual-regression/baseline/red-320/baseline-2026-09-28.png",
+      "sha256": "012fff9e68add26b745d15c788331861c9bfca42338acabf8a56e8995ac9eae9",
       "limits": {
         "max_changed_pixels": 0,
         "max_mean_channel_delta": 0

@@ -3,13 +3,53 @@
   "consumer": "https://disarm.qdev.run/",
   "active_locale": "ru",
   "supported_locales": {
-    "ru": { "status": "implemented", "direction": "ltr", "date_locale": "ru-RU", "number_locale": "ru-RU" },
-    "kk": { "status": "partial", "direction": "ltr", "date_locale": "kk-KZ", "number_locale": "kk-KZ", "scope": "navigation, workspace controls and data-state copy" },
-    "en": { "status": "partial", "direction": "ltr", "date_locale": "en-GB", "number_locale": "en-GB", "scope": "navigation, workspace controls and data-state copy" }
+    "ru": {
+      "status": "implemented",
+      "direction": "ltr",
+      "date_locale": "ru-RU",
+      "number_locale": "ru-RU",
+      "visible_disclosure": "Полного перевода корпуса нет: часть названий и описаний DISARM остаётся на английском, если проверенный перевод отсутствует."
+    },
+    "kk": {
+      "status": "partial",
+      "direction": "ltr",
+      "date_locale": "kk-KZ",
+      "number_locale": "kk-KZ",
+      "scope": "navigation, workspace controls and data-state copy",
+      "visible_disclosure": "Толық аударма жоқ: анықтамалық мәтіндер орыс тілінде, ал тексерілген аудармасы жоқ DISARM атаулары мен сипаттамалары бастапқы тілінде берілген."
+    },
+    "en": {
+      "status": "partial",
+      "direction": "ltr",
+      "date_locale": "en-GB",
+      "number_locale": "en-GB",
+      "scope": "navigation, workspace controls and data-state copy",
+      "visible_disclosure": "The full interface is not translated: guide text remains in Russian; DISARM names and descriptions keep their source wording where no reviewed translation exists."
+    }
   },
-  "number_rules": { "grouping": "Intl.NumberFormat locale grouping", "decimals": "preserve source precision; do not invent precision", "percent": "integer percent with explicit % suffix", "unknown": "—" },
-  "date_rules": { "display": "Intl.DateTimeFormat locale dateStyle=medium", "source_timestamp": "retain ISO-8601 in JSON provenance", "unknown": "дата не указана" },
-  "unit_rules": { "measurement": "show source unit next to value", "unitless_counts": "locale-grouped integer", "unknown": "единица не указана" },
-  "copy_rules": { "line_break": "wrap at word boundaries; never overflow the viewport", "empty": "Ничего не найдено. Измените запрос или сбросьте фильтры.", "error": "Не удалось загрузить данные. Проверьте подключение и повторите попытку.", "stale": "Показана сохранённая копия; требуется обновление.", "offline": "Нет сети. Показана сохранённая копия.", "source_enum_projection": "The raw source value Unknown is rendered as a locale-specific explicit absence label; the original value remains unchanged in data/disarm.json." },
-  "translation_boundary": "RU remains the complete data/content locale; KK and EN cover the navigation/workspace chrome and data-state copy, while DISARM object names, summaries and deep panel copy remain Russian until a full content translation pass."
+  "number_rules": {
+    "grouping": "Intl.NumberFormat locale grouping",
+    "decimals": "preserve source precision; do not invent precision",
+    "percent": "integer percent with explicit % suffix",
+    "unknown": "—"
+  },
+  "date_rules": {
+    "display": "Intl.DateTimeFormat locale dateStyle=medium",
+    "source_timestamp": "retain ISO-8601 in JSON provenance",
+    "unknown": "дата не указана"
+  },
+  "unit_rules": {
+    "measurement": "show source unit next to value",
+    "unitless_counts": "locale-grouped integer",
+    "unknown": "единица не указана"
+  },
+  "copy_rules": {
+    "line_break": "wrap at word boundaries; never overflow the viewport",
+    "empty": "Ничего не найдено. Измените запрос или сбросьте фильтры.",
+    "error": "Не удалось загрузить данные. Проверьте подключение и повторите попытку.",
+    "stale": "Показана сохранённая копия; требуется обновление.",
+    "offline": "Нет сети. Показана сохранённая копия.",
+    "source_enum_projection": "The raw source value Unknown is rendered as a locale-specific explicit absence label; the original value remains unchanged in data/disarm.json."
+  },
+  "translation_boundary": "Russian-authored guide copy remains primary, including most explanatory text in the About view. DISARM names and descriptions preserve source wording where no reviewed translation exists. Kazakh and English localize navigation, workspace controls and data-state copy only; do not present them as full product translations."
 }

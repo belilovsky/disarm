@@ -5,18 +5,18 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
 <title>DISARM · обозреватель дезинформационных тактик и контрмер</title>
-<meta name="description" content="Локализованный обозреватель фреймворка DISARM: матрица атак, матрица защиты, техники, контрмеры, инциденты и конструктор плана реагирования. Источник — DISARM Foundation (CC-BY-SA-4.0).">
+<meta name="description" content="Обозреватель DISARM 1.7.0 с частично локализованными подписями интерфейса: матрицы атак и защиты, поиск, инциденты и план реагирования.">
 <link rel="canonical" href="https://disarm.qdev.run/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://disarm.qdev.run/">
 <meta property="og:title" content="DISARM · обозреватель дезинформационных тактик и контрмер">
-<meta property="og:description" content="Локализованный обозреватель фреймворка DISARM: матрица атак, матрица защиты, техники, контрмеры, инциденты и конструктор плана реагирования.">
+<meta property="og:description" content="Обозреватель DISARM 1.7.0 с частично локализованными подписями интерфейса: матрицы атак и защиты, поиск, инциденты и план реагирования.">
 <meta property="og:image" content="https://disarm.qdev.run/favicon.svg">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="stylesheet" href="/fonts/avds/avds-fonts.css">
 <link rel="stylesheet" href="assets/avds-static-token-contract.css?v=4.7.0-bda50683b32f">
 <link rel="stylesheet" href="assets/avds-static-preview-bundle.css?v=20260821-local-preview">
-    <link rel="stylesheet" href="assets/avds-disarm-adapter.css?v=1.3.5">
+    <link rel="stylesheet" href="assets/avds-disarm-adapter.css?v=1.3.10&sha=5b50ef4b2cad">
 </head>
 <body>
 <a class="skip-link" id="skip-link" href="#main-content">Перейти к содержанию</a>
@@ -49,8 +49,7 @@
       <b>DISARM</b> (Disinformation Analysis and Risk Management) — открытый фреймворк для описания и
       противодействия инцидентам дезинформации. Построен по образцу <b>MITRE ATT&amp;CK</b>: систематизирует
       тактики, техники и процедуры (TTP) злоумышленников и сопоставляет им контрмеры. Поддерживается
-      некоммерческой <a href="https://www.disarm.foundation/" target="_blank" rel="noopener noreferrer">DISARM Foundation</a>
-      под лицензией <span class="mono">CC-BY-SA-4.0</span>.
+      некоммерческой <a href="https://www.disarm.foundation/" target="_blank" rel="noopener noreferrer">DISARM Foundation</a>.
     </p>
   </div>
 </header>
@@ -96,7 +95,7 @@
       </label>
       <label class="avds-locale-picker" for="locale-select">
         <span>Язык</span>
-        <select id="locale-select" aria-label="Язык интерфейса">
+        <select id="locale-select" aria-label="Язык интерфейса" aria-describedby="locale-scope-note">
           <option value="ru">RU</option>
           <option value="kk">KK</option>
           <option value="en">EN</option>
@@ -112,6 +111,7 @@
         </select>
       </label>
       <span class="workspace-shortcuts">Вкладки 1–7 · Enter — поиск</span>
+      <span class="locale-scope-note" id="locale-scope-note" aria-live="polite" hidden></span>
     </div>
   </section>
 
@@ -136,20 +136,6 @@
       </div>
     </header>
 
-    <section class="overview-workflow" aria-labelledby="overview-workflow-title">
-      <header class="overview-workflow__head">
-        <div>
-          <h3 id="overview-workflow-title">Перейдите от наблюдения к ответу</h3>
-        </div>
-        <p>Три опорные точки для первичного разбора: выбрать поведение, проверить ответные меры и собрать следующий шаг.</p>
-      </header>
-      <ol class="overview-workflow__steps">
-        <li><a href="#red"><span class="overview-workflow__index" aria-hidden="true">01</span><span><strong>Выберите тактику</strong><small>Найдите наблюдаемое поведение в матрице атак.</small></span><b>Матрица атак →</b></a></li>
-        <li><a href="#blue"><span class="overview-workflow__index" aria-hidden="true">02</span><span><strong>Проверьте контрмеры</strong><small>Сопоставьте технику с действиями защиты.</small></span><b>Матрица защиты →</b></a></li>
-        <li><a href="#playbook"><span class="overview-workflow__index" aria-hidden="true">03</span><span><strong>Соберите план</strong><small>Сохраните компактный набор действий команды.</small></span><b>План реагирования →</b></a></li>
-      </ol>
-    </section>
-
     <!-- KPI metrics -->
     <div class="avds-kpi-grid" id="phase-stats"></div>
 
@@ -157,7 +143,6 @@
       <div class="overview-reading-card avds-surface-card" id="overview-reading-guide">
         <h3>Путь от фазы к технике и контрмере</h3>
         <div class="overview-phase-rail" id="overview-phase-rail"></div>
-        <p class="overview-reading-copy">Сначала смотрите фазу кампании, затем тактику, после этого — технику и связанные контрмеры. Частота связей помогает навигации по корпусу, но не заменяет оценку риска, источников и контекста.</p>
       </div>
       <div class="overview-reading-card avds-surface-card" id="overview-data-meta">
         <h3>Источник данных</h3>
@@ -252,7 +237,7 @@
       </div>
       <div class="search-inline-hint" id="search-status">Введите ID, термин или фразу. Активные фильтры влияют на выдачу.</div>
       <div class="avds-popular-queries">
-        <div class="avds-popular-queries__title">Популярные запросы</div>
+        <div class="avds-popular-queries__title" id="search-examples-title">Примеры запросов</div>
         <div class="avds-popular-queries__chips">
           <button class="popular-q" data-q="нарратив">нарратив</button>
           <button class="popular-q" data-q="бот">бот</button>
@@ -276,8 +261,8 @@
     <header class="avds-page-header avds-page-header--with-export">
       <div class="avds-page-header__text">
         <div class="avds-section-head__kicker">Каталог инцидентов</div>
-        <h2>Реальные кампании с разбором по техникам DISARM</h2>
-        <p class="avds-page-header__subtitle">Инциденты упорядочены по году. Каждая карточка содержит атрибуцию, страну и список использованных техник.</p>
+        <h2>Каталог инцидентов DISARM</h2>
+        <p class="avds-page-header__subtitle">Записи упорядочены по году начала. Карточка показывает атрибуцию, страну и связанные техники, если эти поля указаны в источнике.</p>
       </div>
       <div class="avds-export-bar avds-control-panel">
         <input type="search" id="incident-filter" placeholder="страна, год, ключевое слово…" class="ds-input">
@@ -297,12 +282,14 @@
         <label>Второй год <select id="incident-period-b" aria-label="Второй год для сравнения"></select></label>
       </div>
       <div class="incident-period-comparison__result" id="incident-period-result" aria-live="polite"></div>
-      <table class="incident-period-comparison__table">
-        <caption>Табличная альтернатива сравнения периодов</caption>
-        <thead><tr><th scope="col">Год</th><th scope="col">Записей</th><th scope="col">Изменение</th><th scope="col">Отн. изменение</th></tr></thead>
-        <tbody id="incident-period-table"></tbody>
-      </table>
-      <p class="incident-period-comparison__source">Источник: DISARM 1.7.0 · <a href="data/disarm-provenance.json">паспорт данных</a> · пропущенный год не трактуется как ноль вне корпуса.</p>
+      <div class="incident-period-comparison__table-scroll" role="region" tabindex="0" aria-label="Таблица сравнения периодов">
+        <table class="incident-period-comparison__table">
+          <caption>Табличная альтернатива сравнения периодов</caption>
+          <thead><tr><th scope="col">Год</th><th scope="col">Записей</th><th scope="col">Изменение</th><th scope="col">Отн. изменение</th></tr></thead>
+          <tbody id="incident-period-table"></tbody>
+        </table>
+      </div>
+      <p class="incident-period-comparison__source">Источник: <a href="https://github.com/DISARMFoundation/DISARMframeworks-17" target="_blank" rel="noopener noreferrer">DISARM 1.7.0 · SQLite-ядро</a> · пропущенный год не трактуется как ноль вне корпуса.</p>
     </section>
     <div class="incident-filter-pills avds-control-panel">
       <div class="mini-filter-pills incident-filter-group" id="incident-year-pills" aria-label="Фильтр по году" data-label="Год"></div>
@@ -385,20 +372,19 @@
       <div class="about-hero avds-surface-card">
         <div>
           <div class="avds-section-head__kicker">Справка</div>
-          <h3>Что лежит внутри этого обозревателя</h3>
-          <p>DISARM описывает информационные операции как цепочку фаз, тактик, техник и защитных мер. Этот модуль переводит официальный корпус DISARM 1.7.0 в рабочий русский слой: матрицы, поиск, каталог кейсов и конструктор плейбука.</p>
+          <h3>Основная матрица DISARM 1.7.0</h3>
+          <p>Матрица собрана из официальной SQLite-базы DISARM 1.7.0.</p>
         </div>
         <dl class="about-facts">
-          <div><dt>Основной режим</dt><dd>DISARM 1.7.0</dd></div>
-          <div><dt>Сверка источников</dt><dd>16 июля 2026</dd></div>
+          <div><dt>Основной набор</dt><dd>DISARM 1.7.0 · SQLite</dd></div>
+          <div><dt>Сверка источников</dt><dd>30 сентября 2026</dd></div>
           <div><dt>Лицензия</dt><dd>CC-BY-SA-4.0</dd></div>
-          <div><dt>Режим</dt><dd>Публичная справочная витрина</dd></div>
         </dl>
       </div>
 
       <section class="about-section avds-surface-card">
         <h3>Коротко об истории</h3>
-        <p>Фреймворк появился в 2018 году как AMITT, затем был объединён с близкими инициативами MITRE и FIU SPICE и переименован в DISARM. Сейчас корпус поддерживает DISARM Foundation, а практики используются исследователями, гражданскими командами, журналистами и защитниками информационной среды.</p>
+        <p>Важным этапом формирования DISARM стала встреча единомышленников на мастерской по гибридной войне летом 2018 года. В 2019 году при поддержке Craig Newmark Philanthropies создали AMITT в рамках MisinfoSec Standards Working Group и Credibility Coalition. Позже AMITT и основанную на ней SP!CE объединили в единый открытый DISARM. Фонд DISARM создан в конце 2021 года после переименования фреймворка.</p>
       </section>
 
       <section class="about-section avds-surface-card">
@@ -417,17 +403,16 @@
       <section class="about-section about-section--split avds-surface-card">
         <div>
           <h3>Лицензия и обновления</h3>
-          <p>Данные распространяются по лицензии <span class="mono">CC-BY-SA-4.0</span>. Текущий интерфейс покрывает рабочую матрицу DISARM 1.7.0: 71 технику, 140 контрмер, 63 инцидента и связанные объекты из официальной SQLite-базы. DISARM 2.0 Observations и Assessments остаются отдельными моделями данных и не смешиваются с матрицей 1.7.</p>
-          <p><b>Граница интерпретации:</b> частота техники в корпусе не является вероятностью или оценкой риска; пользовательская шкала 0–100 — ручной приоритет аналитика; связь техники с контрмерой показывает структурную применимость, но не подтверждённую эффективность. Перед использованием мер обязательна проверка источников, этичности, законности, пропорциональности и локального контекста.</p>
+          <p>Материалы DISARM Foundation используются по лицензии <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC-BY-SA-4.0</a>: источник указан, а данные адаптированы для интерактивного обозревателя и экспорта. <a href="https://www.disarm.foundation/terms-of-service" target="_blank" rel="noopener noreferrer">Действующие условия фонда</a> и <a href="https://github.com/DISARMFoundation/DISARMframeworks-17/blob/v1.7.0/LICENSE.md" target="_blank" rel="noopener noreferrer">LICENSE.md выпуска</a> указывают эту лицензию; <a href="https://github.com/DISARMFoundation/DISARMframeworks-17/blob/v1.7.0/README.md" target="_blank" rel="noopener noreferrer">README.md выпуска</a> содержит отличающуюся запись CC-BY-4.0. DISARM 2.0 Observations и Assessments — отдельные модели данных; они не входят в матрицу техники и контрмер DISARM 1.7.0.</p>
         </div>
       </section>
 
       <section class="about-section about-section--split avds-surface-card">
         <div>
-          <div class="avds-section-head__kicker">Методология и происхождение</div>
-          <h3>Паспорт данных и границы вывода</h3>
-          <p>Срез строится по официальному репозиторию DISARM Foundation версии 1.7.0. Лицензия, дата сверки, состав объектов, известные исключения и границы интерпретации опубликованы отдельно в машиночитаемом паспорте.</p>
-          <p><a class="about-provenance-link" href="data/disarm-provenance.json">Открыть паспорт происхождения данных (JSON)</a></p>
+          <div class="avds-section-head__kicker">Проверка версии</div>
+          <h3>Сверить состав матрицы</h3>
+          <p>Сверьте версию и состав основной матрицы с официальной SQLite-базой DISARM 1.7.0. Контрольный файл сверен 30 сентября 2026 года; две связи на отсутствующую технику T0005 в матрицу не включены.</p>
+          <p><a class="about-provenance-link" href="https://github.com/DISARMFoundation/DISARMframeworks-17" target="_blank" rel="noopener noreferrer">Проверить официальный каталог DISARM 1.7.0</a></p>
         </div>
       </section>
 
@@ -435,16 +420,16 @@
         <h3>Актуальные линии DISARM</h3>
         <div class="version-grid">
           <article>
-            <b>DISARM 1.7.0</b>
-            <span>Текущая рабочая матрица сайта. Локальный срез сверен с официальной SQLite-базой: 4 фазы, 13 тактик, 71 техника, 140 контрмер и 63 инцидента. Две upstream-связи с отсутствующей техникой T0005 намеренно исключены.</span>
+            <b>DISARM 1.7.0 · SQLite core</b>
+            <span>Основная матрица сайта сверена с официальной SQLite-базой: 4 фазы, 13 тактик, 71 техника, 140 контрмер и 63 инцидента. Две связи с отсутствующей техникой T0005 намеренно исключены.</span>
           </article>
           <article>
             <b>DISARM 2.0 Observations (Наблюдения)</b>
-            <span>Бета-модель наблюдаемых признаков FIMI. Это не текущая цепочка техник, поэтому она не должна механически сливаться с матрицей 1.x.</span>
+            <span>Бета-модель наблюдаемых признаков FIMI, организованных по активам, поведению и содержанию, а не по цепочке техник 1.x.</span>
           </article>
           <article>
             <b>DISARM 2.0 Assessments (Оценки)</b>
-            <span>Отдельная модель оценочных выводов по наблюдениям. Для неё нужен отдельный экран анализа, а не подмена матриц Red/Blue.</span>
+            <span>Самостоятельная модель описания выводов по наблюдениям; её структура отличается от матриц техник и контрмер DISARM 1.x.</span>
           </article>
         </div>
       </section>
@@ -452,14 +437,8 @@
       <div class="links-grid">
         <a class="avds-tool-card" href="https://github.com/DISARMFoundation/DISARMframeworks-17" target="_blank" rel="noopener noreferrer">
           <div>
-            <div class="card-title">DISARM 1.7.0</div>
-            <div class="card-desc">Официальный репозиторий текущей рабочей матрицы</div>
-          </div>
-        </a>
-        <a class="avds-tool-card" href="https://github.com/DISARMFoundation/DISARMframeworks" target="_blank" rel="noopener noreferrer">
-          <div>
-            <div class="card-title">DISARM 1.x archive</div>
-            <div class="card-desc">Предыдущая линия корпуса для исторической сверки</div>
+            <div class="card-title">DISARM 1.7.0 · SQLite core</div>
+            <div class="card-desc">Официальный источник основной матрицы сайта</div>
           </div>
         </a>
         <a class="avds-tool-card" href="https://github.com/DISARMFoundation/DISARMframeworks-20-observable" target="_blank" rel="noopener noreferrer">
@@ -505,19 +484,15 @@
   <div class="container footer-grid">
     <div class="footer-col">
       <div class="footer-brand">DISARM обозреватель</div>
-      <div class="footer-meta">Данные: DISARM Foundation · CC-BY-SA-4.0 · режим 1.7.0 · сверено 16 июля 2026</div>
       <div class="footer-links">
         <a href="https://github.com/DISARMFoundation/DISARMframeworks-17" target="_blank" rel="noopener noreferrer">Репозиторий</a>
         <a href="https://www.disarm.foundation/" target="_blank" rel="noopener noreferrer">disarm.foundation</a>
-        <a class="avds-coverage-badge" id="avds-coverage-badge" href=".well-known/avds-adoption.json" data-avds-badge-contract="avds-adoption-badge-v1" data-avds-coverage="97" aria-label="AVDS 4.7.0, зрелость системного контракта 97 процентов" title="AVDS 4.7.0 · зрелость 97% · осталось 3 единицы">AVDS 4.7.0-97</a>
-        <a href="https://qdev.run/" target="_blank" rel="noopener noreferrer">qdev.run</a>
       </div>
     </div>
     <div class="footer-col">
       <div class="footer-col-title">Источники и форматы</div>
       <nav class="ecosystem-nav" aria-label="Источники DISARM">
-        <a href="https://github.com/DISARMFoundation/DISARMframeworks-17" target="_blank" rel="noopener noreferrer">1.7.0</a>
-        <a href="https://github.com/DISARMFoundation/DISARMframeworks" target="_blank" rel="noopener noreferrer">1.x archive</a>
+        <a href="https://github.com/DISARMFoundation/DISARMframeworks-17" target="_blank" rel="noopener noreferrer">1.7.0 SQLite core</a>
         <a href="https://github.com/DISARMFoundation/DISARMframeworks-20-observable" target="_blank" rel="noopener noreferrer">2.0 Observations (Наблюдения)</a>
         <a href="https://github.com/DISARMFoundation/disarm-navigator-mv" target="_blank" rel="noopener noreferrer">Navigator</a>
         <a href="https://www.disarm.foundation/" target="_blank" rel="noopener noreferrer">DISARM Foundation</a>
@@ -538,6 +513,6 @@
 <div id="a11y-transcript" class="avds-sr-only" aria-live="polite" aria-atomic="true"></div>
 
 <script src="assets/analysis-core.js?v=20260716-math1"></script>
-<script src="assets/app.js?v=20260823-edpol-source-boundary"></script>
+<script src="assets/app.js?v=20260930-preprod&sha=a013190fedfa"></script>
 </body>
 </html>

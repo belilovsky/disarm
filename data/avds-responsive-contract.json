@@ -13,5 +13,5 @@
     { "width": 1920, "height": 1080, "regime": "expanded", "composition": "centered bounded content canvas preserves reading length and avoids decorative empty space", "order": ["masthead", "tabs", "workspace", "active panel", "footer"], "rails": "no artificial content rail", "status": "verified-local" },
     { "width": 3840, "height": 2160, "regime": "canvas", "composition": "centered bounded content canvas; density remains readable instead of stretching cards", "order": ["masthead", "tabs", "workspace", "active panel", "footer"], "rails": "no page-level horizontal overflow", "status": "verified-local" }
   ],
-  "proof": { "verified_at": "2026-08-12", "browser": "Playwright CLI", "checks": ["one active panel", "skeleton hidden after load", "ready data state", "no page-level horizontal overflow", "bounded container at ultra-wide"] }
+  "proof": { "verified_at": "2026-09-28", "browser": "Codex in-app Chromium; local static preview", "checks": ["one active panel", "skeleton hidden after load", "ready data state after hydration", "no page-level horizontal overflow", "bounded container at ultra-wide", "7 tabs × 3 locales × 8 viewport widths", "overview KPI grid and playbook composition at responsive breakpoints"] }
 }

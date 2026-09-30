@@ -36,18 +36,20 @@
     ru: {
       skip: 'Перейти к содержанию', kicker: 'Обозреватель фреймворка DISARM', title: 'Фреймворк', language: 'Язык',
       tabs: { overview: 'Обзор', red: 'Матрица атак', blue: 'Матрица защиты', search: 'Поиск', incidents: 'Инциденты', playbook: 'План реагирования', about: 'Справка' },
-      search: 'Быстрый поиск: T0049, нарратив, контрмера…', shortcuts: 'Вкладки 1–7 · Enter — поиск',
+      search: 'Быстрый поиск: T0049, нарратив, контрмера…', shortcuts: 'Вкладки 1–7 · Enter — поиск', exampleQueries: 'Примеры запросов',
       density: { compact: 'Компактно', comfortable: 'Обычный режим' }, theme: 'Тема', textScale: 'Масштаб текста',
       themes: { institutional: 'Институциональная', editorial: 'Редакционная', analytics: 'Данные', map: 'Карта', dark: 'Тёмная' },
       retry: 'Повторить', skeleton: 'Загрузка данных DISARM',
       states: { loading: 'Загрузка проверенного среза DISARM…', ready: 'Данные загружены из локального среза DISARM.', stale: 'Показана сохранённая копия; требуется обновление.', degraded: 'Показана сохранённая копия; часть функций работает с ограничениями.', offline: 'Нет сети. Показана сохранённая копия.', error: 'Не удалось загрузить данные. Проверьте подключение и повторите попытку.' },
+      localeScope: 'Полного перевода корпуса нет: часть названий и описаний DISARM остаётся на английском, если проверенный перевод отсутствует.',
       statusBadge: (version, techniques, counters) => `${version} · ${techniques} техник · ${counters} контрмер`,
       missingAttribution: 'нет сведений',
     },
     kk: {
       skip: 'Мазмұнға өту', kicker: 'DISARM фреймворкін шолу', title: 'Фреймворк', language: 'Тіл',
+      localeScope: 'Толық аударма жоқ: анықтамалық мәтіндер орыс тілінде, ал тексерілген аудармасы жоқ DISARM атаулары мен сипаттамалары бастапқы тілінде берілген.',
       tabs: { overview: 'Шолу', red: 'Шабуыл матрицасы', blue: 'Қорғаныс матрицасы', search: 'Іздеу', incidents: 'Оқиғалар', playbook: 'Әрекет жоспары', about: 'Анықтама' },
-      search: 'Жылдам іздеу: T0049, нарратив, қарсы шара…', shortcuts: '1–7 қойынды · Enter — іздеу',
+      search: 'Жылдам іздеу: T0049, нарратив, қарсы шара…', shortcuts: '1–7 қойынды · Enter — іздеу', exampleQueries: 'Іздеу мысалдары',
       density: { compact: 'Ықшам', comfortable: 'Қалыпты режим' }, theme: 'Тақырып', textScale: 'Мәтін масштабы',
       themes: { institutional: 'Институционалдық', editorial: 'Редакциялық', analytics: 'Деректер', map: 'Карта', dark: 'Қараңғы' },
       retry: 'Қайталау', skeleton: 'DISARM деректері жүктелуде',
@@ -57,8 +59,9 @@
     },
     en: {
       skip: 'Skip to content', kicker: 'DISARM framework explorer', title: 'Framework', language: 'Language',
+      localeScope: 'The full interface is not translated: guide text remains in Russian; DISARM names and descriptions keep their source wording where no reviewed translation exists.',
       tabs: { overview: 'Overview', red: 'Attack matrix', blue: 'Defence matrix', search: 'Search', incidents: 'Incidents', playbook: 'Response plan', about: 'About' },
-      search: 'Quick search: T0049, narrative, countermeasure…', shortcuts: 'Tabs 1–7 · Enter — search',
+      search: 'Quick search: T0049, narrative, countermeasure…', shortcuts: 'Tabs 1–7 · Enter — search', exampleQueries: 'Example queries',
       density: { compact: 'Compact', comfortable: 'Comfortable mode' }, theme: 'Theme', textScale: 'Text scale',
       themes: { institutional: 'Institutional', editorial: 'Editorial', analytics: 'Data', map: 'Map', dark: 'Dark' },
       retry: 'Retry', skeleton: 'Loading DISARM data',
@@ -93,12 +96,6 @@
     if (mod10 === 1) return one;
     if (mod10 >= 2 && mod10 <= 4) return few;
     return many;
-  }
-  function techniqueAfterPo(count) {
-    const n = Math.abs(Number(count) || 0);
-    const mod10 = n % 10;
-    const mod100 = n % 100;
-    return mod10 === 1 && mod100 !== 11 ? 'технике' : 'техникам';
   }
   function formatVersionLabel(version) {
     return String(version || '')
@@ -180,6 +177,8 @@
     if (quickSearch) quickSearch.placeholder = copy.search;
     const shortcuts = $('.workspace-shortcuts');
     if (shortcuts) shortcuts.textContent = copy.shortcuts;
+    const exampleQueries = $('#search-examples-title');
+    if (exampleQueries) exampleQueries.textContent = copy.exampleQueries;
     const themeLabel = $('.avds-theme-picker > span');
     if (themeLabel) themeLabel.textContent = copy.theme;
     const localeLabel = $('.avds-locale-picker > span');
@@ -194,6 +193,11 @@
       localeSelect.setAttribute('aria-label', copy.language);
       localeSelect.value = locale;
     }
+    const localeScopeNote = $('#locale-scope-note');
+    if (localeScopeNote) {
+      localeScopeNote.textContent = copy.localeScope || '';
+      localeScopeNote.hidden = !copy.localeScope;
+    }
     const textScaleLabel = $('.avds-text-scale-picker > span');
     if (textScaleLabel) textScaleLabel.textContent = copy.textScale;
     const textScaleSelect = $('#text-scale-select');
@@ -206,7 +210,9 @@
     if (density) density.textContent = document.documentElement.dataset.density === 'compact' ? copy.density.comfortable : copy.density.compact;
     updateStatusBadgeText();
     setDataState(STATE.dataState, { cachedAt: readCachedData()?.savedAt });
+    updateDocumentMeta($('.tabpanel.active')?.dataset.panel || 'overview');
     try { localStorage.setItem(LOCALE_KEY, locale); } catch {}
+    requestAnimationFrame(() => STATE.revealSelectedTab?.());
   }
   function setupLocale() {
     let saved = 'ru';
@@ -253,30 +259,6 @@
     window.addEventListener('online', () => {
       if (STATE.data) setDataState('stale', { cachedAt: readCachedData()?.savedAt });
     });
-  }
-  async function updateAvdsCoverageBadge() {
-    const badge = $('#avds-coverage-badge');
-    if (!badge) return;
-    try {
-      const response = await fetch('.well-known/avds-adoption.json', {
-        cache: 'no-cache',
-        headers: { Accept: 'application/json' },
-      });
-      if (!response.ok) throw new Error(`AVDS coverage HTTP ${response.status}`);
-      const audit = await response.json();
-      const version = String(audit.version || '').match(/^4\.\d+\.\d+$/)?.[0];
-      const coverage = Number(audit.coverage?.percent);
-      const remaining = Number(audit.work?.remaining);
-      if (audit.schema_version !== 'avds-adoption-badge-v1' || !version || !Number.isInteger(coverage) || coverage < 0 || coverage > 100 || !Number.isInteger(remaining)) {
-        throw new Error('AVDS coverage contract is invalid');
-      }
-      badge.textContent = `AVDS ${version}-${coverage}`;
-      badge.dataset.avdsCoverage = String(coverage);
-      badge.setAttribute('aria-label', `AVDS ${version}, зрелость системного контракта ${coverage} процентов`);
-      badge.title = `AVDS ${version} · зрелость ${coverage}% · осталось ${remaining} единиц`;
-    } catch (err) {
-      console.warn('AVDS coverage badge fallback is active', err);
-    }
   }
   function tabHref(tab) {
     return `${location.pathname}?tab=${encodeURIComponent(tab)}`;
@@ -327,7 +309,7 @@
             </div>
           `).join('')}
         </div>
-        <div class="compare-card__source">Источник: DISARM 1.7.0 · <a href="data/disarm-provenance.json">паспорт данных</a></div>
+        <div class="compare-card__source">Источник: <a href="https://github.com/DISARMFoundation/DISARMframeworks-17" target="_blank" rel="noopener noreferrer">DISARM 1.7.0 · SQLite-ядро</a></div>
         ${card.footerNote ? `<div class="compare-card__footer">${escape(card.footerNote)}</div>` : ''}
       </section>
     `;
@@ -369,7 +351,7 @@
     const a = document.createElement('a');
     a.href = url; a.download = filename;
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
 
   const TYPE_LABELS = {
@@ -749,26 +731,15 @@
     I00004: 'Кейс #Macrongate показывает, как слитые документы могут усиливаться в нужный момент, но проваливаться, если аудитория и институты заранее готовы к такому сценарию.',
     I00005: 'Кейс вокруг Brexit показывает, как длинный политический процесс подпитывался дезинформацией, поляризацией и спором об идентичности.',
     I00006: 'Один из ранних полностью вымышленных вбросов IRA: короткоживущая фальшивая история вокруг химического предприятия Columbian Chemicals.',
-    I00008: 'Для кейса Bujic в текущем публичном корпусе доступно мало пояснений, поэтому карточку стоит читать через связанные техники и общий инцидентный контекст.',
     I00009: 'После сближения Манилы и Москвы в филиппинском инфополе появился новый псевдоэкспертный голос, который поддерживал выгодные Кремлю нарративы.',
-    I00013: 'Французская версия сети Blacktivists использовалась как локализованная оболочка для того же типа манипулятивного сетевого присутствия.',
-    I00014: 'Кейс вокруг Gilets Jaunes показывает, как протестная тема может использоваться для массового сетевого навала и политического давления.',
     I00015: 'История вокруг материалов дела Concord связана с выборочным сливом и искажённой подачей документов, чтобы максимизировать политический и репутационный эффект.',
-    I00018: 'Кейс с утечкой писем DNC стал одним из самых заметных примеров политически направленного информационного ущерба через публикацию похищенных материалов.',
     I00019: 'Кампания использовала троллей и сетевое усиление для давления на Макрона и косвенной поддержки Марин Ле Пен.',
     I00022: 'Кейс #Macronleaks показывает, как фальшивые и подмешанные документы вбрасываются под видом большой утечки перед голосованием.',
-    I00023: 'Хэштег #dislikemacron использовался как часть координированного давления на Макрона и расширения негативной повестки вокруг его кампании.',
-    I00024: 'Кейс #syriahoax связан с попытками дискредитировать сообщения о событиях в Сирии через хэштеговую атаку и повторяемое сетевое усиление.',
-    I00028: 'Кейс о сбитом MH17 стал одной из центральных тем для конкурирующих нарративов, отрицания ответственности и затягивания общественного консенсуса.',
     I00029: 'Расследование MH17 показывает, как официальное установление фактов может годами сопровождаться параллельной кампанией отрицания, сомнений и подмены версий.',
     I00034: 'Организованная операция в Facebook использовалась для давления на тайваньского политика через поток согласованных комментариев и сетевое усиление.',
     I00039: 'Негативные и вводящие в заблуждение истории о Меркель распространялись через фальшивые новостные сайты и усиление в Facebook.',
-    I00043: 'История с комментариями в Федеральную комиссию по связи США показывает, как институциональные площадки могут быть заполнены координированным шумом вместо живой общественной реакции.',
     I00044: 'Военные учения Jade Helm сопровождались усилением конспирологических версий, которые переводили обычную тренировку в режим массовой тревоги.',
-    I00050: 'Кампания #HandsOffVenezuela сопровождала кризис в Венесуэле, помогая поляризовать повестку вокруг международного давления и смены власти.',
     I00051: 'Кейс Integrity Initiative связан с публикацией и усилением украденных материалов вокруг британской структуры, работавшей против кремлёвской дезинформации.',
-    I00053: 'Арест финансового директора Huawei в Канаде быстро превратился из юридического эпизода в международный политический и информационный кризис.',
-    I00062: 'Продолжение линии Brexit показывает, что одна и та же тема может жить годами и регулярно перезапускаться новыми волнами усиления.'
   };
   const LOCALIZATION_GLOSSARY = [
     ['Social Media Profiles / Pages / Groups', 'профили, страницы и группы в соцсетях'],
@@ -962,79 +933,80 @@
   }
   function previewSummary(obj) {
     const summary = tSummary(obj);
-    if (obj?._type === 'technique' && isEnglishHeavy(summary)) {
-      const counterCount = (obj.counters || []).length;
-      const detectionCount = (obj.detections || []).length;
-      const incidentCount = (STATE.incidentByTech?.get(obj.disarm_id) || obj.incidents || []).length;
-      const parts = [];
-      if (counterCount) parts.push(`${counterCount} контрмер`);
-      if (detectionCount) parts.push(`${detectionCount} индикаторов`);
-      if (incidentCount) parts.push(`${incidentCount} инцидентов`);
-      return parts.length
-        ? `Техника из каталога DISARM. Связанные объекты: ${parts.join(', ')}. Откройте карточку, чтобы перейти к контрмерам, индикаторам и кейсам.`
-        : 'Техника из каталога DISARM. Откройте карточку, чтобы посмотреть связи и применимость.';
-    }
-    if (obj?._type === 'incident' && !summary) {
-      const techCount = (obj.techniques || []).length;
-      return techCount
-        ? `Кейс из каталога DISARM со связкой по ${techCount} ${techniqueAfterPo(techCount)}. Откройте карточку, чтобы посмотреть исходное описание и детали кампании.`
-        : 'Кейс из каталога DISARM. Откройте карточку, чтобы посмотреть исходное описание и детали кампании.';
-    }
-    if (!summary) return '';
-    if (obj?._type === 'counter' && isEnglishHeavy(summary)) {
-      const techCount = (obj.techniques || []).length;
-      return techCount
-        ? `Контрмера из каталога DISARM, связанная с ${techCount} ${pluralRu(techCount, 'техникой', 'техниками', 'техниками')}. Используйте список связанных техник ниже как основной ориентир применения.`
-        : 'Контрмера из каталога DISARM. Используйте связанные объекты ниже как основной ориентир применения.';
-    }
-    if (obj?._type === 'incident' && isEnglishHeavy(summary)) {
-      const techCount = (obj.techniques || []).length;
-      return techCount
-        ? `Кейс из каталога DISARM со связкой по ${techCount} ${techniqueAfterPo(techCount)}. Откройте карточку, чтобы посмотреть исходное описание и детали кампании.`
-        : 'Кейс из каталога DISARM. Откройте карточку, чтобы посмотреть исходное описание и детали кампании.';
-    }
-    return summary;
+    return summary && !isEnglishHeavy(summary) ? summary : '';
   }
 
   const TAB_META = {
     overview: {
       title: 'Обзор · DISARM обозреватель',
-      description: 'Обзор DISARM: фазы кампании, ключевые счётчики, как читать матрицу и с чего начинать разбор информационной операции.',
+      description: {
+        ru: 'Обзор DISARM 1.7.0: 4 фазы, 13 тактик, 71 техника, 140 контрмер и 63 инцидента.',
+        kk: 'DISARM 1.7.0 шолуы: 4 кезең, 13 тактика, 71 техника, 140 қарсы шара және 63 оқиға.',
+        en: 'Overview of DISARM 1.7.0: 4 phases, 13 tactics, 71 techniques, 140 countermeasures, and 63 incidents.',
+      },
     },
     red: {
       title: 'Матрица атак · DISARM обозреватель',
-      description: 'Матрица атак DISARM: тактики и техники дезинформационных операций с фильтрами, тепловой картой и переходом в карточки.',
+      description: {
+        ru: 'Матрица атак DISARM: тактики и техники с фильтрами и переходами к карточкам объектов.',
+        kk: 'DISARM шабуыл матрицасы: тактикалар мен техникалар, сүзгілер және нысан карточкаларына өту.',
+        en: 'DISARM attack matrix: tactics and techniques, with filters and links to object details.',
+      },
     },
     blue: {
       title: 'Матрица защиты · DISARM обозреватель',
-      description: 'Матрица защиты DISARM: контрмеры по тактическим этапам, связанные техники и рабочий слой для защитного планирования.',
+      description: {
+        ru: 'Матрица защиты DISARM: контрмеры и связанные техники по этапам кампании.',
+        kk: 'DISARM қорғаныс матрицасы: науқан кезеңдері бойынша қарсы шаралар мен байланысты техникалар.',
+        en: 'DISARM defence matrix: countermeasures and linked techniques across campaign phases.',
+      },
     },
     search: {
       title: 'Поиск · DISARM обозреватель',
-      description: 'Поиск по объектам DISARM: техники, контрмеры, инциденты, тактики, индикаторы, задачи и инструменты.',
+      description: {
+        ru: 'Поиск по техникам, контрмерам, инцидентам, тактикам, индикаторам, задачам и инструментам DISARM.',
+        kk: 'DISARM нысандарын іздеу: техникалар, қарсы шаралар, оқиғалар, тактикалар, индикаторлар, тапсырмалар және құралдар.',
+        en: 'Search DISARM techniques, countermeasures, incidents, tactics, indicators, tasks, and tools.',
+      },
     },
     incidents: {
-      title: 'Инциденты · DISARM обозреватель',
-      description: 'Каталог инцидентов DISARM: реальные кампании, страны, годы и используемые техники с привязкой к матрице.',
+      title: 'Каталог инцидентов · DISARM обозреватель',
+      description: {
+        ru: 'Каталог инцидентов DISARM: годы начала, указанные страны и связанные техники.',
+        kk: 'DISARM оқиғаларының каталогы: басталған жылдары, көрсетілген елдер және байланысты техникалар.',
+        en: 'DISARM incident catalogue: start years, listed countries, and linked techniques.',
+      },
     },
     playbook: {
       title: 'План реагирования · DISARM обозреватель',
-      description: 'Конструктор плана реагирования DISARM: выбор техник атаки, покрытие контрмерами, экспорт плейбука и ссылки с сохранённым состоянием.',
+      description: {
+        ru: 'План реагирования DISARM: выбор техник, оценка покрытия контрмерами и экспорт плана.',
+        kk: 'DISARM жауап жоспары: техникаларды таңдау, қарсы шаралармен қамтуды бағалау және жоспарды экспорттау.',
+        en: 'DISARM response plan: select techniques, review countermeasure coverage, and export the plan.',
+      },
     },
     about: {
       title: 'Справка · DISARM обозреватель',
-      description: 'Справка по DISARM: история фреймворка, режимы 1.x и 2.0, структура объектов и используемые источники.',
+      description: {
+        ru: 'Справка о DISARM 1.7.0: состав и источники матрицы, лицензия и отдельные версии фреймворка.',
+        kk: 'DISARM 1.7.0 туралы: матрица құрамы мен дереккөздері, лицензиясы және фреймворк нұсқалары.',
+        en: 'About DISARM 1.7.0: matrix contents and sources, licensing, and separate framework versions.',
+      },
     },
   };
   function updateDocumentMeta(tab) {
     const meta = TAB_META[tab] || TAB_META.overview;
-    document.title = meta.title;
+    const copy = localeCopy();
+    const tabTitle = copy.tabs[tab] || copy.title;
+    const localizedTitle = STATE.locale === 'ru' ? meta.title : `${tabTitle} · DISARM`;
+    const localizedDescription = meta.description[STATE.locale] || meta.description.ru;
+    document.title = localizedTitle;
     const description = document.querySelector('meta[name="description"]');
-    if (description) description.setAttribute('content', meta.description);
+    if (description) description.setAttribute('content', localizedDescription);
     const ogTitle = document.querySelector('meta[property="og:title"]');
-    if (ogTitle) ogTitle.setAttribute('content', meta.title);
+    if (ogTitle) ogTitle.setAttribute('content', localizedTitle);
     const ogDescription = document.querySelector('meta[property="og:description"]');
-    if (ogDescription) ogDescription.setAttribute('content', meta.description);
+    if (ogDescription) ogDescription.setAttribute('content', localizedDescription);
   }
 
   /* ---- Playbook persistence ---- */
@@ -1244,6 +1216,17 @@
   function setupTabs() {
     const tabs = $$('#tabs .avds-pill-tab');
     const panels = $$('.tabpanel');
+    const revealSelectedTab = () => {
+      const tabList = $('#tabs');
+      const activeTab = tabs.find(t => t.getAttribute('aria-selected') === 'true');
+      if (!tabList || !activeTab) return;
+      const listRect = tabList.getBoundingClientRect();
+      const tabRect = activeTab.getBoundingClientRect();
+      if (tabRect.left < listRect.left || tabRect.right > listRect.right) {
+        const target = tabList.scrollLeft + (tabRect.left + tabRect.right - listRect.left - listRect.right) / 2;
+        tabList.scrollLeft = Math.max(0, Math.min(target, tabList.scrollWidth - tabList.clientWidth));
+      }
+    };
     const setTab = (name, opts={}) => {
       tabs.forEach(t => {
         const active = t.dataset.tab === name;
@@ -1251,6 +1234,7 @@
         t.setAttribute('aria-selected', active ? 'true' : 'false');
         t.setAttribute('tabindex', active ? '0' : '-1');
       });
+      revealSelectedTab();
       panels.forEach(p => {
         const active = p.dataset.panel === name;
         p.classList.toggle('active', active);
@@ -1269,6 +1253,8 @@
       if (!opts.noScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
     };
     STATE.setTab = setTab;
+    STATE.revealSelectedTab = revealSelectedTab;
+    window.addEventListener('resize', revealSelectedTab);
 
     tabs.forEach(t => t.addEventListener('click', () => setTab(t.dataset.tab)));
     tabs.forEach((t, idx) => t.addEventListener('keydown', e => {
@@ -1367,7 +1353,6 @@
       ['Этапов', d.phases.length],
       ['Тактик', d.tactics.length],
       ['Техник', d.techniques.length],
-      ['Расш. техник', d.extended_techniques.length],
       ['Контрмер', d.counters.length],
       ['Метатехник', d.metatechniques.length],
       ['Индикаторов', d.detections.length],
@@ -1405,7 +1390,7 @@
       <div class="overview-meta-row"><span>Релиз</span><strong>${escape(formatVersionLabel(d.version || '—'))}</strong></div>
       <div class="overview-meta-row"><span>Лицензия</span><strong>CC-BY-SA-4.0</strong></div>
       <div class="overview-meta-row"><span>Источник</span><strong>Фонд DISARM</strong></div>
-      <div class="overview-meta-row"><span>Объектов в срезе</span><strong>${d.techniques.length + d.counters.length + d.incidents.length}</strong></div>
+      <div class="overview-meta-row"><span>Записей в матрицах и каталоге</span><strong>${d.techniques.length + d.counters.length + d.incidents.length}</strong></div>
     `;
     renderQuickLinksRail($('#overview-quick-links'), [
       { label: 'Матрица атак', href: tabHref('red'), meta: `${d.techniques.length}` },
@@ -1417,7 +1402,6 @@
     ]);
     renderQuickLinksRail($('#about-quick-links'), [
       { label: '1.7.0', href: 'https://github.com/DISARMFoundation/DISARMframeworks-17', external: true, active: true },
-      { label: '1.x archive', href: 'https://github.com/DISARMFoundation/DISARMframeworks', external: true },
       { label: '2.0 Observations', href: 'https://github.com/DISARMFoundation/DISARMframeworks-20-observable', external: true },
       { label: '2.0 Assessments', href: 'https://github.com/DISARMFoundation/DISARMframeworks-20-assessments', external: true },
       { label: 'Foundation', href: 'https://www.disarm.foundation/', external: true },
@@ -1678,6 +1662,15 @@
       </div>
     `).join('');
 
+    const applyTextFilter = () => {
+      const q = $('#blue-filter').value.trim().toLowerCase();
+      $$('#blue-matrix .matrix-cell').forEach(c => {
+        const txt = c.textContent.toLowerCase();
+        c.classList.toggle('hidden', q && !txt.includes(q));
+      });
+    };
+    applyTextFilter();
+
     grid.onclick = e => {
       const head = e.target.closest('.matrix-col-head');
       if (head && window.matchMedia('(max-width: 720px)').matches) {
@@ -1695,18 +1688,19 @@
       }
     };
 
-    $('#blue-filter').oninput = e => {
-      const q = e.target.value.trim().toLowerCase();
-      $$('#blue-matrix .matrix-cell').forEach(c => {
-        const txt = c.textContent.toLowerCase();
-        c.classList.toggle('hidden', q && !txt.includes(q));
-      });
-    };
+    $('#blue-filter').oninput = applyTextFilter;
     if (phasePills) phasePills.onclick = e => {
       const btn = e.target.closest('[data-phase]');
       if (!btn) return;
-      MATRIX_FILTERS.bluePhase = btn.dataset.phase || '';
+      const selectedPhase = btn.dataset.phase || '';
+      const restoreFocus = document.activeElement === btn;
+      MATRIX_FILTERS.bluePhase = selectedPhase;
       renderBlueMatrix();
+      if (restoreFocus) {
+        [...phasePills.querySelectorAll('[data-phase]')]
+          .find(pill => pill.dataset.phase === selectedPhase)
+          ?.focus({ preventScroll: true });
+      }
     };
   }
 
@@ -1766,17 +1760,20 @@
       }
       const visible = results.slice(0, SEARCH_PAGE.shown);
       setStatus(`Найдено: ${results.length} · показано: ${visible.length} · фильтров: ${types.size}`, true);
-      out.innerHTML = visible.map(({o}) => `
-        <div class="result" data-id="${escape(o.disarm_id)}">
-          <div class="result-h">
-            <span class="result-id">${escape(o.disarm_id)}</span>
-            <span class="result-name">${highlight(tName(o) || '—', q)}</span>
-            <span class="result-type ${TYPE_CSS[o._type] || ''}">${escape(TYPE_LABELS[o._type] || o._type)}</span>
-            <button class="result-open" type="button">Открыть</button>
+      out.innerHTML = visible.map(({o}) => {
+        const summary = previewSummary(o);
+        return `
+          <div class="result" data-id="${escape(o.disarm_id)}">
+            <div class="result-h">
+              <span class="result-id">${escape(o.disarm_id)}</span>
+              <span class="result-name">${highlight(tName(o) || '—', q)}</span>
+              <span class="result-type ${TYPE_CSS[o._type] || ''}">${escape(TYPE_LABELS[o._type] || o._type)}</span>
+              <button class="result-open" type="button">Открыть</button>
+            </div>
+            ${summary ? `<div class="result-summary">${highlight(truncate(summary, 220), q)}</div>` : ''}
           </div>
-          <div class="result-summary">${highlight(truncate(previewSummary(o), 220), q)}</div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
       more.innerHTML = visible.length < results.length
         ? `<button class="avds-export-btn" type="button" id="search-more-btn">Показать ещё (${results.length - visible.length})</button>`
         : `<div class="search-results-count">Показано ${visible.length} из ${results.length}</div>`;
@@ -1824,7 +1821,7 @@
     $('#incident-country-pills').innerHTML = [`<button class="mini-pill ${!INCIDENT_FILTERS.country ? 'active' : ''}" data-country="">Все страны</button>`, ...countries.slice(0, 16).map(c => `<button class="mini-pill ${countryFilterIncludes(c) ? 'active' : ''}" data-country="${escape(c)}">${escape(localizeCountry(c))}</button>`)].join('');
     $('#incident-tactic-pills').innerHTML = [`<button class="mini-pill ${!INCIDENT_FILTERS.tactic ? 'active' : ''}" data-tactic="">Все тактики</button>`, ...tactics.slice(0, 12).map(t => `<button class="mini-pill ${INCIDENT_FILTERS.tactic === t.disarm_id ? 'active' : ''}" data-tactic="${escape(t.disarm_id)}">${escape(tName(t))}</button>`)].join('');
     renderIncidentPeriodComparison(d.incidents, years);
-    const render = (q='') => {
+    const render = (q=$('#incident-filter')?.value || '') => {
       q = q.trim().toLowerCase();
       const items = d.incidents
         .filter(i => !INCIDENT_FILTERS.year || i.year_started === INCIDENT_FILTERS.year)
@@ -1894,41 +1891,60 @@
         <section class="incident-year-group">
           <div class="incident-year-head"><strong>${escape(year)}</strong><span>${bucket.length} ${pluralRu(bucket.length, 'кейс', 'кейса', 'кейсов')}</span></div>
           <div class="incident-year-grid">
-            ${bucket.map(i => `
-              <div class="incident-card" data-id="${escape(i.disarm_id)}">
-                <div class="incident-meta">
-                  <span class="incident-id">${escape(i.disarm_id)}</span>
-                  ${i.year_started ? `<span class="incident-year">${escape(i.year_started)}</span>` : ''}
-                  ${i.found_in_country ? `<span class="incident-country">${escape(localizeCountry(i.found_in_country))}</span>` : ''}
+            ${bucket.map(i => {
+              const title = tName(i);
+              const label = `${i.disarm_id} — ${title}`;
+              const summary = previewSummary({...i, _type:'incident'});
+              return `
+                <div class="incident-card" data-id="${escape(i.disarm_id)}" role="button" tabindex="0" aria-haspopup="dialog" aria-label="${escape(label)}">
+                  <div class="incident-meta">
+                    <span class="incident-id">${escape(i.disarm_id)}</span>
+                    ${i.year_started ? `<span class="incident-year">${escape(i.year_started)}</span>` : ''}
+                    ${i.found_in_country ? `<span class="incident-country">${escape(localizeCountry(i.found_in_country))}</span>` : ''}
+                  </div>
+                  <div class="incident-name">${escape(title)}</div>
+                  ${summary ? `<div class="incident-summary">${escape(truncate(summary, 150))}</div>` : ''}
+                  ${(i.techniques || []).length ? `<div class="incident-techs">${i.techniques.slice(0,8).map(t => `<span class="incident-tech-tag">${escape(t)}</span>`).join('')}${i.techniques.length>8?`<span class="incident-tech-tag">+${i.techniques.length-8}</span>`:''}</div>` : ''}
                 </div>
-                <div class="incident-name">${escape(tName(i))}</div>
-                <div class="incident-summary">${escape(truncate(previewSummary({...i, _type:'incident'}), 150))}</div>
-                ${(i.techniques || []).length ? `<div class="incident-techs">${i.techniques.slice(0,8).map(t => `<span class="incident-tech-tag">${escape(t)}</span>`).join('')}${i.techniques.length>8?`<span class="incident-tech-tag">+${i.techniques.length-8}</span>`:''}</div>` : ''}
-              </div>
-            `).join('')}
+              `;
+            }).join('')}
           </div>
         </section>
       `).join('') : '<div class="pb-empty">Инциденты не найдены. Измените запрос или сбросьте фильтры.</div>';
     };
     render();
     $('#incident-filter').oninput = e => render(e.target.value);
+    const restorePillFocus = (groupId, key, value) => {
+      const group = $(`#${groupId}`);
+      const pill = Array.from(group?.querySelectorAll('button') || []).find(button => button.dataset[key] === value);
+      pill?.focus({ preventScroll: true });
+    };
     $('#incident-year-pills').onclick = e => {
       const btn = e.target.closest('[data-year]');
       if (!btn) return;
-      INCIDENT_FILTERS.year = btn.dataset.year || '';
+      const value = btn.dataset.year || '';
+      const restoreFocus = document.activeElement === btn;
+      INCIDENT_FILTERS.year = value;
       renderIncidents();
+      if (restoreFocus) restorePillFocus('incident-year-pills', 'year', value);
     };
     $('#incident-country-pills').onclick = e => {
       const btn = e.target.closest('[data-country]');
       if (!btn) return;
-      INCIDENT_FILTERS.country = btn.dataset.country || '';
+      const value = btn.dataset.country || '';
+      const restoreFocus = document.activeElement === btn;
+      INCIDENT_FILTERS.country = value;
       renderIncidents();
+      if (restoreFocus) restorePillFocus('incident-country-pills', 'country', value);
     };
     $('#incident-tactic-pills').onclick = e => {
       const btn = e.target.closest('[data-tactic]');
       if (!btn) return;
-      INCIDENT_FILTERS.tactic = btn.dataset.tactic || '';
+      const value = btn.dataset.tactic || '';
+      const restoreFocus = document.activeElement === btn;
+      INCIDENT_FILTERS.tactic = value;
       renderIncidents();
+      if (restoreFocus) restorePillFocus('incident-tactic-pills', 'tactic', value);
     };
     $('#incident-clear-filters').onclick = () => {
       INCIDENT_FILTERS.year = '';
@@ -1937,10 +1953,17 @@
       $('#incident-filter').value = '';
       renderIncidents();
     };
-    list.addEventListener('click', e => {
+    list.onclick = e => {
       const c = e.target.closest('.incident-card');
       if (c) openModal(c.dataset.id);
-    });
+    };
+    list.onkeydown = e => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const c = e.target.closest('.incident-card[role="button"]');
+      if (!c) return;
+      e.preventDefault();
+      openModal(c.dataset.id);
+    };
   }
 
   function activeYearsLabel(items) {
@@ -2153,7 +2176,7 @@
 
     const dt = new Date().toISOString().slice(0, 10);
     let md = `# DISARM Плейбук · ${dt}\n\n`;
-    md += `_Сгенерировано обозревателем по официальной SQLite-базе DISARM 1.7.0._\n\n`;
+    md += `_Сгенерировано обозревателем для выбранных техник DISARM 1.7.0 и связанных контрмер._\n\n`;
     md += `## Выбранные наблюдаемые техники (${techs.length})\n\n`;
     techs.forEach(t => {
       md += `### ${t.disarm_id} — ${tName(t)}\n`;
@@ -2167,7 +2190,7 @@
       if (tSummary(counter)) md += `\n${tSummary(counter)}\n\n`;
     });
     if (analysis.uncovered.length) md += `## Без связанной контрмеры в корпусе\n\n${analysis.uncovered.join(', ')}\n\n`;
-    md += `\n---\n\nИсточник данных: [DISARM Foundation](${DISARM_SOURCE_URL}) · DISARM 1.7.0 · CC-BY-SA-4.0\n`;
+    md += `\n---\n\nИсточник данных: [DISARM Foundation](${DISARM_SOURCE_URL}) · DISARM 1.7.0. Данные адаптированы для интерактивного обозревателя и этого экспорта. Лицензия материалов DISARM: [CC-BY-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/), согласно [условиям фонда](https://www.disarm.foundation/terms-of-service) и [LICENSE.md выпуска](https://github.com/DISARMFoundation/DISARMframeworks-17/blob/v1.7.0/LICENSE.md). README.md выпуска содержит отличающуюся запись CC-BY-4.0.\n`;
 
     downloadBlob(md, `disarm-playbook-${dt}.md`, 'text/markdown');
   }
@@ -2221,7 +2244,17 @@
       metadata: [
         { name: 'source', value: 'DISARM local explorer' },
         { name: 'generated', value: new Date().toISOString() },
-        { name: 'version', value: d.version || 'DISARM 1.7.0' },
+        { name: 'version', value: 'DISARM 1.7.0' },
+        { name: 'source_url', value: DISARM_SOURCE_URL },
+        { name: 'source_revision', value: '216a8828c7d0f6a67ad2a8867c716bf961914776' },
+        { name: 'source_artifact', value: 'generated_files/DISARM_database.sqlite' },
+        { name: 'source_artifact_sha256', value: '753eef8df1ce9678c41e16f7f45ccc59fce095c7be00f81f832be689bf43ad38' },
+        { name: 'layer_scope', value: 'DISARM 1.7.0 official SQLite core' },
+        { name: 'license', value: 'CC-BY-SA-4.0; https://creativecommons.org/licenses/by-sa/4.0/' },
+        { name: 'license_status', value: 'resolved_by_current_foundation_terms' },
+        { name: 'license_terms', value: 'https://www.disarm.foundation/terms-of-service' },
+        { name: 'license_readme', value: 'CC-BY-4.0; https://github.com/DISARMFoundation/DISARMframeworks-17/blob/v1.7.0/README.md' },
+        { name: 'license_file', value: 'CC-BY-SA-4.0; https://github.com/DISARMFoundation/DISARMframeworks-17/blob/v1.7.0/LICENSE.md' },
         { name: 'score_semantics', value: PLAYBOOK.selected.size ? 'binary selection: selected=100' : 'log1p frequency bucket 0..5; raw count is in comment; not probability or risk' },
       ],
       showTacticRowBackground: false,
@@ -2243,7 +2276,7 @@
     const dt = now.slice(0,10);
     const objects = [];
 
-    // Marking definition (CC-BY-SA-4.0)
+    // Current Foundation terms and v1.7.0 LICENSE both identify CC-BY-SA-4.0.
     const markingId = 'marking-definition--' + uuidv4();
     objects.push({
       type: 'marking-definition',
@@ -2251,7 +2284,7 @@
       id: markingId,
       created: '2017-01-20T00:00:00.000Z',
       definition_type: 'statement',
-      definition: { statement: 'CC-BY-SA-4.0 © DISARM Foundation' },
+      definition: { statement: 'DISARM Foundation framework material: CC-BY-SA-4.0. This explorer adapts the DISARM 1.7.0 dataset for interactive exploration and export. https://www.disarm.foundation/terms-of-service https://creativecommons.org/licenses/by-sa/4.0/ https://github.com/DISARMFoundation/DISARMframeworks-17/blob/v1.7.0/LICENSE.md' },
     });
 
     // Identity (creator)
@@ -2439,7 +2472,7 @@
 
     if (previewSummary(o)) {
       body += `<div class="obj-summary">${escape(previewSummary(o))}</div>`;
-      body += `<p class="obj-source-boundary">Источник описания — DISARM Foundation. <a href="data/disarm-provenance.json" target="_blank" rel="noopener noreferrer">Открыть паспорт данных и ограничения</a>.</p>`;
+      body += `<p class="obj-source-boundary">Источник описания — <a href="https://github.com/DISARMFoundation/DISARMframeworks-17" target="_blank" rel="noopener noreferrer">DISARM 1.7.0 · SQLite-ядро</a>.</p>`;
     }
 
     // Annotations panel for techniques
@@ -2676,9 +2709,24 @@
     });
   }
 
+  function setupIncidentPeriodTableScroll() {
+    const viewport = $('.incident-period-comparison__table-scroll');
+    if (!viewport) return;
+    viewport.onkeydown = e => {
+      if (e.altKey || e.ctrlKey || e.metaKey) return;
+      let left;
+      if (e.key === 'ArrowRight') left = viewport.scrollLeft + 64;
+      else if (e.key === 'ArrowLeft') left = viewport.scrollLeft - 64;
+      else if (e.key === 'Home') left = 0;
+      else if (e.key === 'End') left = viewport.scrollWidth - viewport.clientWidth;
+      else return;
+      e.preventDefault();
+      viewport.scrollLeft = Math.max(0, Math.min(left, viewport.scrollWidth - viewport.clientWidth));
+    };
+  }
+
   /* ---- Boot ---- */
   document.addEventListener('DOMContentLoaded', async () => {
-    updateAvdsCoverageBadge();
     setupTheme();
     setupLocale();
     setupTextScale();
@@ -2695,6 +2743,7 @@
     applyDeepLinkState(dl);
 
     setupTabs();
+    setupIncidentPeriodTableScroll();
     setupWorkspaceToolbar();
 
     try {

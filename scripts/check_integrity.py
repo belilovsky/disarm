@@ -24,6 +24,7 @@ RELEASE_PATH = ROOT / "release.json"
 HEALTH_PATH = ROOT / "health.json"
 INDEX_PATH = ROOT / "index.html"
 STYLE_PATH = ROOT / "assets" / "avds-disarm-adapter.css"
+APP_SCRIPT_PATH = ROOT / "assets" / "app.js"
 ROBOTS_PATH = ROOT / "robots.txt"
 SITEMAP_PATH = ROOT / "sitemap.xml"
 
@@ -45,6 +46,12 @@ def load_json(path: Path) -> dict:
         fail(f"cannot parse JSON {path}: {exc}")
 
 
+def expected_adapter_asset() -> str:
+    adapter = load_json(AVDS_ADAPTER_PATH)
+    style_digest = hashlib.sha256(STYLE_PATH.read_bytes()).hexdigest()[:12]
+    return f"/assets/avds-disarm-adapter.css?v={adapter.get('adapter_version')}&sha={style_digest}"
+
+
 def check_html() -> None:
     html = INDEX_PATH.read_text(encoding="utf-8")
     require('<html lang="ru"' in html, "index.html missing lang=ru")
@@ -52,15 +59,18 @@ def check_html() -> None:
     require('id="main-content"' in html, "index.html missing #main-content anchor")
     require('rel="canonical" href="https://disarm.qdev.run/"' in html, "index.html missing canonical URL")
     require("og:title" in html and "og:description" in html and "og:image" in html, "index.html missing core OG tags")
+    require('Локализованный обозреватель фреймворка DISARM' not in html, "static metadata overstates the incomplete localization")
+    app_js = APP_SCRIPT_PATH.read_text(encoding="utf-8")
+    require("ogDescription.setAttribute('content', localizedDescription)" in app_js, "localized Open Graph description must use the selected locale string")
     require("Content-Security-Policy" in html, "index.html missing CSP meta")
+    app_digest = hashlib.sha256(APP_SCRIPT_PATH.read_bytes()).hexdigest()[:12]
+    require(re.search(r'<script[^>]+src="assets/app\.js\?[^\"]*&sha=' + app_digest + r'"></script>', html) is not None, "index.html app.js cache key does not match current asset")
     require(len(re.findall(r'<section[^>]+class="[^"]*tabpanel', html)) == 7, "unexpected tabpanel count")
     require(len(re.findall(r'<button[^>]+class="[^"]*avds-pill-tab', html)) == 7, "unexpected top-level tab count")
     require(len(re.findall(r'<input[^>]+type="search"', html)) >= 4, "too few search inputs")
-    require('id="avds-coverage-badge"' in html, "index.html missing AVDS coverage badge")
-    require('data-avds-coverage="97"' in html and '>AVDS 4.7.0-97</a>' in html, "index.html AVDS maturity fallback mismatch")
-    require('href=".well-known/avds-adoption.json"' in html, "AVDS maturity badge does not expose shared evidence")
-    require('data-avds-badge-contract="avds-adoption-badge-v1"' in html, "AVDS maturity badge is not structured")
-    require('href="assets/avds-disarm-adapter.css?v=1.3.5"' in html, "index.html missing versioned AVDS adapter")
+    require('avds-coverage-badge' not in html and 'AVDS 4.7.0-97' not in html, "reader-facing HTML exposes an AVDS operator badge")
+    require('href=".well-known/avds-adoption.json"' not in html, "reader-facing HTML links to AVDS adoption evidence")
+    require(f'href="{expected_adapter_asset().lstrip("/")}"' in html, "index.html missing versioned AVDS adapter")
     require('href="assets/style.css' not in html, "index.html still loads the unversioned legacy override")
     require('id="data-state"' in html and 'role="status"' in html, "index.html missing data-state contract")
     require('id="data-retry"' in html and 'disabled hidden' in html, "index.html missing disabled retry state")
@@ -69,7 +79,8 @@ def check_html() -> None:
     require('id="text-scale-select"' in html and 'value="200"' in html, "index.html missing 200 percent text-scale control")
     require('id="a11y-transcript"' in html and 'class="avds-sr-only"' in html, "index.html missing screen-reader transcript")
     require('role="grid"' in html and 'aria-describedby="red-matrix-help"' in html, "index.html missing red matrix accessibility contract")
-    require('data/disarm-provenance.json' in html, "index.html missing data provenance link")
+    require('data/disarm-provenance.json' not in html, "reader-facing HTML links to the raw provenance JSON")
+    require('https://github.com/DISARMFoundation/DISARMframeworks-17' in html, "reader-facing source link is missing")
     require('id="incident-geo-map"' in html and 'id="incident-geo-list"' in html, "index.html missing incident map-list composition")
 
     local_refs = re.findall(r'''(?:href|src)=["']([^"']+)["']''', html)
@@ -141,6 +152,8 @@ def check_release_publish_contract() -> None:
         "release publish allowlist must include both self-referential receipts",
     )
     require(release.get("release_id", "").startswith("content-"), "release receipt has no content identity")
+    published_paths = {item.get("path") for item in release.get("manifest", {}).get("artifacts", [])}
+    require("supporting-data/disarm-1x-archive-unknown-revision.json" not in published_paths, "unverified archive data must remain outside the public release")
     require(health.get("release_id") == release.get("release_id"), "health receipt release identity mismatch")
     require(
         health.get("release_manifest_sha256") == release.get("artifact_manifest_sha256"),
@@ -279,6 +292,27 @@ def check_avds_system_contract() -> None:
     upstream = contract.get("upstream", {})
     require(upstream.get("release_version") == "4.7.0", "AVDS system contract release mismatch")
     require(re.fullmatch(r"[0-9a-f]{40}", str(upstream.get("source_commit", ""))) is not None, "invalid AVDS source commit")
+    observation = contract.get("current_upstream_observation", {})
+    observed_release = observation.get("release", {})
+    observed_version = str(observed_release.get("version", ""))
+    require(re.fullmatch(r"\d+\.\d+\.\d+", observed_version) is not None, "invalid observed AVDS release version")
+    require(re.fullmatch(r"[0-9a-f]{40}", str(observed_release.get("source_commit", ""))) is not None, "invalid observed AVDS source commit")
+    observed_package = observation.get("ui_package", {})
+    require(observed_package.get("version") == observed_version, "observed AVDS UI package version mismatch")
+    migration = observation.get("migration", {})
+    require(migration.get("portfolio_pilots") == "planned" and migration.get("stable_system") == "planned", "observed AVDS migration gate changed; re-evaluate the consumer decision")
+    decision = observation.get("consumer_decision", {})
+    adapter = load_json(AVDS_ADAPTER_PATH)
+    require(decision.get("status") == "hold-pinned-consumer-baseline", "AVDS consumer migration decision changed")
+    require(decision.get("adapter_avds_release_version") == adapter.get("avds_release_version"), "AVDS consumer decision pin drift")
+    require(decision.get("adapter_package") == f"@sgeo/ui-kit@{adapter.get('design_package_version')}", "AVDS consumer package decision drift")
+    observed_documents = observation.get("source_documents", [])
+    require({item.get("url") for item in observed_documents} == {
+        "https://avds.digital/release.json",
+        "https://avds.digital/.well-known/avds-ui-contract.json",
+        "https://avds.digital/.well-known/avds-development-system.json",
+    }, "observed AVDS source-document set mismatch")
+    require(all(re.fullmatch(r"[0-9a-f]{64}", str(item.get("sha256", ""))) for item in observed_documents), "invalid observed AVDS source-document digest")
     require(bool(contract.get("local_deviations")), "AVDS local deviations are missing")
     fonts = contract.get("fonts_and_icons", {})
     require(fonts.get("font_license_status") == "local-license-evidence-present", "font license evidence is missing")
@@ -313,12 +347,21 @@ def check_avds_component_contracts() -> None:
     css = STYLE_PATH.read_text(encoding="utf-8")
     components = contract.get("components", [])
     require(contract.get("schema_version") == "disarm-avds-component-contracts-v1", "unexpected AVDS component contract schema")
-    require(contract.get("adapter_version") == "1.3.5", "component contract adapter mismatch")
+    require(contract.get("adapter_version") == "1.3.10", "component contract adapter mismatch")
     require(len(components) == 10, "AVDS component registry must contain ten components")
     require(len({item.get("id") for item in components}) == 10, "AVDS component ids must be unique")
     for component in components:
-        for field in ["id", "selector", "variants", "states", "size", "keyboard", "allowed_children", "required_markup"]:
+        for field in ["id", "selector", "variants", "states", "size", "keyboard", "allowed_children"]:
             require(bool(component.get(field)), f"AVDS component contract missing {field}: {component.get('id')}")
+        status = component.get("status", "implemented")
+        if status == "retired":
+            require(component.get("required_markup") == [], f"retired AVDS component still requires markup: {component.get('id')}")
+            forbidden = component.get("forbidden_markup", [])
+            require(bool(forbidden), f"retired AVDS component lacks forbidden markup: {component.get('id')}")
+            require(all(marker not in html for marker in forbidden), f"retired AVDS component markup is still present: {component.get('id')}")
+            continue
+        require(status == "implemented", f"unknown AVDS component status: {component.get('id')}")
+        require(bool(component.get("required_markup")), f"AVDS component contract missing required markup: {component.get('id')}")
         require(all(marker in html for marker in component["required_markup"]), f"AVDS component markup drift: {component['id']}")
         selector = str(component["selector"])
         class_tokens = re.findall(r"\.([a-zA-Z0-9_-]+)", selector)
@@ -343,9 +386,31 @@ def check_disarm_provenance() -> None:
     dataset = provenance.get("dataset", {})
     coverage = provenance.get("coverage", {})
     require(provenance.get("schema_version") == "disarm-provenance-v1", "unexpected DISARM provenance schema")
+    license_sources = dataset.get("license_sources", [])
     require(dataset.get("license") == "CC-BY-SA-4.0", "DISARM provenance license mismatch")
+    require(dataset.get("license_status") == "resolved_by_current_foundation_terms", "DISARM license basis missing")
+    require(
+        {(item.get("document"), item.get("license"), item.get("url")) for item in license_sources}
+        == {
+            ("README.md", "CC-BY-4.0", "https://github.com/DISARMFoundation/DISARMframeworks-17/blob/v1.7.0/README.md"),
+            ("LICENSE.md", "CC-BY-SA-4.0", "https://github.com/DISARMFoundation/DISARMframeworks-17/blob/v1.7.0/LICENSE.md"),
+            ("Foundation Terms of Service", "CC-BY-SA-4.0", "https://www.disarm.foundation/terms-of-service"),
+        },
+        "DISARM license source evidence mismatch",
+    )
+    source_data = load_json(DATA_PATH)
+    require(source_data.get("license") == "CC-BY-SA-4.0", "DISARM data license mismatch")
+    require(source_data.get("license_status") == "resolved_by_current_foundation_terms", "DISARM data license basis missing")
+    require(source_data.get("license_sources") == license_sources, "DISARM data license source evidence mismatch")
+    require("extended_techniques" not in source_data, "unverified DISARM archive records must not be in the public core JSON")
+    require("supplemental_counts" not in source_data, "unverified DISARM archive counts must not be exposed in public data")
     require(dataset.get("source") == "https://github.com/DISARMFoundation/DISARMframeworks-17", "DISARM provenance source mismatch")
     require(coverage.get("techniques") == 71 and coverage.get("counters") == 140, "DISARM provenance coverage mismatch")
+    require(dataset.get("source_revision") == "216a8828c7d0f6a67ad2a8867c716bf961914776", "DISARM SQLite source revision mismatch")
+    require(dataset.get("source_artifact") == "generated_files/DISARM_database.sqlite", "DISARM SQLite source artifact mismatch")
+    require(dataset.get("source_artifact_sha256") == "753eef8df1ce9678c41e16f7f45ccc59fce095c7be00f81f832be689bf43ad38", "DISARM SQLite artifact digest mismatch")
+    require("supplemental_layers" not in provenance, "unverified DISARM archive metadata must not be exposed in public provenance")
+    require("archive_extended" not in provenance, "unverified DISARM archive identifier must not be exposed in public provenance")
     require(len(provenance.get("interpretation_rules", [])) >= 3, "DISARM provenance interpretation rules incomplete")
     require(len(provenance.get("known_limits", [])) >= 3, "DISARM provenance limits incomplete")
 
@@ -360,6 +425,9 @@ def check_locale_contract() -> None:
     require(set(locales) == {"ru", "kk", "en"}, "AVDS locale set mismatch")
     require(locales["ru"].get("status") == "implemented", "RU locale is not marked implemented")
     require(locales["kk"].get("status") == "partial" and locales["en"].get("status") == "partial", "KK/EN chrome locale status must remain explicit")
+    for locale in ("ru", "kk", "en"):
+        disclosure = locales[locale].get("visible_disclosure", "")
+        require(bool(disclosure) and disclosure in js, f"{locale} visible locale disclosure is missing from the runtime copy")
     require('id="locale-select"' in html and 'LOCALE_COPY' in js and 'setupLocale' in js, "partial KK/EN locale picker is missing")
     require('TEXT_SCALE_KEY' in js and 'setupTextScale' in js, "text-scale persistence is missing")
     for ready_copy in [
@@ -385,7 +453,10 @@ def check_data_visualization_contract() -> None:
     require(missing.get("status") == "implemented" and missing.get("missing_label") == "нет данных", "data missing-value rule missing")
     require(contract.get("tabular_alternatives", {}).get("status") == "implemented", "data tabular alternative rule missing")
     require('data-viz="comparison-bar"' in js and 'data-table-alternative="true"' in js, "comparison visual lacks table alternative marker")
-    require('compare-card__source' in js and 'data/disarm-provenance.json' in js, "comparison visual lacks source contract")
+    require('compare-card__source' in js and 'https://github.com/DISARMFoundation/DISARMframeworks-17' in js, "comparison visual lacks reader-facing source link")
+    require('data/disarm-provenance.json' not in js, "reader-facing JavaScript links to the raw provenance JSON")
+    require('DISARM 1.7.0 SQLite core' in contract.get("sources", {}).get("comparison", ""), "data visualization contract does not identify the primary source layer")
+    require('data/disarm-provenance.json' not in contract.get("sources", {}).get("comparison", ""), "data visualization contract directs readers to raw provenance JSON")
     require('compare-card__axis' in js and 'Шкала: от 0 до' in js, "comparison visual lacks explicit scale axis")
     period = contract.get("period_comparison", {})
     require(period.get("status") == "implemented", "period comparison contract must be implemented")
@@ -423,10 +494,10 @@ def check_visual_regression_contract() -> None:
 def check_avds_adapter() -> None:
     adapter = load_json(AVDS_ADAPTER_PATH)
     require(adapter.get("schema_version") == "disarm-avds-static-adapter-v1", "unexpected AVDS adapter schema")
-    require(adapter.get("adapter_version") == "1.3.5", "unexpected AVDS adapter version")
+    require(adapter.get("adapter_version") == "1.3.10", "unexpected AVDS adapter version")
     require(adapter.get("avds_release_version") == "4.7.0", "AVDS adapter release version mismatch")
     require(adapter.get("design_package_version") == "4.5.1", "AVDS adapter package version mismatch")
-    require(adapter.get("asset") == "/assets/avds-disarm-adapter.css?v=1.3.5", "AVDS adapter asset mismatch")
+    require(adapter.get("asset") == expected_adapter_asset(), "AVDS adapter asset mismatch")
     require(adapter.get("consumer_system_contract") == "/data/avds-system-contract.json", "AVDS system contract link mismatch")
     require(adapter.get("consumer_maturity_contract") == "/data/avds-coverage.json", "AVDS maturity contract link mismatch")
     require(adapter.get("component_contract") == "/data/avds-component-contracts.json", "AVDS component contract link mismatch")

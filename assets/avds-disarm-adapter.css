@@ -1,4 +1,4 @@
-/* AVDS DISARM static product adapter v1.3.5
+/* AVDS DISARM static product adapter v1.3.9
    AVDS release baseline: 4.7.0
    Compatible source UI package: 4.5.1
    Product owns DISARM data, interaction policy and local composition.
@@ -278,15 +278,16 @@ h4 { font-size: var(--disarm-scaled-text-lg); }
 }
 .workspace-toolbar {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: stretch;
   gap: var(--space-3);
   margin: 0 0 var(--space-6);
   padding: var(--space-2);
 }
 .workspace-search {
-  flex: 1 1 calc(var(--disarm-unit) * 420);
-  min-width: calc(var(--disarm-unit) * 240);
+  width: 100%;
+  flex: 1 1 auto;
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: var(--space-2);
@@ -329,14 +330,19 @@ h4 { font-size: var(--disarm-scaled-text-lg); }
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  flex: 0 0 auto;
+  width: 100%;
+  min-width: 0;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
 }
 .avds-data-state {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
   min-height: var(--disarm-control-min-height);
-  max-width: 36rem;
+  max-width: none;
+  min-width: 0;
+  flex: 1 1 100%;
   padding: calc(var(--disarm-unit) * 6) calc(var(--disarm-unit) * 10);
   border: var(--disarm-unit) solid var(--color-border);
   border-radius: var(--radius-sm);
@@ -396,6 +402,13 @@ h4 { font-size: var(--disarm-scaled-text-lg); }
   font: 600 var(--disarm-scaled-text-xs) / 1 var(--font-mono);
   padding: 0 var(--space-2);
 }
+.locale-scope-note {
+  flex: 1 1 100%;
+  min-width: 0;
+  color: var(--color-text-muted);
+  font: 500 var(--disarm-scaled-text-xs) / 1.4 var(--font-sans);
+  overflow-wrap: anywhere;
+}
 .avds-text-scale-picker {
   display: inline-flex;
   align-items: center;
@@ -454,9 +467,12 @@ h4 { font-size: var(--disarm-scaled-text-lg); }
   box-shadow: var(--shadow-focus);
 }
 .workspace-shortcuts {
+  flex: 0 1 auto;
+  min-width: 0;
+  margin-left: auto;
   color: var(--color-text-muted);
   font: 500 var(--disarm-scaled-text-xs) / 1.2 var(--font-sans);
-  white-space: nowrap;
+  white-space: normal;
 }
 .avds-export-btn:disabled {
   opacity: .45;
@@ -992,6 +1008,7 @@ h4 { font-size: var(--disarm-scaled-text-lg); }
 .overview-reading-grid {
   display: grid;
   grid-template-columns: 1.2fr .8fr;
+  align-items: start;
   gap: var(--space-3);
   margin: 0 0 var(--space-5);
 }
@@ -2362,7 +2379,7 @@ html[data-density="compact"] .avds-page-header__subtitle {
   line-height: 1.45;
 }
 html[data-density="compact"] .avds-kpi-grid {
-  grid-template-columns: repeat(auto-fit, minmax(calc(var(--disarm-unit) * 112), 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: var(--space-2);
   margin-bottom: var(--space-5);
 }
@@ -2395,10 +2412,8 @@ html[data-density="compact"] .pb-counter-item {
 /* ============================================================
    RESPONSIVE
    ============================================================ */
-/* At medium desktop widths the operational controls need two rows;
-   overview and editorial grids remain multi-column until the compact regime. */
+/* Keep bounded editorial grids composed for the available content width. */
 @media (max-width: 1500px) {
-  .playbook-grid,
   .footer-grid {
     grid-template-columns: 1fr;
   }
@@ -2407,30 +2422,20 @@ html[data-density="compact"] .pb-counter-item {
     grid-template-columns: 1fr 1fr;
   }
   .masthead-meta-strip { grid-template-columns: repeat(5, 1fr); }
-  .workspace-toolbar {
-    flex-direction: column;
-    align-items: stretch;
+}
+
+@media (max-width: 1120px) {
+  .avds-kpi-grid,
+  html[data-density="compact"] .avds-kpi-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
-  .workspace-search {
-    width: 100%;
-    min-width: 0;
-    flex: 1 1 auto;
-  }
-  .workspace-actions {
-    width: 100%;
-    min-width: 0;
-    flex: 1 1 auto;
-    flex-wrap: wrap;
-  }
-  .avds-data-state {
-    flex: 1 1 100%;
-    max-width: none;
-    min-width: 0;
-  }
-  .workspace-shortcuts {
-    flex: 1 1 100%;
-    margin-left: 0;
-    white-space: normal;
+}
+
+@media (max-width: 900px) {
+  .playbook-grid { grid-template-columns: 1fr; }
+  .avds-kpi-grid,
+  html[data-density="compact"] .avds-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -2637,7 +2642,7 @@ html[data-density="compact"] .pb-counter-item {
     overflow: hidden;
   }
   .avds-kpi-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-2);
     margin-bottom: var(--space-4);
   }
@@ -2811,8 +2816,23 @@ html[data-density="compact"] .pb-counter-item {
     grid-template-columns: 1fr;
   }
   .incident-map-list { padding: var(--space-3); }
-  .incident-period-comparison { padding: var(--space-3); }
+  .incident-period-comparison {
+    padding: var(--space-3);
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .incident-period-comparison > * { min-width: 0; }
   .incident-period-comparison__head { display: grid; gap: var(--space-2); }
+  .incident-period-comparison__table-scroll {
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding-bottom: var(--space-1);
+  }
+  .incident-period-comparison__table { min-width: calc(var(--disarm-unit) * 320); }
+  .incident-period-comparison__table-scroll::-webkit-scrollbar { height: calc(var(--disarm-unit) * 6); }
+  .incident-period-comparison__table-scroll::-webkit-scrollbar-track { background: var(--color-divider); border-radius: var(--radius-full); }
+  .incident-period-comparison__table-scroll::-webkit-scrollbar-thumb { background: var(--color-text-muted); border-radius: var(--radius-full); }
   .incident-map-list__head { display: grid; gap: var(--space-2); }
   .incident-map-list__body { grid-template-columns: 1fr; gap: var(--space-3); }
   .pb-coverage-bar {
@@ -3287,5 +3307,25 @@ html[data-avds-theme="map"] {
   .ann-swatch.is-selected {
     background: Highlight;
     forced-color-adjust: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .masthead-meta-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .masthead-meta-strip .meta-label {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+  }
+}
+
+@media (min-width: 761px) and (max-width: 768px) {
+  #panel-search .avds-search-hero__filters {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
   }
 }

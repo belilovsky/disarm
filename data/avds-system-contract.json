@@ -35,7 +35,7 @@
     },
     {
       "path": "assets/avds-disarm-adapter.css",
-      "sha256": "3f21495f3a22774434f3a381cec401856e9baaebf389e9d923f477c4d7e51858"
+      "sha256": "5b50ef4b2cad9716a9fd5e09bc83e595005c61db64c6f9c4f6b1fcc213d71002"
     },
     {
       "path": "assets/avds-static-token-contract.css",
@@ -72,15 +72,15 @@
     },
     {
       "path": "assets/app.js",
-      "sha256": "eacccf04d0e251d752f688f76421397c330414b88e55b1f7d8ad92c7d3c44564"
+      "sha256": "a013190fedfa85341338e4b14c936f5c2388ef10f3c1c6ec7224f07081905919"
     },
     {
       "path": "index.html",
-      "sha256": "bdfe030657d8bdf803c92fd185b469afe89d33008e6bee6c2aafcc8e68c3e318"
+      "sha256": "4a2198e36d93d84b5f28b5081f7c7723309e6d307e7ec6d4da7a383b3e1aba0c"
     },
     {
       "path": "data/avds-adapter.json",
-      "sha256": "37d365c09f3e64f36f8dea1f0312e70198776c5394bb566b00a876f14db007ad"
+      "sha256": "cfeba2d5b130b8b370848368ea5c8a8155cdf90096a22b08946b4d2244d749a6"
     },
     {
       "path": "data/avds-coverage.json",
@@ -88,27 +88,27 @@
     },
     {
       "path": "data/avds-component-contracts.json",
-      "sha256": "67db35b0c0ef5eb21393a861c8d2e39eedc065a125e0d944a0fdd832debba22a"
+      "sha256": "27a9d2654595f391ed4805ac617b8406c6ba32ae5d868593cfa57f647f5853da"
     },
     {
       "path": "data/avds-responsive-contract.json",
-      "sha256": "d3780086f56ae440198eab05d70d810eee5568f8d3ab587b32e60d3c6eab6084"
+      "sha256": "687133a4d07c4d37d01f58208ac393191c560b9a598ab86e429f48ceaf551f2a"
     },
     {
       "path": "data/disarm-provenance.json",
-      "sha256": "09ed5f2dc6297f763f63ede135356e0fe787f144d0198730c4a3973e7be050be"
+      "sha256": "b21296fd3720f0eb4b66073264025cfa5ed1cd0282b3e5fa69a631217db92bb2"
     },
     {
       "path": "data/avds-locale-contract.json",
-      "sha256": "f61067c2cff30e3f7bf2667aa331e0549abc3815d72e3035a4869d204b596869"
+      "sha256": "c88af8c4bfe02187020b430e355a86b266a96ae121835837890d93d5d9ab8ac8"
     },
     {
       "path": "data/avds-data-visualization-contract.json",
-      "sha256": "2f68557276c8f85f14f52858add067ef87bc60fd70eee654ae163e0957b565af"
+      "sha256": "7552d1fc46062026060d206c9a0f3ee544413ed83b7c2dd602df3533dd55ff61"
     },
     {
       "path": "data/avds-visual-regression.json",
-      "sha256": "b6c0cae997276c2fe2094a01902914c5f3b3db09330bd24625db53e5b03df7f5"
+      "sha256": "b061dfe1e687f68adb0a3b39d16099999e34cbceadf51992ff3d192a9ee092a8"
     },
     {
       "path": ".well-known/avds-adoption.json",
@@ -117,10 +117,10 @@
   ],
   "local_deviations": [
     "Static HTML/CSS/JavaScript adapter instead of direct @sgeo/ui-kit runtime components.",
-    "Theme picker maps institutional, editorial, data/analytics, map and dark roles; product still has one data content language.",
+    "Theme picker maps institutional, editorial, data/analytics, map and dark roles; Russian-authored interface copy is primary, with partial Kazakh and English chrome.",
     "DISARM-specific tab shell, matrices, playbook and modal compositions remain product-owned.",
     "Unicode glyphs and inline SVG are used instead of a complete named AVDS icon registry.",
-    "KK and EN cover the navigation/workspace chrome and data-state copy; DISARM object names, summaries and deep panel copy remain Russian.",
+    "DISARM object names and descriptions remain in their source language where no reviewed translation exists; Russian-authored guide copy is primary, and locale-specific disclosures appear in RU, KK and EN.",
     "Incident geography uses a disclosed external country-reference-point layer; DISARM supplies country labels only, so the map never asserts exact event locations and World remains list-only.",
     "The shared /_avds/avds.css dependency is hash-pinned, but its deployed bytes are not mapped to AVDS 4.7.0 source commit; the local static token export remains pinned to the earlier bda50683 source because an exact 79342b07 export was not available from an authoritative source.",
     "The requested qz.energy deviation list is outside this consumer contract; qz.energy must have its own manifest and evidence."
@@ -489,12 +489,65 @@
     "visual_regression_contract": "/data/avds-visual-regression.json",
     "untracked_local_style_gate": "hard-coded-colors-plus-contract-markers",
     "update_procedure": [
-      "Run scripts/check_avds_update.py --check; use --write for the bounded upstream identity migration.",
-      "Fetch and hash AVDS release and contract documents.",
-      "Update pinned identity and connected-file hashes.",
-      "Recalculate all ten categories fail closed.",
-      "Run static, browser and accessibility checks.",
-      "Deploy immutable changed files and verify public hashes and badge."
+      "Run scripts/check_avds_update.py and record the latest release separately from the consumer baseline.",
+      "A new major release reports UPSTREAM_MIGRATION_REQUIRED; do not run --write or rewrite the adapter identity until the exact package bundle and migration evidence are available.",
+      "For a supported same-major update, confirm package/API compatibility before using --write for the bounded identity and connected-file hash updates.",
+      "Fetch and hash the AVDS release and contract documents.",
+      "Recalculate all ten categories fail closed and run the project static, browser and accessibility checks for any changed surface.",
+      "Deploy immutable changed files and verify public hashes and the machine-readable AVDS adoption contract."
     ]
+  },
+  "current_upstream_observation": {
+    "observed_at": "2026-09-30",
+    "release": {
+      "version": "5.2.0",
+      "source_commit": "9593fb4a5e935a4c1793ca572f79adc7b86e5f18",
+      "build_id": "9593fb4a5e93",
+      "built_at": "2026-09-24T18:17:54+05:00",
+      "artifact_sha256": "a48d2c8c7e9819a0103ab47b97284a3dce80caf7b4434ca90ac1e1ef83d87743"
+    },
+    "ui_package": {
+      "logical_name": "@avds/ui-kit",
+      "version": "5.2.0",
+      "legacy_name": "@sgeo/ui-kit",
+      "legacy_version": "5.2.0",
+      "legacy_supported_through": "5.x",
+      "legacy_lifecycle": "deprecated",
+      "delivery": "same-bundle"
+    },
+    "distribution": {
+      "mode": "private-immutable-file-bundle",
+      "published": false,
+      "registry": null,
+      "receipt": "bundle.json",
+      "install": "npm install --offline"
+    },
+    "migration": {
+      "definition": "complete",
+      "documentation": "current",
+      "golden_paths": "candidate",
+      "portfolio_pilots": "planned",
+      "stable_system": "planned"
+    },
+    "source_documents": [
+      {
+        "url": "https://avds.digital/release.json",
+        "sha256": "2c3213ca32c5ee6175a4a7a11c8552ff2bf60e7a45506616e5e832b80d5c6910"
+      },
+      {
+        "url": "https://avds.digital/.well-known/avds-ui-contract.json",
+        "sha256": "d55f140d0118fcd3ffc7ad8d035a0b58c62c1bd9e9867f3239aea8829ffdbe9b"
+      },
+      {
+        "url": "https://avds.digital/.well-known/avds-development-system.json",
+        "sha256": "0c52010de903de95656b41cc16ee8154e868f12cf0e797f130528c5f23ad0961"
+      }
+    ],
+    "consumer_decision": {
+      "status": "hold-pinned-consumer-baseline",
+      "adapter_avds_release_version": "4.7.0",
+      "adapter_package": "@sgeo/ui-kit@4.5.1",
+      "reason": "The 5.2.0 bundle is private and unpublished; portfolio pilots and the stable-system milestone are planned; the current local static token and component exports do not prove this major-version migration."
+    }
   }
 }
