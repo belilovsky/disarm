@@ -20,6 +20,7 @@
     incidentByTech: new Map(), // technique_id -> [incident objects]
     heatmap: false,
     initialDeepLink: null,   // {tab, technique, playbook[]}
+    tabSelectedDuringLoad: null,
     modalReturnFocus: null,
     locale: 'ru',
     dataState: 'loading',
@@ -1228,6 +1229,7 @@
       }
     };
     const setTab = (name, opts={}) => {
+      STATE.tabSelectedDuringLoad = name;
       tabs.forEach(t => {
         const active = t.dataset.tab === name;
         t.classList.toggle('active', active);
@@ -2765,13 +2767,15 @@
     renderPlaybook();
     setupModal();
 
-    // NOW apply deep-link tab + technique modal
-    if (dl.tab && $$('#tabs .avds-pill-tab').find(t => t.dataset.tab === dl.tab)) {
-      STATE.setTab(dl.tab, { silent: true, noScroll: true });
+    // Preserve a tab chosen while the data and panels were loading.
+    const tabChosenBeforeReady = STATE.tabSelectedDuringLoad;
+    const readyTab = tabChosenBeforeReady || dl.tab;
+    if (readyTab && $$('#tabs .avds-pill-tab').find(t => t.dataset.tab === readyTab)) {
+      STATE.setTab(readyTab, { silent: true, noScroll: true });
     } else {
       updateDocumentMeta('overview');
     }
-    if (dl.technique && STATE.byId.get(dl.technique)) {
+    if (!tabChosenBeforeReady && dl.technique && STATE.byId.get(dl.technique)) {
       // small delay so panel switch settles
       setTimeout(() => openModal(dl.technique), 150);
     }
