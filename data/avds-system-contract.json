@@ -72,11 +72,11 @@
     },
     {
       "path": "assets/app.js",
-      "sha256": "a013190fedfa85341338e4b14c936f5c2388ef10f3c1c6ec7224f07081905919"
+      "sha256": "7f20aaa26ef72d0d8a31b14830f6102485719ad4ba6c8048513b32df56a55bea"
     },
     {
       "path": "index.html",
-      "sha256": "4a2198e36d93d84b5f28b5081f7c7723309e6d307e7ec6d4da7a383b3e1aba0c"
+      "sha256": "4c48338ba74d9d8d57590441de313d3ba3b9d85bcded83f588f853f5ec482601"
     },
     {
       "path": "data/avds-adapter.json",
