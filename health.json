@@ -1,8 +1,8 @@
 {
   "schema_version": "disarm-static-health-v1",
   "project_id": "disarm",
-  "release_id": "content-5879d3b42cb8bf48b2057b7f",
-  "release_manifest_sha256": "5879d3b42cb8bf48b2057b7f6d58d5846871a8d6d0bd1c3515d56183b5d37693",
+  "release_id": "content-44eaca178f5e679c4ed95320",
+  "release_manifest_sha256": "44eaca178f5e679c4ed953205cd0bbfd4d9c9e5cda27ac1b62babae42b518a30",
   "health_kind": "static_release_content",
   "status": "ok",
   "checks": {
@@ -11,5 +11,5 @@
     "public_data_projection": "present",
     "auth_boundary": "expected_302_login"
   },
-  "generated_at": "2026-08-23T18:33:28Z"
+  "generated_at": "2026-09-30T19:31:01Z"
 }

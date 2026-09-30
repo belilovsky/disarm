@@ -15,6 +15,7 @@ from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
+ADAPTER_VERSION = json.loads((ROOT / "data" / "avds-adapter.json").read_text(encoding="utf-8"))["adapter_version"]
 CHECK = ROOT / "scripts" / "check_runtime_evidence.py"
 CHECKER_SPEC = importlib.util.spec_from_file_location("runtime_evidence_checker", CHECK)
 assert CHECKER_SPEC and CHECKER_SPEC.loader
@@ -77,7 +78,7 @@ class RuntimeEvidenceTest(unittest.TestCase):
         self.assertTrue(payload["local_release_id"].startswith("content-"))
         self.assertEqual(payload["public_release_id"], payload["local_release_id"])
         self.assertEqual(payload["public_health_status"], "ok")
-        self.assertEqual(payload["public_adapter_version"], "1.3.6")
+        self.assertEqual(payload["public_adapter_version"], ADAPTER_VERSION)
         self.assertEqual(payload["public_avds_percent"], 97)
 
     def test_adapter_drift_fails_closed(self) -> None:
@@ -95,7 +96,7 @@ class RuntimeEvidenceTest(unittest.TestCase):
         self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
         payload = json.loads(result.stdout)
         self.assertEqual(payload["result"], "RUNTIME_EVIDENCE_CONFLICT")
-        self.assertIn("AVDS adapter mismatch: local 1.3.6 != public 0.0.0", payload["failures"])
+        self.assertIn(f"AVDS adapter mismatch: local {ADAPTER_VERSION} != public 0.0.0", payload["failures"])
 
     def test_transport_timeout_is_normalized(self) -> None:
         with patch.object(CHECKER, "urlopen", side_effect=TimeoutError("read operation timed out")):
