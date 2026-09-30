@@ -2,12 +2,12 @@
   "schema_version": "disarm-release-identity-v1",
   "project_id": "disarm",
   "public_url": "https://disarm.qdev.run/",
-  "release_id": "content-caf95b7cc0f5c7d735ddd28e",
+  "release_id": "content-2aa499b8d501e5b1b96e5a02",
   "revision_kind": "content_sha256_manifest",
-  "source_revision": "734663ce4f65fb0decc8fc553298b5371ffb4da3",
+  "source_revision": "e2ffc583cb395d523919604f122936dcff7a6206",
   "source_revision_status": "git-commit",
-  "artifact_manifest_sha256": "caf95b7cc0f5c7d735ddd28ed7ae28029e2f4d03f4652e85a87ac15bf40dafcb",
-  "generated_at": "2026-09-30T20:46:26Z",
+  "artifact_manifest_sha256": "2aa499b8d501e5b1b96e5a02a58a53d0b6d4e801ea44a26649edb54205b21f9f",
+  "generated_at": "2026-09-30T20:56:21Z",
   "deployment_contract": {
     "mode": "immutable-static-files",
     "required_targets": [
@@ -41,8 +41,8 @@
       },
       {
         "path": "assets/avds-disarm-adapter.css",
-        "bytes": 103721,
-        "sha256": "5b50ef4b2cad9716a9fd5e09bc83e595005c61db64c6f9c4f6b1fcc213d71002"
+        "bytes": 103766,
+        "sha256": "fe222aeed3af6dea31e7c73e4df388229cf6c4d426698e067439e34a1507d59c"
       },
       {
         "path": "assets/avds-static-preview-bundle.css",
@@ -57,7 +57,7 @@
       {
         "path": "data/avds-adapter.json",
         "bytes": 1116,
-        "sha256": "cfeba2d5b130b8b370848368ea5c8a8155cdf90096a22b08946b4d2244d749a6"
+        "sha256": "ab957f8bc1e2f52fa69e2d653dd5f0d65fab98c67bc56511d572bc953e256aea"
       },
       {
         "path": "data/avds-component-contracts.json",
@@ -87,7 +87,7 @@
       {
         "path": "data/avds-system-contract.json",
         "bytes": 18509,
-        "sha256": "46ed8de01d55ac1bec3b0099d42d184e7fb1f7ce0b25de840451bbe1b5b0ab3a"
+        "sha256": "d69ca19a10ccedc1ca3e43b6829175a66ab2a39beaf35caea94e1a30a4ba5e03"
       },
       {
         "path": "data/avds-visual-regression.json",
@@ -412,7 +412,7 @@
       {
         "path": "index.html",
         "bytes": 38482,
-        "sha256": "4c48338ba74d9d8d57590441de313d3ba3b9d85bcded83f588f853f5ec482601"
+        "sha256": "314c91024ab10c316d8c4bb4283ae0f4b445cca5f5a5eed3f6548374269d7134"
       },
       {
         "path": "qdev-project.json",
