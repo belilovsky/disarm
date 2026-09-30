@@ -1829,10 +1829,11 @@ h4 { font-size: var(--disarm-scaled-text-lg); }
 
 .playbook-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-3);
 }
 .pb-col {
+  min-width: 0;
   padding: var(--space-4);
   display: flex;
   flex-direction: column;
@@ -2432,7 +2433,7 @@ html[data-density="compact"] .pb-counter-item {
 }
 
 @media (max-width: 900px) {
-  .playbook-grid { grid-template-columns: 1fr; }
+  .playbook-grid { grid-template-columns: minmax(0, 1fr); }
   .avds-kpi-grid,
   html[data-density="compact"] .avds-kpi-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
