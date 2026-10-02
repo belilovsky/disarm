@@ -15,13 +15,15 @@ async function localeExports(locale) {
  for (const [bucket,type] of Object.entries({phases:'phase',tactics:'tactic',techniques:'technique',counters:'counter',incidents:'incident',metatechniques:'metatechnique',detections:'detection',tasks:'task',tools:'tool'})) for(const obj of STATE.data[bucket])STATE.byId.set(obj.disarm_id,{...obj,_type:type});
  for(const inc of STATE.data.incidents)for(const id of inc.techniques){ if(!STATE.incidentByTech.has(id))STATE.incidentByTech.set(id,[]);STATE.incidentByTech.get(id).push(inc); }
  PLAYBOOK.selected=new Set(DATA.normalizeSelection(['T0001','T0049','T9999','T0001'],STATE.data.techniques).selected);
+ if (formatIncidentCount(1) !== ${JSON.stringify({ru:'1 инцидент',kk:'1 оқиға',en:'1 incident'}[locale])}) throw new Error('Export singular incident label');
+ if (formatIncidentCount(2) !== ${JSON.stringify({ru:'2 инцидента',kk:'2 оқиға',en:'2 incidents'}[locale])}) throw new Error('Export plural incident label');
  exportPlaybook();exportNavigatorJSON();exportStixBundle();\n`;
  app=app.replace(/\}\)\(\);\s*$/,injection+'})();');vm.runInContext(app,context,{filename:'app.js'});
  assert.equal(files.length,3);
  const written=[];
  for(const file of files){const text=await file.blob.text();const target=path.join(output,locale+'-'+file.name);fs.writeFileSync(target,text);written.push(target);
   assert.ok(text.includes('CC-BY-SA-4.0')&&text.includes('DISARMFoundation/DISARMframeworks-17'));assert.ok(!text.includes('T9999'));
-  if(file.name.includes('navigator')){const layer=JSON.parse(text);assert.equal(layer.domain,'disarm-1.7-sqlite'); const domain=JSON.parse(decodeURIComponent(layer.customDataURL.split(',').slice(1).join(','))); assert.equal(domain.objects.filter(o=>o.type==='attack-pattern').length,71); for(const id of ['T0001','T0049'])assert.ok(domain.objects.some(o=>o.external_references?.[0]?.external_id===id));assert.equal(layer.versions.layer,'4.4');assert.deepEqual(layer.techniques.map(t=>t.techniqueID),['T0001','T0049']);}
+  if(file.name.includes('navigator')){const layer=JSON.parse(text);assert.equal(layer.domain,'disarm-1.7-sqlite'); const domain=JSON.parse(decodeURIComponent(layer.customDataURL.split(',').slice(1).join(','))); assert.equal(domain.objects.filter(o=>o.type==='attack-pattern').length,71); for(const id of ['T0001','T0049'])assert.ok(domain.objects.some(o=>o.external_references?.[0]?.external_id===id));assert.equal(layer.versions.layer,'4.4');assert.deepEqual(layer.techniques.map(t=>t.techniqueID),['T0001','T0049']);assert.equal(layer.techniques.find(t=>t.techniqueID==='T0049').comment,'Flooding · '+{ru:'2 инцидента',kk:'2 оқиға',en:'2 incidents'}[locale]);}
   if(file.name.includes('stix')){const bundle=JSON.parse(text),ids=new Set(bundle.objects.map(o=>o.id));assert.equal(ids.size,bundle.objects.length);for(const o of bundle.objects){for(const prop of ['source_ref','target_ref','created_by_ref'])if(o[prop])assert.ok(ids.has(o[prop]));for(const ref of o.object_marking_refs||[])assert.ok(ids.has(ref));}assert.deepEqual(bundle.objects.filter(o=>o.type==='attack-pattern').map(o=>o.external_references[0].external_id),['T0001','T0049']);}
  }
  return {locale,files:written};

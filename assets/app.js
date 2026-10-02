@@ -103,6 +103,11 @@
     if (mod10 >= 2 && mod10 <= 4) return few;
     return many;
   }
+  function formatIncidentCount(count) {
+    const label = uiFormat('{n} инцидентов', count);
+    if (STATE.locale === 'ru') return I18N.text(label);
+    return STATE.locale === 'en' && count === 1 ? label.replace('incidents', 'incident') : label;
+  }
   function formatVersionLabel(version) {
     return ui(String(version || '')
       .replace('official SQLite', 'официальная SQLite-база')
@@ -1856,7 +1861,7 @@
         tactic: t.tactic_id.toLowerCase(),
         score: score,
         color: inPlaybook ? '#dc2626' : (incCount > 0 ? '#fb923c' : ''),
-        comment: t.name + (incCount ? ` · ${uiFormat('{n} инцидентов', incCount)}` : ''),
+        comment: t.name + (incCount ? ` · ${formatIncidentCount(incCount)}` : ''),
         enabled: true,
       };
     }).filter(Boolean);

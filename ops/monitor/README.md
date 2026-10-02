@@ -7,8 +7,8 @@ a protected-page redirect and a meaningful login page. Failure details contain n
 The operator home is the DISARM entry on the existing Monitor dashboard and Platform catalog.
 
 Installation preserves the monitor's existing source and runtime changes. Add
-`check_disarm` to the functional checker list only when `pid == "disarm"`, and add
-the DISARM definition to the existing project configuration. Keep unrelated rows unchanged.
+the project-scoped `check_disarm` to the existing quick health job, and add the
+DISARM definition to the existing project configuration. Keep unrelated rows unchanged.
 Release evidence must record activation and a successful test notification.
 
 ## Active installation — 3 October 2026
@@ -18,8 +18,12 @@ are retained. `project.yaml` is the exact DISARM configuration row; its command
 runs the actual asynchronous checker and exits unsuccessfully on an error.
 
 On the existing monitor host, the checker is installed as
-`app/checkers/disarm_check.py`. Both app and worker add `check_disarm` only for
-`pid == "disarm"`. Their latest-result queries include `disarm_runtime`; the
+`app/checkers/disarm_check.py`. `integration.py:amend_monitor` applies the bounded
+amendment to the host source and each container's preserved runtime source.
+Both app and worker run `check_disarm` for DISARM at the start of the existing
+minute health job, persist its result and include it in the existing transition
+alert channel. This does not depend on the duration of the full portfolio job.
+Their latest-result queries include `disarm_runtime`; the
 project template labels this result “DISARM: оба хоста, PIN и корпус”.
 
 The app and worker have separate, read-only mounts for the checker and their
