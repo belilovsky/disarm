@@ -17,6 +17,8 @@ async function localeExports(locale) {
  PLAYBOOK.selected=new Set(DATA.normalizeSelection(['T0001','T0049','T9999','T0001'],STATE.data.techniques).selected);
  if (formatIncidentCount(1) !== ${JSON.stringify({ru:'1 инцидент',kk:'1 оқиға',en:'1 incident'}[locale])}) throw new Error('Export singular incident label');
  if (formatIncidentCount(2) !== ${JSON.stringify({ru:'2 инцидента',kk:'2 оқиға',en:'2 incidents'}[locale])}) throw new Error('Export plural incident label');
+ if (playbookCountLabel('techniques',1) !== ${JSON.stringify({ru:'техника в плейбуке',kk:'жоспардағы техника',en:'technique in playbook'}[locale])}) throw new Error('Selected technique singular label');
+ if (playbookCountLabel('core',1) !== ${JSON.stringify({ru:'мера в опорном наборе',kk:'негізгі жинақтағы шара',en:'measure in core set'}[locale])}) throw new Error('Core measure singular label');
  exportPlaybook();exportNavigatorJSON();exportStixBundle();\n`;
  app=app.replace(/\}\)\(\);\s*$/,injection+'})();');vm.runInContext(app,context,{filename:'app.js'});
  assert.equal(files.length,3);

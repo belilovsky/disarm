@@ -1500,6 +1500,14 @@ globalThis.DisarmLocaleCatalog = {
     "en": "measures in core set",
     "kk": "негізгі жинақтағы шаралар"
   },
+  "мера в опорном наборе": {
+    "en": "measure in core set",
+    "kk": "негізгі жинақтағы шара"
+  },
+  "меры в опорном наборе": {
+    "en": "measures in core set",
+    "kk": "негізгі жинақтағы шаралар"
+  },
   "метка": {
     "en": "label",
     "kk": "белгі"
@@ -1559,6 +1567,14 @@ globalThis.DisarmLocaleCatalog = {
   "покрытие": {
     "en": "coverage",
     "kk": "қамту"
+  },
+  "связанная контрмера": {
+    "en": "related countermeasure",
+    "kk": "байланысты қарсы шара"
+  },
+  "связанные контрмеры": {
+    "en": "related countermeasures",
+    "kk": "байланысты қарсы шаралар"
   },
   "связанных контрмер": {
     "en": "related countermeasures",
@@ -1648,9 +1664,17 @@ globalThis.DisarmLocaleCatalog = {
     "en": "technique",
     "kk": "техника"
   },
+  "техника в плейбуке": {
+    "en": "technique in playbook",
+    "kk": "жоспардағы техника"
+  },
   "техники": {
     "en": "techniques",
     "kk": "техника"
+  },
+  "техники в плейбуке": {
+    "en": "techniques in playbook",
+    "kk": "жоспардағы техника"
   },
   "только список": {
     "en": "list only",

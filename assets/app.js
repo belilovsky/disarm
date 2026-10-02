@@ -108,6 +108,14 @@
     if (STATE.locale === 'ru') return I18N.text(label);
     return STATE.locale === 'en' && count === 1 ? label.replace('incidents', 'incident') : label;
   }
+  function playbookCountLabel(kind, count) {
+    const forms = {
+      techniques: ['техника в плейбуке', 'техники в плейбуке', 'техник в плейбуке'],
+      counters: ['связанная контрмера', 'связанные контрмеры', 'связанных контрмер'],
+      core: ['мера в опорном наборе', 'меры в опорном наборе', 'мер в опорном наборе'],
+    }[kind];
+    return ui(STATE.locale === 'en' ? forms[count === 1 ? 0 : 2] : pluralRu(count, ...forms));
+  }
   function formatVersionLabel(version) {
     return ui(String(version || '')
       .replace('official SQLite', 'официальная SQLite-база')
@@ -1667,11 +1675,11 @@
       headEl.innerHTML = `
         <div class="cov-stat">
           <span class="cov-num">${analysis.selectedCount}</span>
-          <span class="cov-lbl">техник в плейбуке</span>
+          <span class="cov-lbl">${playbookCountLabel('techniques', analysis.selectedCount)}</span>
         </div>
         <div class="cov-stat">
           <span class="cov-num">${analysis.candidateCount}</span>
-          <span class="cov-lbl">связанных контрмер</span>
+          <span class="cov-lbl">${playbookCountLabel('counters', analysis.candidateCount)}</span>
         </div>
         <div class="cov-stat">
           <span class="cov-num">${analysis.linkedCount}/${analysis.selectedCount}</span>
@@ -1679,7 +1687,7 @@
         </div>
         <div class="cov-stat">
           <span class="cov-num">${analysis.portfolio.length}</span>
-          <span class="cov-lbl">мер в опорном наборе</span>
+          <span class="cov-lbl">${playbookCountLabel('core', analysis.portfolio.length)}</span>
         </div>
         <div class="cov-bar"><div class="cov-bar-fill" style="width:${analysis.linkedCoveragePct}%"></div></div>
         <div class="cov-method">Связь в DISARM показывает применимость, но не доказанную эффективность. Опорный набор рассчитан жадным set-cover по максимальному новому охвату; этичность, законность и пропорциональность проверяются аналитиком.</div>`;

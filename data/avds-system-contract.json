@@ -72,11 +72,11 @@
     },
     {
       "path": "assets/app.js",
-      "sha256": "6682d45c500708988725977253ff704f26d991d00dd501800de81b822ed166bd"
+      "sha256": "9771120d6b611e363afefb6286aa0789d2a106dc7e3dcd6c7be1e1c141abec2a"
     },
     {
       "path": "index.html",
-      "sha256": "7e347e22ef07525d92b5b52328e526f2ee883bc73207a44967232a0ce9c69b07"
+      "sha256": "338f0bd6afaae6fcf7b3a5bac56a7e53a34fbbb344aa03eeb551f182bbca5710"
     },
     {
       "path": "data/avds-adapter.json",
@@ -124,15 +124,15 @@
     },
     {
       "path": "assets/ui-locales.js",
-      "sha256": "696c81212a4d6c69a7601edbff6c1eb31d025f97821a82b6a9b62580dd120306"
+      "sha256": "36ff7960c2fdae6a2534fbdb332ca45d102d5778fbf3b66ba1cb38161e11bb90"
     },
     {
       "path": "data/ui-locales.json",
-      "sha256": "09485ffaa9221e9cf4ed4379e29e8aabdeb27da8870c601d6c7d05edbb9d8399"
+      "sha256": "e0632c3041a51bd498e6a1bcbc04d8e0ad256008eca3740e23d9f4583aa3398e"
     },
     {
       "path": "login.html",
-      "sha256": "8f31d49a89058a1bedb6a5b14eace25b64208e2935fd0c55b768d2407dfc5de8"
+      "sha256": "ed9cf14bf0b9127ae179b01390a5f6dc178e63508f0ce17d07687e7543f0e023"
     },
     {
       "path": "assets/disarm-login.js",

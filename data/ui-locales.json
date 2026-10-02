@@ -1682,5 +1682,29 @@
   "Материалы DISARM Foundation: CC-BY-SA-4.0. Данные DISARM 1.7.0 адаптированы для интерактивного обозревателя и экспорта. https://www.disarm.foundation/terms-of-service https://creativecommons.org/licenses/by-sa/4.0/ https://github.com/DISARMFoundation/DISARMframeworks-17/blob/v1.7.0/LICENSE.md": {
     "en": "DISARM Foundation framework material: CC-BY-SA-4.0. This explorer adapts the DISARM 1.7.0 dataset for interactive exploration and export. https://www.disarm.foundation/terms-of-service https://creativecommons.org/licenses/by-sa/4.0/ https://github.com/DISARMFoundation/DISARMframeworks-17/blob/v1.7.0/LICENSE.md",
     "kk": "DISARM Foundation материалдары: CC-BY-SA-4.0. DISARM 1.7.0 деректері интерактивті шолушы мен экспортқа бейімделген. https://www.disarm.foundation/terms-of-service https://creativecommons.org/licenses/by-sa/4.0/ https://github.com/DISARMFoundation/DISARMframeworks-17/blob/v1.7.0/LICENSE.md"
+  },
+  "мера в опорном наборе": {
+    "en": "measure in core set",
+    "kk": "негізгі жинақтағы шара"
+  },
+  "меры в опорном наборе": {
+    "en": "measures in core set",
+    "kk": "негізгі жинақтағы шаралар"
+  },
+  "связанная контрмера": {
+    "en": "related countermeasure",
+    "kk": "байланысты қарсы шара"
+  },
+  "связанные контрмеры": {
+    "en": "related countermeasures",
+    "kk": "байланысты қарсы шаралар"
+  },
+  "техника в плейбуке": {
+    "en": "technique in playbook",
+    "kk": "жоспардағы техника"
+  },
+  "техники в плейбуке": {
+    "en": "techniques in playbook",
+    "kk": "жоспардағы техника"
   }
 }
