@@ -17,6 +17,7 @@ def main():
  cfg=read(ROOT/'ops/serving-hosts.json');candidate=read(ROOT/'release.json');target=candidate['release_id'];commit=run(['git','-C',str(ROOT),'rev-parse','HEAD'])
  journal=read(a.journal) if a.journal.exists() else {'schema_version':'disarm-release-transaction-v2','operation':a.operation,'base_release':a.base,'target_release':target,'candidate_commit':commit,'steps':[],'provider_ci':'manual-continuity; provider CI must be reported separately'}
  assert journal['operation']==a.operation and journal['base_release']==a.base and journal['target_release']==target
+ a.journal.parent.mkdir(parents=True,exist_ok=True)
  locks=[];started=[]
  def store():a.journal.parent.mkdir(parents=True,exist_ok=True);a.journal.write_text(json.dumps(journal,ensure_ascii=False,indent=2)+'\n')
  def remote(role,cmd):return run(['ssh','-T','-o','BatchMode=yes','-o','ConnectTimeout=12',cfg['hosts'][role]['ssh'],cmd])
