@@ -2,12 +2,12 @@
   "schema_version": "disarm-release-identity-v1",
   "project_id": "disarm",
   "public_url": "https://disarm.qdev.run/",
-  "release_id": "content-b8030ccea94ca608d4409f34",
+  "release_id": "content-a2a19e20fd798e42cc2892c5",
   "revision_kind": "content_sha256_manifest",
-  "source_revision": "febd93968e38f168636cc97d08e2b0df2d0c6175",
+  "source_revision": "bb94d61e2d9fef2804918fa282a378a96991d30c",
   "source_revision_status": "git-commit",
-  "artifact_manifest_sha256": "b8030ccea94ca608d4409f3499f26796d99c8abbe139be5b5943556aa21fb48c",
-  "generated_at": "2026-10-02T19:01:23Z",
+  "artifact_manifest_sha256": "a2a19e20fd798e42cc2892c58eed960b149febf5e511c33f1b0443ee75eec884",
+  "generated_at": "2026-10-02T19:35:19Z",
   "deployment_contract": {
     "mode": "atomic-static-release-directory",
     "auth_source_sha256": "389afb17e7a65708e32ba810c06e285662ac0a0514a67b9d5d83dea2ed2ddaf9",
@@ -47,8 +47,8 @@
       },
       {
         "path": "assets/app.js",
-        "bytes": 120750,
-        "sha256": "1925a19fa14304cfbd023ecca63cae796fecc790469cf6ed8a1bcabdd3f99159"
+        "bytes": 120994,
+        "sha256": "6682d45c500708988725977253ff704f26d991d00dd501800de81b822ed166bd"
       },
       {
         "path": "assets/avds-disarm-adapter.css",
@@ -123,7 +123,7 @@
       {
         "path": "data/avds-system-contract.json",
         "bytes": 19443,
-        "sha256": "d42ccdcb630f61206cf13557ba107248479c02a19646ed7b9eb051151962f060"
+        "sha256": "2339244523bca37744b1e86315a6b773d708b72f0e2eaef70c072111b156ff28"
       },
       {
         "path": "data/avds-visual-regression.json",
@@ -453,7 +453,7 @@
       {
         "path": "index.html",
         "bytes": 38821,
-        "sha256": "79faf11641e1c650c6c0084b7633c9fa4f6bbb4782b9ede7d9b53c9278682522"
+        "sha256": "7e347e22ef07525d92b5b52328e526f2ee883bc73207a44967232a0ce9c69b07"
       },
       {
         "path": "login.html",
