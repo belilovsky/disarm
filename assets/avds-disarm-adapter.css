@@ -274,7 +274,11 @@ h4 { font-size: var(--disarm-scaled-text-lg); }
 #status-badge {
   font-family: var(--font-mono);
   font-size: var(--disarm-scaled-text-2xs);
-  flex: 0 0 auto;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 .workspace-toolbar {
   display: flex;

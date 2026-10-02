@@ -52,7 +52,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("base", nargs="?", default="https://disarm.qdev.run", help="public consumer base URL")
     args = parser.parse_args()
-    url = args.base.rstrip("/") + "/_avds/avds.css"
+    url = args.base.rstrip("/") + "/assets/avds-static-preview-bundle.css"
     request = urllib.request.Request(url, headers={"Accept": "text/css"})
     with urllib.request.urlopen(request, timeout=20) as response:
         css = response.read().decode("utf-8")
