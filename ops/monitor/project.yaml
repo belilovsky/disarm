@@ -1,0 +1,34 @@
+  disarm:
+    name: DISARM 1.7
+    description: 'Анализ техник и контрмер DISARM 1.7; авторский RU/KK/EN; доступ по PIN.'
+    repo: belilovsky/disarm
+    public: false
+    health_url: https://disarm.qdev.run/runtime-health.json
+    smoke_urls:
+      - https://disarm.qdev.run/login?locale=en
+      - http://187.55.228.239:18080/login?locale=en
+    domain: disarm.qdev.run
+    role: analytics
+    audience: team
+    priority: high
+    responsible: Белиловский А.
+    owner: qdev
+    lifecycle: active
+    runtime_role: static-site
+    data_class: public
+    notes: 'Оба serving host проверяются disarm_runtime: свежесть PIN-сервиса, digest корпуса, parity релиза, редирект и содержательная страница входа. GitHub CI заблокирован оплатой; независимая визуальная оценка ожидается.'
+    key_pages:
+      - url: https://disarm.qdev.run/login?locale=en
+        label: Защищённый доступ
+    endpoints:
+      - kind: protected
+        url: https://disarm.qdev.run/
+      - kind: health
+        url: https://disarm.qdev.run/runtime-health.json
+    placements:
+      - host: 148.230.117.131
+        role: edge
+      - host: 187.55.228.239
+        role: origin
+    verification_command: >-
+      python -c 'import asyncio; from app.projects import load_projects; from app.checkers.disarm_check import check_disarm; result = asyncio.run(check_disarm(load_projects()["disarm"])); print(result.status, result.message); raise SystemExit(0 if result.status == "ok" else 1)'
