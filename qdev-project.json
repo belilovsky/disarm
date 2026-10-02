@@ -68,23 +68,23 @@
     "workflow": "content-addressed-static-release-gate",
     "coverage_minimum": 97,
     "commands": {
-      "install": "No package installation; system Python 3 and Node.js are required.",
+      "install": "Python 3.12, Node.js 22; isolated venv: pip install -r requirements-release.txt",
       "lint": "node --check assets/app.js",
       "typecheck": "Not applicable: the static JavaScript surface has no typed build step.",
-      "test": "python3 -m unittest discover -s tests -p 'test_*.py'",
+      "test": "./scripts/smoke_static.sh (required publication checks)",
       "build": "python3 scripts/build_avds_adoption.py --check && python3 scripts/build_release_receipt.py --check",
       "security": "python3 scripts/check_integrity.py && ./scripts/smoke_live.sh https://disarm.qdev.run"
     },
     "required_documents": [
       "README.md",
-      "docs/OFFICIAL_SOURCE_SYNC_2026-06-12.md",
-      "docs/FINAL_QA_PASS_2026-06-12.md",
-      "docs/audits/platform-integration-2026-08-23.md"
+      "ops/README.md",
+      "docs/PREPRODUCTION_1_7.md",
+      "ops/monitor/README.md"
     ]
   },
   "operations": {
     "health_path": "/health.json",
-    "readiness_path": "/health.json",
+    "readiness_path": "/runtime-health.json",
     "release_revision_path": "/release.json",
     "deploy_mode": "static"
   },

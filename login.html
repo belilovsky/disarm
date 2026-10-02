@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Вход · DISARM</title>
+  <link rel="stylesheet" href="/assets/disarm-login.css">
+  <script defer src="/assets/ui-locales.js?v=1.7.0&sha=696c81212a4d"></script>
+  <script defer src="/assets/i18n-runtime.js?v=1.7.0&sha=9dcfe6e1894a"></script>
+  <script defer src="/assets/disarm-login.js?v=1.7.0&sha=ad3025e9daca"></script>
+</head>
+<body class="auth-body">
+  <main class="auth-main">
+    <div class="access-label" aria-label="Статус доступа"><span aria-hidden="true"></span>Защищённый доступ</div>
+    <div class="login-layout">
+      <section class="login-intro" aria-labelledby="intro-title">
+        <div class="brand hero-brand">
+          <span class="brand-mark" aria-hidden="true">D</span>
+          <span><strong>DISARM</strong><small>Обозреватель фреймворка</small></span>
+        </div>
+        <h1 id="intro-title">Рабочий контур анализа</h1>
+        <p>Матрицы, контрмеры, инциденты и планы реагирования в одном защищённом пространстве.</p>
+      </section>
+      <section class="login-card" aria-labelledby="login-title">
+        <div>
+          <h2 id="login-title">Вход</h2>
+          <p class="muted">Введите PIN-код для доступа к рабочему контуру.</p>
+        </div>
+        <p class="alert" id="login-error" hidden role="alert"></p>
+        <label class="login-language">Язык <select id="login-locale" aria-label="Язык интерфейса"><option value="ru">RU</option><option value="kk">KK</option><option value="en">EN</option></select></label>
+        <form method="post" action="/auth/login" class="form-stack">
+          <label for="pin">PIN-код
+            <input id="pin" name="pin" type="password" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" minlength="4" maxlength="4" required autofocus>
+          </label>
+          <button type="submit">Войти</button>
+        </form>
+        <p class="login-note">Доступ предоставляется только уполномоченным пользователям. Сессия сохраняется на этом устройстве 90 дней.</p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

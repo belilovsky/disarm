@@ -1,0 +1,11 @@
+{
+  "schema_version": "disarm-serving-hosts-v1",
+  "public_url": "https://disarm.qdev.run/",
+  "repository": "https://github.com/belilovsky/disarm.git",
+  "branch": "master",
+  "lock": "/run/lock/qdev-disarm-publish.lock",
+  "hosts": {
+    "edge": {"ssh": "root@148.230.117.131", "root": "/var/www/disarm.qdev.run", "nginx": "/etc/nginx/sites-enabled/disarm.qdev.run.conf"},
+    "origin": {"ssh": "root@187.55.228.239", "root": "/srv/www/disarm.qdev.run", "nginx": "/etc/nginx/sites-enabled/disarm.qdev.run"}
+  }
+}

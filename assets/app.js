@@ -6,6 +6,9 @@
 (() => {
   'use strict';
 
+  const I18N = globalThis.DisarmI18n;
+  const ui = value => I18N.text(value);
+  const uiFormat = (key, ...values) => { let i = 0; return ui(key).replaceAll('{n}', () => typeof values[i] === 'number' ? new Intl.NumberFormat({ru:'ru-RU',kk:'kk-KZ',en:'en-GB'}[STATE.locale]).format(values[i++]) : values[i++]); };
   const ANALYSIS = globalThis.DisarmAnalysis;
   if (!ANALYSIS) throw new Error('DisarmAnalysis core is not loaded');
   const DISARM_SOURCE_URL = 'https://github.com/DISARMFoundation/DISARMframeworks-17';
@@ -29,7 +32,9 @@
   const THEME_KEY = 'disarm-ui-theme';
   const LOCALE_KEY = 'disarm-ui-locale';
   const TEXT_SCALE_KEY = 'disarm-ui-text-scale';
-  const DATA_CACHE_KEY = 'disarm-framework-data-v1';
+  const DATA_CACHE_KEY = 'disarm-framework-data-v2';
+  const DATA = globalThis.DisarmData;
+  STATE.cachedAt = null;
   const AVDS_THEMES = new Set(['institutional', 'editorial', 'analytics', 'map', 'dark']);
   const AVDS_LOCALES = new Set(['ru', 'kk', 'en']);
 
@@ -48,7 +53,7 @@
     },
     kk: {
       skip: 'Мазмұнға өту', kicker: 'DISARM фреймворкін шолу', title: 'Фреймворк', language: 'Тіл',
-      localeScope: 'Толық аударма жоқ: анықтамалық мәтіндер орыс тілінде, ал тексерілген аудармасы жоқ DISARM атаулары мен сипаттамалары бастапқы тілінде берілген.',
+      localeScope: 'DISARM атаулары мен сипаттамалары тексерілген аудармасы болмаған кезде бастапқы тілінде беріледі.',
       tabs: { overview: 'Шолу', red: 'Шабуыл матрицасы', blue: 'Қорғаныс матрицасы', search: 'Іздеу', incidents: 'Оқиғалар', playbook: 'Әрекет жоспары', about: 'Анықтама' },
       search: 'Жылдам іздеу: T0049, нарратив, қарсы шара…', shortcuts: '1–7 қойынды · Enter — іздеу', exampleQueries: 'Іздеу мысалдары',
       density: { compact: 'Ықшам', comfortable: 'Қалыпты режим' }, theme: 'Тақырып', textScale: 'Мәтін масштабы',
@@ -60,7 +65,7 @@
     },
     en: {
       skip: 'Skip to content', kicker: 'DISARM framework explorer', title: 'Framework', language: 'Language',
-      localeScope: 'The full interface is not translated: guide text remains in Russian; DISARM names and descriptions keep their source wording where no reviewed translation exists.',
+      localeScope: 'DISARM names and descriptions keep their source wording where no reviewed translation exists.',
       tabs: { overview: 'Overview', red: 'Attack matrix', blue: 'Defence matrix', search: 'Search', incidents: 'Incidents', playbook: 'Response plan', about: 'About' },
       search: 'Quick search: T0049, narrative, countermeasure…', shortcuts: 'Tabs 1–7 · Enter — search', exampleQueries: 'Example queries',
       density: { compact: 'Compact', comfortable: 'Comfortable mode' }, theme: 'Theme', textScale: 'Text scale',
@@ -76,7 +81,7 @@
   function updateStatusBadgeText(data = STATE.data) {
     const badge = $('#status-badge');
     if (!badge || !data) return;
-    const version = STATE.locale === 'ru' ? formatVersionLabel(data.version || '—') : String(data.version || 'DISARM');
+    const version = formatVersionLabel(data.version || '—');
     badge.textContent = localeCopy().statusBadge(version, data.techniques.length, data.counters.length);
   }
 
@@ -99,14 +104,14 @@
     return many;
   }
   function formatVersionLabel(version) {
-    return String(version || '')
+    return ui(String(version || '')
       .replace('official SQLite', 'официальная SQLite-база')
-      .replace('verified', 'сверено');
+      .replace('verified', 'сверено'));
   }
   function formatCachedAt(value) {
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return 'сохранённой копии';
-    return new Intl.DateTimeFormat('ru-RU', { dateStyle: 'short', timeStyle: 'short' }).format(date);
+    return new Intl.DateTimeFormat({ru:'ru-RU',kk:'kk-KZ',en:'en-GB'}[STATE.locale], { dateStyle: 'short', timeStyle: 'short' }).format(date);
   }
   function displayAttribution(value) {
     const raw = String(value || '').trim();
@@ -123,9 +128,9 @@
     const copyMap = localeCopy().states;
     const messages = {
       ...copyMap,
-      stale: `${copyMap.stale}${cachedAt && STATE.locale === 'ru' ? ` от ${cachedAt}` : ''}`,
-      degraded: `${copyMap.degraded}${cachedAt && STATE.locale === 'ru' ? ` от ${cachedAt}` : ''}`,
-      offline: `${copyMap.offline}${cachedAt && STATE.locale === 'ru' ? ` от ${cachedAt}` : ''}`,
+      stale: `${copyMap.stale}${cachedAt ? ` · ${cachedAt}` : ''}`,
+      degraded: `${copyMap.degraded}${cachedAt ? ` · ${cachedAt}` : ''}`,
+      offline: `${copyMap.offline}${cachedAt ? ` · ${cachedAt}` : ''}`,
     };
     if (panel) panel.dataset.state = state;
     if (copy) copy.textContent = messages[state] || messages.error;
@@ -141,28 +146,23 @@
     const transcript = $('#a11y-transcript');
     if (!transcript) return;
     transcript.textContent = '';
-    requestAnimationFrame(() => { transcript.textContent = message; });
+    requestAnimationFrame(() => { transcript.textContent = ui(message); });
   }
-  function readCachedData() {
-    try {
-      const cached = JSON.parse(localStorage.getItem(DATA_CACHE_KEY) || 'null');
-      if (!cached?.data || !cached?.savedAt) return null;
-      if (!Array.isArray(cached.data.techniques) || !Array.isArray(cached.data.counters)) return null;
-      return cached;
-    } catch {
-      return null;
-    }
+  async function readCachedData() {
+    try { return await DATA.readCache(localStorage.getItem(DATA_CACHE_KEY)); }
+    catch { return null; }
   }
-  function cacheData(data) {
+  function cacheData(text) {
+    STATE.cachedAt = new Date().toISOString();
     try {
-      localStorage.setItem(DATA_CACHE_KEY, JSON.stringify({ savedAt: new Date().toISOString(), data }));
-    } catch {
-      // Caching is an enhancement. Network data remains usable when storage is unavailable.
-    }
+      localStorage.setItem(DATA_CACHE_KEY, JSON.stringify({ schema: DATA.schema, digest: DATA.digest, savedAt: STATE.cachedAt, text }));
+    } catch {}
   }
   function applyLocale(requested) {
     const locale = AVDS_LOCALES.has(requested) ? requested : 'ru';
+    const previous = STATE.locale;
     STATE.locale = locale;
+    I18N.setLocale(locale);
     const copy = localeCopy();
     document.documentElement.lang = locale;
     const skip = $('.skip-link');
@@ -209,16 +209,26 @@
     if (skeleton) skeleton.setAttribute('aria-label', copy.skeleton);
     const density = $('#density-toggle');
     if (density) density.textContent = document.documentElement.dataset.density === 'compact' ? copy.density.comfortable : copy.density.compact;
+    if (STATE.data && previous !== locale) {
+      renderOverview(); renderRedMatrix(); renderBlueMatrix(); renderIncidents();
+      STATE._pb?.renderTechList($('#pb-tech-filter')?.value || '');
+      STATE._pb?.renderCounters(); STATE.runSearch?.();
+      if (STATE.modalId && !$('#modal').hidden) openModal(STATE.modalId);
+    }
+    I18N.render();
+    const url = new URL(location.href); url.searchParams.set('locale', locale);
+    history.replaceState(null, '', url.pathname + url.search + url.hash);
     updateStatusBadgeText();
-    setDataState(STATE.dataState, { cachedAt: readCachedData()?.savedAt });
+    setDataState(STATE.dataState, { cachedAt: STATE.cachedAt });
     updateDocumentMeta($('.tabpanel.active')?.dataset.panel || 'overview');
     try { localStorage.setItem(LOCALE_KEY, locale); } catch {}
+    I18N.render();
     requestAnimationFrame(() => STATE.revealSelectedTab?.());
   }
   function setupLocale() {
     let saved = 'ru';
     try { saved = localStorage.getItem(LOCALE_KEY) || saved; } catch {}
-    applyLocale(saved);
+    applyLocale(new URLSearchParams(location.search).get('locale') || saved);
     $('#locale-select')?.addEventListener('change', event => applyLocale(event.target.value));
   }
   function setupTextScale() {
@@ -255,14 +265,14 @@
   function setupDataRecovery() {
     $('#data-retry')?.addEventListener('click', () => location.reload());
     window.addEventListener('offline', () => {
-      if (STATE.data) setDataState('offline', { cachedAt: readCachedData()?.savedAt });
+      if (STATE.data) setDataState('offline', { cachedAt: STATE.cachedAt });
     });
     window.addEventListener('online', () => {
-      if (STATE.data) setDataState('stale', { cachedAt: readCachedData()?.savedAt });
+      if (STATE.data) setDataState('stale', { cachedAt: STATE.cachedAt });
     });
   }
   function tabHref(tab) {
-    return `${location.pathname}?tab=${encodeURIComponent(tab)}`;
+    return `${location.pathname}?tab=${encodeURIComponent(tab)}&locale=${STATE.locale}`;
   }
   function renderQuickLinksRail(el, items = [], opts = {}) {
     if (!el) return;
@@ -423,411 +433,22 @@
     'United Kingdom': [-3.0, 55.0], US: [-98.0, 39.0], USA: [-98.0, 39.0],
     'United States': [-98.0, 39.0],
   };
-  const LOCALIZED_NAMES = {
-    TA01: 'Стратегическое планирование',
-    TA02: 'Планирование целей',
-    TA13: 'Анализ центра тяжести',
-    TA03: 'Формирование исполнителей',
-    TA04: 'Построение сети',
-    TA05: 'Микротаргетинг',
-    TA06: 'Подготовка контента',
-    TA07: 'Выбор каналов',
-    TA08: 'Разогрев повестки',
-    TA09: 'Вывод в широкий охват',
-    TA10: 'Перевод в офлайн-активность',
-    TA11: 'Удержание присутствия',
-    TA12: 'Измерение эффективности',
-    T0001: 'Пять D: отрицать, искажать, отвлекать, деморализовывать, раскалывать',
-    T0002: 'Поддержка государственной пропаганды',
-    T0003: 'Опора на существующие нарративы',
-    T0004: 'Создание конкурирующих нарративов',
-    T0006: 'Разработка базовых нарративов',
-    T0007: 'Создание фальшивых профилей, страниц и групп в соцсетях',
-    T0008: 'Создание фальшивых или поддельных новостных сайтов',
-    T0009: 'Создание поддельных экспертов',
-    T0010: 'Выращивание неосведомленных агентов',
-    T0011: 'Компрометация легитимного аккаунта',
-    T0012: 'Использование маскировки',
-    T0013: 'Создание фальшивых сайтов',
-    T0014: 'Подготовка кампаний по сбору средств',
-    T0015: 'Создание хэштегов',
-    T0016: 'Кликбейт',
-    T0017: 'Проведение кампаний по сбору средств',
-    T0018: 'Покупка рекламы',
-    T0019: 'Генерация информационного шума',
-    T0020: 'Тестирование контента',
-    T0021: 'Мемы',
-    T0022: 'Конспирологические нарративы',
-    T0023: 'Искажение фактов',
-    T0024: 'Создание фальшивых видео и изображений',
-    T0025: 'Слив изменённых документов',
-    T0026: 'Создание псевдонаучных или недобросовестных исследований',
-    T0027: 'Адаптация существующих нарративов',
-    T0028: 'Создание конкурирующих нарративов',
-    T0029: 'Манипулирование онлайн-опросами',
-    T0030: 'Подкрепление персон легендой',
-    T0031: 'YouTube',
-    T0032: 'Reddit',
-    T0033: 'Instagram',
-    T0034: 'LinkedIn',
-    T0035: 'Pinterest',
-    T0036: 'WhatsApp',
-    T0037: 'Facebook',
-    T0038: 'Twitter',
-    T0039: 'Приманивание легитимных инфлюенсеров',
-    T0040: 'Требование недостижимых доказательств',
-    T0041: 'Отрицание причастности',
-    T0042: 'Зерно правды',
-    T0043: 'Использование SMS, WhatsApp и чат-приложений',
-    T0044: 'Вбрасывание искажений',
-    T0045: 'Использование поддельных экспертов',
-    T0046: 'Поисковая оптимизация',
-    T0047: 'Подавление политического влияния соцсетей',
-    T0048: 'Запугивание онлайн-лидеров мнений',
-    T0049: 'Наводнение контентом',
-    T0050: 'Поддержка внутренних операций в соцсетях',
-    T0051: 'Фабрикация комментариев в соцсетях',
-    T0052: 'Усиление новостей через вторичные сайты',
-    T0053: 'Усиление и манипуляция через троллей в Twitter',
-    T0054: 'Усиление через ботов в Twitter',
-    T0055: 'Использование хэштега',
-    T0056: 'Распространение информационного шума через выделенные каналы',
-    T0057: 'Организация удалённых митингов и событий',
-    T0058: 'Архивный веб-контент',
-    T0059: 'Долгая игра',
-    T0060: 'Продолжение усиления',
-    T0061: 'Продажа мерча',
-    T0062: 'Изменения в поведении',
-    T0063: 'Охват сообщения',
-    T0064: 'Вовлечённость в соцсетях',
-    T0065: 'Использование возможностей физического вещания',
-    T0066: 'Ослабление противника',
-    T0067: 'Планирование дискредитации достоверных источников',
-    T0068: 'Реакция на срочную новость',
-    T0069: 'Реакция на активный кризис',
-    T0070: 'Анализ существующих сообществ',
-    T0071: 'Поиск эхо-камер',
-    T0072: 'Сегментация аудиторий',
-    I00001: 'Сеть Blacktivists в Facebook',
-    I00002: 'Кампания #VaccinateUS',
-    I00003: 'Протестные митинги вокруг Бейонсе',
-    I00004: '#Macrongate — утечки против Макрона',
-    I00005: 'Референдум по Brexit',
-    I00006: 'Фейк о выбросе на Columbian Chemicals',
-    I00007: 'Террористы в Инджирлике',
-    I00008: 'Кейс Bujic',
-    I00009: 'Псевдоэксперт PhilippinesExpert',
-    I00010: 'Подростки из Паркленда',
-    I00011: 'Подросток из Ковингтона',
-    I00012: 'Смог в Китае',
-    I00013: 'Французская сеть Blacktivists',
-    I00014: 'Кампания вокруг Gilets Jaunes',
-    I00015: 'Манипуляции с материалами дела Concord',
-    I00016: 'Литовские эльфы',
-    I00017: 'Президентские выборы в США',
-    I00018: 'Утечка писем DNC',
-    I00019: 'Кампания MacronTiphaine',
-    I00020: '3000 танков',
-    I00021: 'Выборы в Армении',
-    I00022: 'Кампания #Macronleaks',
-    I00023: 'Кампания #dislikemacron',
-    I00024: 'Кампания #syriahoax',
-    I00025: 'Армия ЕС',
-    I00026: 'Референдум в Нидерландах по Украине',
-    I00027: 'Распятый мальчик',
-    I00028: 'Сбитый MH17',
-    I00029: 'Расследование MH17',
-    I00030: 'Последний джедай',
-    I00031: 'Антивакцинаторская кампания',
-    I00032: 'Кавано',
-    I00033: 'Китайская армия 50 центов',
-    I00034: 'Операция Diba в Facebook',
-    I00035: 'Выборы в Бразилии',
-    I00036: 'Дебаты на выборах в Бразилии',
-    I00037: 'Выборы в Рио',
-    I00038: 'Импичмент в Бразилии',
-    I00039: 'Кампания против Меркель в Facebook',
-    I00040: 'Селфи Модамани',
-    I00041: 'Карта преступлений беженцев',
-    I00042: 'Бот-спор Саудовской Аравии и Катара',
-    I00043: 'Комментарии в Федеральную комиссию по связи США',
-    I00044: 'Учения Jade Helm',
-    I00045: 'Скрипаль',
-    I00046: 'Северная Македония',
-    I00047: 'Азовское море',
-    I00048: 'Белые каски',
-    I00049: 'Белые каски: химическое оружие',
-    I00050: 'Кампания #HandsOffVenezuela',
-    I00051: 'Кейс вокруг Integrity Initiative',
-    I00052: 'Обзор по Китаю',
-    I00053: 'Арест финансового директора Huawei в Канаде',
-    I00054: 'Мусульмане Китая',
-    I00055: 'Армия 50 центов',
-    I00056: 'Операции влияния Ирана',
-    I00057: 'Выборы в Мексике',
-    I00058: 'Хемниц',
-    I00059: 'Мьянма — рохинджа',
-    I00060: 'Белый геноцид',
-    I00061: 'Таргетинг на военных ветеранов',
-    I00062: 'Brexit в Великобритании: продолжение',
-    I00063: 'Скандал с олимпийским допингом',
-    C00006: 'Ввести плату за политическую рекламу в соцсетях',
-    C00008: 'Создать общую базу фактчекинга',
-    C00009: 'Обучать влиятельных людей цифровой гигиене',
-    C00010: 'Усилить регулирование приватности в соцсетях',
-    C00011: 'Медиаграмотность через игровые сценарии',
-    C00012: 'Платформенное регулирование',
-    C00013: 'Рейтинг доверия к новостным источникам',
-    C00014: 'База фактчекинга с обновлениями в реальном времени',
-    C00016: 'Цензурирование вредоносного контента',
-    C00017: 'Восстанавливать разорванные социальные связи',
-    C00019: 'Снижать эффект раскалывающих тем',
-    C00021: 'Поощрять личное офлайн-общение',
-    C00022: 'Позитивные кампании для укрепления чувства безопасности',
-    C00024: 'Продвижение здоровых нарративов',
-    C00026: 'Укрепление продемократических сообщений',
-    C00027: 'Формирование культуры цивилизованного общения',
-    C00028: 'Обеспечение прозрачности происхождения информации',
-    C00029: 'Создание ответного сайта и контрнарратива через физические носители',
-    C00030: 'Разработка убедительного контрнарратива на основе правды',
-    C00031: 'Размывание базового нарратива через множественные версии и усиление',
-    C00032: 'Перехват контента и привязка к проверенной информации',
-    C00034: 'Повышение трения при создании аккаунта',
-    C00036: 'Внедрение в группу для дискредитации лидеров',
-    C00040: 'Сторонняя верификация людей',
-    C00042: 'Работа с долей правды внутри нарративов',
-    C00044: 'Замедление немедленных публикаций в соцсетях',
-    C00046: 'Маргинализация и дискредитация экстремистских групп',
-    C00047: 'Ловушка с координированными неаутентичными сущностями',
-    C00048: 'Публичное разоблачение инфлюенсеров',
-    C00051: 'Обучение противодействию социальной инженерии',
-    C00052: 'Инфильтрация платформ',
-    C00053: 'Удаление старых и неиспользуемых аккаунтов',
-    C00056: 'Поощрение ухода людей из соцсетей',
-    C00058: 'Жалоба на краудфандинговый проект как на нарушителя',
-    C00059: 'Проверка проекта до публикации запроса на финансирование',
-    C00060: 'Правовые меры против фабрик платного вовлечения',
-    C00062: 'Открытые библиотечные ресурсы для всех стран',
-    C00065: 'Снижение политического таргетинга',
-    C00066: 'Перехват хэштега и его утопление',
-    C00067: 'Дискредитация получателя или проекта онлайн-финансирования',
-    C00070: 'Блокировка доступа к ресурсам дезинформации',
-    C00071: 'Перекрытие источника информационного загрязнения',
-    C00072: 'Удаление нерелевантного контента из тематических групп',
-    C00073: 'Прививка устойчивости через медиаграмотность',
-    C00074: 'Поиск и удаление либо замедление идентичного контента',
-    C00075: 'Нормализация языка',
-    C00076: 'Запрет изображений в каналах политической дискуссии',
-    C00077: 'Активная защита через развитие людей',
-    C00078: 'Изменение поисковых алгоритмов для дезинформационного контента',
-    C00080: 'Создание конкурирующего нарратива',
-    C00081: 'Подсветка шума и информационного наводнения с объяснением мотивов',
-    C00082: 'Автоматическая проверка фактов как ответ на загрязнение',
-    C00084: 'Переработка дезинформационных нарративов и их повторное вещание',
-    C00085: 'Приглушение контента',
-    C00086: 'Отвлечение от шума более захватывающим контентом',
-    C00087: 'Создание большего шума, чем у дезинформации',
-    C00090: 'Система фальшивого вовлечения',
-    C00091: 'Социальное сообщество-ловушка',
-    C00092: 'Рейтинг репутации правдивости для инфлюенсеров',
-    C00093: 'Кодекс поведения для инфлюенсеров',
-    C00094: 'Полное раскрытие спонсора исследований',
-    C00096: 'Укрепление институтов, системно говорящих правду',
-    C00097: 'Обязательная верифицированная личность для опросов и комментариев',
-    C00098: 'Отзыв статуса из списка доверенных или верифицированных',
-    C00099: 'Укрепление методов верификации',
-    C00100: 'Перехват хэштега',
-    C00101: 'Создание трения через ограничение скорости вовлечения',
-    C00103: 'Создание бота для вовлечения и отвлечения троллей',
-    C00105: 'Покупка большего объёма рекламы, чем у создателей дезинформации',
-    C00106: 'Центристский кликбейт-контент',
-    C00107: 'Модерация контента',
-    C00109: 'Снижение эмоциональной реакции',
-    C00111: 'Снижение поляризации через сочувственное представление противоположных взглядов',
-    C00112: 'Требование доказать, что это не операция',
-    C00113: 'Разоблачение фальшивого эксперта или поддельных полномочий',
-    C00114: 'Не продвигать само сообщение при реакции на него',
-    C00115: 'Раскрытие актора и его намерений',
-    C00116: 'Предоставление доказательств причастности',
-    C00117: 'Понижение или деусиление сообщения',
-    C00118: 'Перепаковка изображений с новым текстом',
-    C00119: 'Вовлечение в сообщение с последующим опровержением',
-    C00120: 'Открытый диалог о дизайне платформ для иных результатов',
-    C00121: 'Прозрачность инструментов и цифровая грамотность по каналам',
-    C00122: 'Модерация контента',
-    C00123: 'Удаление или замедление бот-сетей',
-    C00124: 'Не кормить троллей',
-    C00125: 'Предварительное опровержение',
-    C00126: 'Экстренное оповещение в соцсетях',
-    C00128: 'Создание трения через маркировку контента насмешкой и замедляющими метками',
-    C00129: 'Использование банковских инструментов для перекрытия доступа',
-    C00130: 'Наставничество: старшие, молодёжь, доверие и обучение через пример',
-    C00131: 'Изъятие и анализ серверов бот-сетей',
-    C00133: 'Деплатформинг аккаунта',
-    C00135: 'Деплатформинг групп сообщений и форумных досок',
-    C00136: 'Микротаргетинг вероятных целей контрсообщениями',
-    C00138: 'Засыпание внутренних акторов исками',
-    C00139: 'Использование матриц YouTube-контента как оружия',
-    C00140: 'Бомбардировка сервисов коротких ссылок запросами',
-    C00142: 'Предупреждение и точка решения перед шерингом контента',
-    C00143: 'DMCA-жалобы по модели бот-сети для траты времени группы',
-    C00144: 'Выкуп сотрудников фабрики троллей или предложение им работы',
-    C00147: 'Срок жизни усиления постов в соцсетях',
-    C00148: 'Добавление случайных ссылок в сетевые графы',
-    C00149: 'Отравление данных мониторинга и оценки',
-    C00153: 'Превентивные действия против инфраструктуры акторов',
-    C00154: 'Просьба к медиа не распространять ложную информацию',
-    C00155: 'Бан акторов инцидента на сайтах финансирования',
-    C00156: 'Лучше рассказывать историю страны или организации',
-    C00159: 'План реагирования на дезинформацию',
-    C00160: 'Поиск и обучение инфлюенсеров',
-    C00161: 'Коалиционное строительство со стейкхолдерами и внешними стимулами',
-    C00162: 'Разбор и таргетинг потёмкинских деревень',
-    C00164: 'Политика соотечественников',
-    C00165: 'Обеспечение целостности официальных документов',
-    C00169: 'Развитие креативного контент-хаба',
-    C00170: 'Повышение роли информации как критического домена государственной политики',
-    C00172: 'Удаление источников из соцсетей',
-    C00174: 'Создание более здоровой новостной среды',
-    C00176: 'Улучшение координации между публичными и частными стейкхолдерами',
-    C00178: 'Заполнение информационных пустот недезинформационным контентом',
-    C00182: 'Переадресация, выявление вредоносности и исправление последствий',
-    C00184: 'Медийная огласка',
-    C00188: 'Обучение редакций и журналистов противодействию операциям влияния',
-    C00189: 'Контроль того, что платформы удаляют помеченные аккаунты',
-    C00190: 'Открытое взаимодействие с гражданским обществом',
-    C00195: 'Увод поисков от дезинформационного и экстремистского контента',
-    C00197: 'Удаление подозрительных аккаунтов',
-    C00200: 'Уважаемая фигура публично отвергает дезинформацию',
-    C00202: 'Постановка медовых ловушек для данных',
-    C00203: 'Прекращение выдачи пресс-аккредитаций пропагандистским площадкам',
-    C00205: 'Сильный диалог государства и частного сектора ради лучшей отчётности',
-    C00207: 'Запуск конкурирующей дезинформационной кампании',
-    C00211: 'Юмористические контрнарративы',
-    C00212: 'Укрепление общественной устойчивости через живое гражданское общество',
-    C00216: 'Использование рекламных ограничителей для перекрытия финансирования',
-    C00219: 'Добавление метаданных к контенту вне контроля дезинформаторов',
-    C00220: 'Разработка плана мониторинга и разведки',
-    C00221: 'Запуск красной команды по дезинформации и проектирование факторов снижения риска',
-    C00222: 'Настольные сценарные учения',
-    C00223: 'Укрепление доверия к платформам соцсетей'
-  };
-  const LOCALIZED_SUMMARIES = {
-    TA01: 'Фаза стратегического замысла: постановка цели, желаемого эффекта и ключевого нарратива.',
-    TA02: 'Определение конкретных политических, репутационных или поведенческих целей кампании.',
-    TA03: 'Подбор людей, посредников и сетей, которые будут разносить сообщение.',
-    TA04: 'Создание устойчивой сети аккаунтов, площадок и вспомогательных каналов.',
-    TA05: 'Точное наведение сообщения на уязвимые аудитории, сегменты и сообщества.',
-    TA06: 'Производство текстов, видео, мемов и визуальных артефактов для кампании.',
-    TA07: 'Выбор среды распространения: соцсети, мессенджеры, сайты, офлайн-носители.',
-    T0001: 'Классический набор дезинформационных приемов: отрицать факты, искажать контекст, уводить внимание, сеять тревогу и раскалывать общество.',
-    T0007: 'Создание сети фальшивых социальных сущностей, которые имитируют живых пользователей и сообщества.',
-    T0008: 'Разворачивание псевдо-СМИ и клонов медиа для легитимации вбросов и ссылочного шума.',
-    C00008: 'Общий реестр проверок и опровержений помогает командам быстрее синхронизироваться вокруг фактов.',
-    C00011: 'Игровые и практические форматы медиаграмотности лучше показывают механику манипуляций, чем абстрактные лекции.',
-    C00012: 'Регуляторные меры могут ограничивать самые токсичные формы дезинформационной дистрибуции.',
-    I00001: 'IRA развернула фальшивую сеть Blacktivists в Facebook и Twitter, чтобы имитировать живое общественное движение и управлять повесткой от его имени.',
-    I00002: 'Кампания одновременно использовала провакцинные и антивакцинные сообщения, чтобы искусственно разогреть конфликт вокруг темы вакцинации.',
-    I00003: 'Кейс с офлайн-митингами вокруг Бейонсе показывает, как противоположные сообщения используются для искусственного конфликта уже вне соцсетей.',
-    I00004: 'Кейс #Macrongate показывает, как слитые документы могут усиливаться в нужный момент, но проваливаться, если аудитория и институты заранее готовы к такому сценарию.',
-    I00005: 'Кейс вокруг Brexit показывает, как длинный политический процесс подпитывался дезинформацией, поляризацией и спором об идентичности.',
-    I00006: 'Один из ранних полностью вымышленных вбросов IRA: короткоживущая фальшивая история вокруг химического предприятия Columbian Chemicals.',
-    I00009: 'После сближения Манилы и Москвы в филиппинском инфополе появился новый псевдоэкспертный голос, который поддерживал выгодные Кремлю нарративы.',
-    I00015: 'История вокруг материалов дела Concord связана с выборочным сливом и искажённой подачей документов, чтобы максимизировать политический и репутационный эффект.',
-    I00019: 'Кампания использовала троллей и сетевое усиление для давления на Макрона и косвенной поддержки Марин Ле Пен.',
-    I00022: 'Кейс #Macronleaks показывает, как фальшивые и подмешанные документы вбрасываются под видом большой утечки перед голосованием.',
-    I00029: 'Расследование MH17 показывает, как официальное установление фактов может годами сопровождаться параллельной кампанией отрицания, сомнений и подмены версий.',
-    I00034: 'Организованная операция в Facebook использовалась для давления на тайваньского политика через поток согласованных комментариев и сетевое усиление.',
-    I00039: 'Негативные и вводящие в заблуждение истории о Меркель распространялись через фальшивые новостные сайты и усиление в Facebook.',
-    I00044: 'Военные учения Jade Helm сопровождались усилением конспирологических версий, которые переводили обычную тренировку в режим массовой тревоги.',
-    I00051: 'Кейс Integrity Initiative связан с публикацией и усилением украденных материалов вокруг британской структуры, работавшей против кремлёвской дезинформации.',
-  };
-  const LOCALIZATION_GLOSSARY = [
-    ['Social Media Profiles / Pages / Groups', 'профили, страницы и группы в соцсетях'],
-    ['shared fact-checking database', 'общую базу фактчекинга'],
-    ['high profile influencers on best practices', 'влиятельных людей цифровой гигиене'],
-    ['privacy regulation for social media', 'регулирование приватности в соцсетях'],
-    ['Media literacy. Games to identify fake news', 'медиаграмотность через игровые сценарии'],
-    ['Rating framework for news', 'систему рейтинга доверия к новостям'],
-    ['Real-time updates to fact-checking database', 'обновления базы фактчекинга в реальном времени'],
-    ['Repair broken social connections', 'восстанавливать разорванные социальные связи'],
-    ['Reduce effect of division-enablers', 'снижать эффект раскалывающих тем'],
-    ['Encourage in-person communication', 'поощрять личное общение'],
-    ['Create fake or imposter news sites', 'создавать фальшивые или поддельные новостные сайты'],
-    ['Create fake experts', 'создавать поддельных экспертов'],
-    ['Compromise legitimate account', 'компрометировать легитимный аккаунт'],
-    ['Use physical broadcast capabilities', 'использовать возможности физического вещания'],
-    ['Create fake websites', 'создавать фальшивые сайты'],
-    ['Create hashtags', 'создавать хэштеги'],
-    ['Prepare fundraising campaigns', 'готовить кампании по сбору средств'],
-    ['Respond to active crisis', 'реагировать на текущий кризис'],
-    ['Analyze existing communities', 'анализировать существующие сообщества'],
-    ['Generate information pollution', 'генерировать информационный шум'],
-    ['Trial content', 'тестировать контент'],
-    ['Conspiracy narratives', 'конспирологические нарративы'],
-    ['Distort facts', 'искажать факты'],
-    ['Create fake videos and images', 'создавать фальшивые видео и изображения'],
-    ['Leak altered documents', 'сливать измененные документы'],
-    ['Create pseudoscientific or disingenuous research', 'создавать псевдонаучные или манипулятивные исследования'],
-    ['Develop Narrative Concepts', 'разрабатывать базовые нарративы'],
-    ['Leverage Existing Narratives', 'опираться на существующие нарративы'],
-    ['Devise Competing Narratives', 'создавать конкурирующие нарративы'],
-    ['Facilitate State Propaganda', 'поддерживать государственную пропаганду'],
-    ['Cultivate ignorant agents', 'выращивать неосведомленных агентов'],
-    ['Use concealment', 'использовать маскировку'],
-    ['Objective Planning', 'планирование целей'],
-    ['Strategic Planning', 'стратегическое планирование'],
-    ['Conduct Center of Gravity Analysis', 'анализ центра тяжести'],
-    ['Develop People', 'формирование исполнителей'],
-    ['Develop Networks', 'построение сети'],
-    ['Microtargeting', 'микротаргетинг'],
-    ['Develop Content', 'подготовка контента'],
-    ['Channel Selection', 'выбор каналов'],
-    ['Implement', 'внедрять'],
-    ['Create', 'создавать'],
-    ['Develop', 'разрабатывать'],
-    ['fake', 'фальшивый'],
-    ['Fake', 'Фальшивый'],
-    ['news sites', 'новостные сайты'],
-    ['websites', 'сайты'],
-    ['experts', 'экспертов'],
-    ['account', 'аккаунт'],
-    ['accounts', 'аккаунты'],
-    ['community', 'сообщество'],
-    ['communities', 'сообщества'],
-    ['campaign', 'кампанию'],
-    ['campaigns', 'кампании'],
-    ['content', 'контент'],
-    ['narrative', 'нарратив'],
-    ['narratives', 'нарративы'],
-    ['fundraising', 'сбор средств'],
-    ['clickbait', 'кликбейт'],
-    ['Memes', 'Мемы'],
-    ['hashtag', 'хэштег'],
-    ['hashtags', 'хэштеги'],
-    ['broadcast', 'вещание'],
-    ['documents', 'документы'],
-    ['videos', 'видео'],
-    ['images', 'изображения'],
-    ['experts', 'эксперты']
-  ];
+  // The legacy Russian paraphrases have no source-bound editorial review.
+  // Official record translations require an explicit review for the exact corpus.
+  // Until that evidence exists, retain the complete original name and summary.
+  const REVIEWED_RECORD_TRANSLATIONS = { ru: {}, kk: {}, en: {} };
   function localizeText(text) {
-    let out = String(text || '');
-    if (!out) return out;
-    for (const [src, dst] of LOCALIZATION_GLOSSARY) {
-      out = out.replaceAll(src, dst);
-    }
-    return out;
+    return String(text || '');
   }
   function tName(obj) {
-    return LOCALIZED_NAMES[obj?.disarm_id] || localizeText(obj?.name) || '—';
+    return REVIEWED_RECORD_TRANSLATIONS[STATE.locale]?.[obj?.disarm_id]?.name || obj?.name || '—';
   }
   function tSummary(obj) {
-    return LOCALIZED_SUMMARIES[obj?.disarm_id] || localizeText(obj?.summary) || '';
+    return REVIEWED_RECORD_TRANSLATIONS[STATE.locale]?.[obj?.disarm_id]?.summary || obj?.summary || '';
   }
   function localizeCountry(country) {
     const raw = String(country || '').trim();
-    return COUNTRY_RU[raw] || raw;
+    return STATE.locale === 'ru' ? COUNTRY_RU[raw] || raw : raw;
   }
   function countryFilterIncludes(country) {
     return !INCIDENT_FILTERS.country || INCIDENT_FILTERS.country.split('|').includes(country);
@@ -934,7 +555,7 @@
   }
   function previewSummary(obj) {
     const summary = tSummary(obj);
-    return summary && !isEnglishHeavy(summary) ? summary : '';
+    return summary || '';
   }
 
   const TAB_META = {
@@ -1083,7 +704,7 @@
   function flashSavedHint(panel, msg) {
     const hint = panel.querySelector('.ann-saved-hint');
     if (!hint) return;
-    hint.textContent = msg || 'Сохранено';
+    hint.textContent = ui(msg || 'Сохранено');
     hint.classList.add('is-visible');
     clearTimeout(hint._t);
     hint._t = setTimeout(() => hint.classList.remove('is-visible'), 1400);
@@ -1103,7 +724,7 @@
         cell.appendChild(dot);
       }
       dot.style.background = a.color || 'var(--color-text-muted, #64748b)';
-      dot.title = a.note ? truncate(a.note, 80) : (a.color ? 'метка' : '');
+      dot.title = a.note ? truncate(a.note, 80) : (a.color ? ui('метка') : '');
     } else if (dot) {
       dot.remove();
     }
@@ -1138,7 +759,6 @@
     if (dl.playbook && dl.playbook.length) {
       // merge with persisted state
       dl.playbook.forEach(id => PLAYBOOK.selected.add(id));
-      savePlaybook();
     }
   }
 
@@ -1149,6 +769,7 @@
     const tab = activeTab.dataset.tab;
     const params = new URLSearchParams();
     params.set('tab', tab);
+    params.set('locale', STATE.locale);
     if (PLAYBOOK.selected.size) {
       params.set('playbook', Array.from(PLAYBOOK.selected).join(','));
     }
@@ -1158,6 +779,15 @@
 
   /* ---- Load ---- */
   function hydrateData(d) {
+    DATA.validate(d);
+    const normalized = DATA.normalizeSelection(Array.from(PLAYBOOK.selected), d.techniques);
+    PLAYBOOK.selected = new Set(normalized.selected);
+    STATE.rejectedPlaybookIds = normalized.rejected;
+    savePlaybook();
+    const url = new URL(location.href);
+    if (PLAYBOOK.selected.size) url.searchParams.set('playbook', [...PLAYBOOK.selected].join(','));
+    else url.searchParams.delete('playbook');
+    history.replaceState(null, '', url.pathname + url.search + url.hash);
     STATE.data = d;
     STATE.byId.clear();
     STATE.incidentByTech.clear();
@@ -1198,16 +828,18 @@
     try {
       const r = await fetch('data/disarm.json', { cache: 'no-cache', headers: { Accept: 'application/json' } });
       if (!r.ok) throw new Error(`DISARM data HTTP ${r.status}`);
-      const d = await r.json();
+      const text = await r.text();
+      const d = await DATA.validateText(text);
       hydrateData(d);
-      cacheData(d);
+      cacheData(text);
       setDataState('ready');
     } catch (error) {
-      const cached = readCachedData();
+      const cached = await readCachedData();
       if (!cached) {
-        setDataState(navigator.onLine ? 'error' : 'offline');
+        setDataState('error');
         throw error;
       }
+      STATE.cachedAt = cached.savedAt;
       hydrateData(cached.data);
       setDataState(navigator.onLine ? 'degraded' : 'offline', { cachedAt: cached.savedAt });
     }
@@ -1246,6 +878,7 @@
         // preserve playbook param when switching tabs
         const params = new URLSearchParams(location.search);
         params.set('tab', name);
+        params.set('locale', STATE.locale);
         if (PLAYBOOK.selected.size) params.set('playbook', Array.from(PLAYBOOK.selected).join(','));
         else params.delete('playbook');
         params.delete('technique');
@@ -1392,7 +1025,7 @@
       <div class="overview-meta-row"><span>Релиз</span><strong>${escape(formatVersionLabel(d.version || '—'))}</strong></div>
       <div class="overview-meta-row"><span>Лицензия</span><strong>CC-BY-SA-4.0</strong></div>
       <div class="overview-meta-row"><span>Источник</span><strong>Фонд DISARM</strong></div>
-      <div class="overview-meta-row"><span>Записей в матрицах и каталоге</span><strong>${d.techniques.length + d.counters.length + d.incidents.length}</strong></div>
+      <div class="overview-meta-row"><span>Записей в матрицах и каталоге</span><strong class="overview-meta-count">${d.techniques.length + d.counters.length + d.incidents.length}</strong></div>
     `;
     renderQuickLinksRail($('#overview-quick-links'), [
       { label: 'Матрица атак', href: tabHref('red'), meta: `${d.techniques.length}` },
@@ -1728,7 +1361,7 @@
       ];
     };
 
-    const searchIndex = ANALYSIS.createSearchIndex(corpus().map(o => ({
+    const createSearchIndex = () => ANALYSIS.createSearchIndex(corpus().map(o => ({
       id: o.disarm_id,
       name: tName(o),
       summary: tSummary(o),
@@ -1751,7 +1384,7 @@
         return;
       }
 
-      const results = searchIndex.search(q, { types })
+      const results = createSearchIndex().search(q, { types })
         .map(result => ({ o: result.document.object, score: result.score }));
 
       if (!results.length) {
@@ -1781,6 +1414,7 @@
         : `<div class="search-results-count">Показано ${visible.length} из ${results.length}</div>`;
     };
 
+    STATE.runSearch = run;
     input.addEventListener('input', () => {
       SEARCH_PAGE.shown = SEARCH_PAGE.limit;
       run();
@@ -2141,9 +1775,10 @@
     const linkBtn = $('#pb-permalink');
     if (linkBtn) {
       linkBtn.addEventListener('click', async () => {
-        if (!PLAYBOOK.selected.size) { alert('Выберите хотя бы одну технику'); return; }
+        if (!PLAYBOOK.selected.size) { alert(ui('Выберите хотя бы одну технику')); return; }
         const params = new URLSearchParams();
         params.set('tab', 'playbook');
+        params.set('locale', STATE.locale);
         params.set('playbook', Array.from(PLAYBOOK.selected).join(','));
         const url = location.origin + location.pathname + '?' + params.toString();
         try {
@@ -2152,7 +1787,7 @@
           linkBtn.textContent = 'Ссылка скопирована';
           setTimeout(() => { linkBtn.textContent = orig; }, 2500);
         } catch (e) {
-          prompt('Скопируйте ссылку:', url);
+          prompt(ui('Скопируйте ссылку:'), url);
         }
       });
     }
@@ -2169,7 +1804,7 @@
 
   function exportPlaybook() {
     if (!PLAYBOOK.selected.size) {
-      alert('Выберите хотя бы одну технику');
+      alert(ui('Выберите хотя бы одну технику'));
       return;
     }
     const d = STATE.data;
@@ -2177,22 +1812,26 @@
     const analysis = ANALYSIS.analyzeCounterCoverage(Array.from(PLAYBOOK.selected), d.counters);
 
     const dt = new Date().toISOString().slice(0, 10);
-    let md = `# DISARM Плейбук · ${dt}\n\n`;
-    md += `_Сгенерировано обозревателем для выбранных техник DISARM 1.7.0 и связанных контрмер._\n\n`;
-    md += `## Выбранные наблюдаемые техники (${techs.length})\n\n`;
+    const displayDate = new Intl.DateTimeFormat({ru:'ru-RU',kk:'kk-KZ',en:'en-GB'}[STATE.locale], {dateStyle:'medium'}).format(new Date());
+    let md = `# ${uiFormat('DISARM Плейбук · {n}', displayDate)}\n\n`;
+    md += `_${ui('Сгенерировано обозревателем для выбранных техник DISARM 1.7.0 и связанных контрмер.')}_\n\n`;
+    md += `## ${uiFormat('Выбранные наблюдаемые техники ({n})', techs.length)}\n\n`;
     techs.forEach(t => {
       md += `### ${t.disarm_id} — ${tName(t)}\n`;
       if (tSummary(t)) md += `${tSummary(t)}\n\n`;
+      const note = getAnn(t.disarm_id).note;
+      if (note) md += `**${ui('Заметка аналитика')}:** ${note}\n\n`;
     });
-    md += `## Опорный набор связанных контрмер (${analysis.portfolio.length})\n\n`;
-    md += `Набор рассчитан жадным set-cover по максимальному новому структурному охвату. Связь в DISARM не доказывает эффективность меры; перед применением обязательна проверка этичности, законности, пропорциональности и локального контекста.\n\n`;
+    md += `## ${uiFormat('Опорный набор связанных контрмер ({n})', analysis.portfolio.length)}\n\n`;
+    md += ui('Набор рассчитан жадным set-cover по максимальному новому структурному охвату. Связь в DISARM не доказывает эффективность меры; перед применением обязательна проверка этичности, законности, пропорциональности и локального контекста.') + '\n\n';
     analysis.portfolio.forEach(({counter, matched, marginal}, index) => {
       md += `### ${index + 1}. ${counter.disarm_id} — ${tName(counter)}  \n`;
-      md += `Связано: ${matched.length}/${techs.length}; новый охват на этом шаге: ${marginal.length} (${marginal.join(', ')})  \n`;
+      md += uiFormat('Связано: {n}/{n}; новый охват на этом шаге: {n} ({n})', matched.length, techs.length, marginal.length, marginal.join(', ')) + '  \n';
       if (tSummary(counter)) md += `\n${tSummary(counter)}\n\n`;
     });
-    if (analysis.uncovered.length) md += `## Без связанной контрмеры в корпусе\n\n${analysis.uncovered.join(', ')}\n\n`;
-    md += `\n---\n\nИсточник данных: [DISARM Foundation](${DISARM_SOURCE_URL}) · DISARM 1.7.0. Данные адаптированы для интерактивного обозревателя и этого экспорта. Лицензия материалов DISARM: [CC-BY-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/), согласно [условиям фонда](https://www.disarm.foundation/terms-of-service) и [LICENSE.md выпуска](https://github.com/DISARMFoundation/DISARMframeworks-17/blob/v1.7.0/LICENSE.md). README.md выпуска содержит отличающуюся запись CC-BY-4.0.\n`;
+    if (analysis.uncovered.length) md += `## ${ui('Без связанной контрмеры в корпусе')}\n\n${analysis.uncovered.join(', ')}\n\n`;
+    md += '\n---\n\n' + uiFormat('Источник данных: [DISARM Foundation]({n}) · DISARM 1.7.0. Данные адаптированы для интерактивного обозревателя и этого экспорта.', DISARM_SOURCE_URL) + ' ';
+    md += ui('Лицензия материалов DISARM: [CC-BY-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/), согласно [условиям фонда](https://www.disarm.foundation/terms-of-service) и [LICENSE.md выпуска](https://github.com/DISARMFoundation/DISARMframeworks-17/blob/v1.7.0/LICENSE.md). README.md выпуска содержит отличающуюся запись CC-BY-4.0.') + '\n';
 
     downloadBlob(md, `disarm-playbook-${dt}.md`, 'text/markdown');
   }
@@ -2214,22 +1853,25 @@
       const score = inPlaybook ? 100 : heatScale.bucketFor(incCount);
       return {
         techniqueID: id,
+        tactic: t.tactic_id.toLowerCase(),
         score: score,
         color: inPlaybook ? '#dc2626' : (incCount > 0 ? '#fb923c' : ''),
-        comment: t.name + (incCount ? ` · ${incCount} инцидентов` : ''),
+        comment: t.name + (incCount ? ` · ${uiFormat('{n} инцидентов', incCount)}` : ''),
         enabled: true,
       };
     }).filter(Boolean);
 
     const max = Math.max(1, ...scored.map(s=>s.score));
     const layer = {
-      name: PLAYBOOK.selected.size ? `DISARM Плейбук · ${dt}` : `DISARM Тепловая карта · ${dt}`,
-      versions: { layer: '4.5', navigator: '4.9.5' },
-      domain: 'disarm',
+      name: PLAYBOOK.selected.size ? uiFormat('DISARM Плейбук · {n}', dt) : uiFormat('DISARM Тепловая карта · {n}', dt),
+      versions: { attack: '1', layer: '4.4', navigator: '4.8.2' },
+      domain: 'disarm-1.7-sqlite',
+      // Embedded source-bound domain prevents loading an incompatible upstream STIX revision.
+      customDataURL: 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(DATA.navigatorBundle(d))),
       description: PLAYBOOK.selected.size
-        ? `Плейбук из обозревателя DISARM. ${PLAYBOOK.selected.size} техник; связанные контрмеры и границы интерпретации см. в текстовом экспорте.`
-        : `Тепловая карта всех ${d.techniques.length} техник: score — логарифмический bucket частоты 0–5, не вероятность и не риск (инцидентов в корпусе: ${d.incidents.length}).`,
-      filters: { platforms: [] },
+        ? uiFormat('Плейбук из обозревателя DISARM. {n} техник; связанные контрмеры и границы интерпретации см. в текстовом экспорте.', PLAYBOOK.selected.size)
+        : uiFormat('Тепловая карта всех {n} техник: score — логарифмический bucket частоты 0–5, не вероятность и не риск (инцидентов в корпусе: {n}).', d.techniques.length, d.incidents.length),
+      filters: { platforms: ['DISARM'] },
       sorting: 0,
       layout: { layout: 'side', aggregateFunction: 'average', showID: true, showName: true, showAggregateScores: false, countUnscored: false },
       hideDisabled: false,
@@ -2240,11 +1882,12 @@
         maxValue: max,
       },
       legendItems: [
-        { label: 'В плейбуке', color: '#dc2626' },
-        { label: 'В инцидентах', color: '#fb923c' },
+        { label: ui('В плейбуке'), color: '#dc2626' },
+        { label: ui('В инцидентах'), color: '#fb923c' },
       ],
       metadata: [
-        { name: 'source', value: 'DISARM local explorer' },
+        { name: 'source', value: ui('DISARM обозреватель') },
+        { name: 'locale', value: STATE.locale },
         { name: 'generated', value: new Date().toISOString() },
         { name: 'version', value: 'DISARM 1.7.0' },
         { name: 'source_url', value: DISARM_SOURCE_URL },
@@ -2272,7 +1915,7 @@
   function exportStixBundle() {
     const d = STATE.data;
     const techIds = PLAYBOOK.selected.size ? Array.from(PLAYBOOK.selected) : d.techniques.map(t=>t.disarm_id);
-    if (!techIds.length) { alert('Нет техник для экспорта'); return; }
+    if (!techIds.length) { alert(ui('Нет техник для экспорта')); return; }
 
     const now = new Date().toISOString();
     const dt = now.slice(0,10);
@@ -2284,9 +1927,9 @@
       type: 'marking-definition',
       spec_version: '2.1',
       id: markingId,
-      created: '2017-01-20T00:00:00.000Z',
+      created: now,
       definition_type: 'statement',
-      definition: { statement: 'DISARM Foundation framework material: CC-BY-SA-4.0. This explorer adapts the DISARM 1.7.0 dataset for interactive exploration and export. https://www.disarm.foundation/terms-of-service https://creativecommons.org/licenses/by-sa/4.0/ https://github.com/DISARMFoundation/DISARMframeworks-17/blob/v1.7.0/LICENSE.md' },
+      definition: { statement: ui('Материалы DISARM Foundation: CC-BY-SA-4.0. Данные DISARM 1.7.0 адаптированы для интерактивного обозревателя и экспорта. https://www.disarm.foundation/terms-of-service https://creativecommons.org/licenses/by-sa/4.0/ https://github.com/DISARMFoundation/DISARMframeworks-17/blob/v1.7.0/LICENSE.md') },
     });
 
     // Identity (creator)
@@ -2297,7 +1940,8 @@
       id: identityId,
       created: now,
       modified: now,
-      name: 'DISARM explorer',
+      name: ui('DISARM обозреватель'),
+      lang: STATE.locale,
       identity_class: 'system',
       object_marking_refs: [markingId],
     });
@@ -2318,15 +1962,17 @@
         modified: now,
         created_by_ref: identityId,
         name: t.name,
+        lang: 'en',
         description: t.summary || '',
         external_references: [{
           source_name: 'DISARM',
           external_id: t.disarm_id,
-          url: DISARM_SOURCE_URL,
+          url: 'https://raw.githubusercontent.com/DISARMFoundation/DISARMframeworks-17/216a8828c7d0f6a67ad2a8867c716bf961914776/generated_files/DISARM_database.sqlite',
+          hashes: { 'SHA-256': '753eef8df1ce9678c41e16f7f45ccc59fce095c7be00f81f832be689bf43ad38' },
         }],
         kill_chain_phases: t.tactic_id ? [{
           kill_chain_name: 'disarm',
-          phase_name: t.tactic_id,
+          phase_name: t.tactic_id.toLowerCase(),
         }] : [],
         object_marking_refs: [markingId],
       });
@@ -2348,11 +1994,13 @@
         modified: now,
         created_by_ref: identityId,
         name: c.name,
+        lang: 'en',
         description: c.summary || '',
         external_references: [{
           source_name: 'DISARM',
           external_id: c.disarm_id,
-          url: DISARM_SOURCE_URL,
+          url: 'https://raw.githubusercontent.com/DISARMFoundation/DISARMframeworks-17/216a8828c7d0f6a67ad2a8867c716bf961914776/generated_files/DISARM_database.sqlite',
+          hashes: { 'SHA-256': '753eef8df1ce9678c41e16f7f45ccc59fce095c7be00f81f832be689bf43ad38' },
         }],
         object_marking_refs: [markingId],
       });
@@ -2392,11 +2040,13 @@
         modified: now,
         created_by_ref: identityId,
         name: inc.name,
+        lang: 'en',
         description: inc.summary || '',
         external_references: [{
           source_name: 'DISARM',
           external_id: inc.disarm_id,
-          url: DISARM_SOURCE_URL,
+          url: 'https://raw.githubusercontent.com/DISARMFoundation/DISARMframeworks-17/216a8828c7d0f6a67ad2a8867c716bf961914776/generated_files/DISARM_database.sqlite',
+          hashes: { 'SHA-256': '753eef8df1ce9678c41e16f7f45ccc59fce095c7be00f81f832be689bf43ad38' },
         }],
         object_marking_refs: [markingId],
       });
@@ -2429,12 +2079,13 @@
 
   /* ---- Modal ---- */
   function openModal(id) {
+    STATE.modalId = id;
     const o = STATE.byId.get(id);
     if (!o) return;
     const d = STATE.data;
     const modal = $('#modal');
     if (modal?.hidden) {
-      STATE.modalReturnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      STATE.modalReturnFocus = document.activeElement instanceof HTMLElement && document.activeElement !== document.body ? document.activeElement : $('#tabs [aria-selected="true"]');
     }
 
     let body = `<div class="modal-body" id="modal-content">`;
@@ -2517,7 +2168,7 @@
     const linkRow = (id) => {
       const r = STATE.byId.get(id);
       if (!r) return '';
-      return `<div class="obj-link" data-id="${escape(id)}">
+      return `<div class="obj-link" role="button" tabindex="0" data-id="${escape(id)}">
         <span class="obj-link-id">${escape(id)}</span>
         <span class="obj-link-name">${escape(tName(r) || '')}</span>
       </div>`;
@@ -2572,6 +2223,7 @@
 
     body += `</div>`;
     $('#modal-body').innerHTML = body;
+    I18N.render($('#modal-body'));
     const m = modal || $('#modal');
     m.hidden = false;
     document.body.style.overflow = 'hidden';
@@ -2587,6 +2239,7 @@
     const returnFocus = STATE.modalReturnFocus;
     STATE.modalReturnFocus = null;
     if (returnFocus?.isConnected && typeof returnFocus.focus === 'function') returnFocus.focus();
+    else $('#tabs [aria-selected="true"]')?.focus();
     announceA11y('Карточка закрыта. Фокус возвращён к исходному элементу.');
   }
 
@@ -2618,14 +2271,14 @@
       const dlBtn = e.target.closest('[data-deeplink]');
       if (dlBtn) {
         const id = dlBtn.dataset.deeplink;
-        const url = location.origin + location.pathname + '?tab=red&technique=' + encodeURIComponent(id);
+        const url = location.origin + location.pathname + '?tab=red&locale=' + STATE.locale + '&technique=' + encodeURIComponent(id);
         try {
           await navigator.clipboard.writeText(url);
           const orig = dlBtn.textContent;
           dlBtn.textContent = 'Скопировано';
           setTimeout(() => { dlBtn.textContent = orig; }, 2000);
         } catch (err) {
-          prompt('Скопируйте ссылку:', url);
+          prompt(ui('Скопируйте ссылку:'), url);
         }
         return;
       }
@@ -2666,7 +2319,7 @@
       const link = e.target.closest('.obj-link');
       if (link) openModal(link.dataset.id);
     });
-    // Annotation: live note + score input (debounced save)
+    // Persist every edit before navigation; debounce only the visual acknowledgement.
     let annTimer = null;
     m.addEventListener('input', e => {
       const noteEl = e.target.closest('.ann-note');
@@ -2679,11 +2332,11 @@
         const sv = panel.querySelector('.ann-score-value');
         if (sv) sv.textContent = String(scoreEl.value);
       }
+      const note = panel.querySelector('.ann-note')?.value || '';
+      const score = Number(panel.querySelector('.ann-score')?.value || 0);
+      setAnn(id, { note, score });
       clearTimeout(annTimer);
       annTimer = setTimeout(() => {
-        const note = panel.querySelector('.ann-note')?.value || '';
-        const score = Number(panel.querySelector('.ann-score')?.value || 0);
-        setAnn(id, { note, score });
         flashSavedHint(panel);
         updateMatrixAnnotation(id);
       }, 300);
@@ -2695,6 +2348,8 @@
         closeModal();
         return;
       }
+      const related = e.target.closest('.obj-link');
+      if (related && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openModal(related.dataset.id); return; }
       if (e.key !== 'Tab') return;
       const focusable = $$('button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), summary, [href], [tabindex]:not([tabindex="-1"])', m)
         .filter(node => !node.hidden && node.getClientRects().length > 0);
@@ -2752,7 +2407,8 @@
       await load();
     } catch (err) {
       const badge = $('#status-badge');
-      badge.textContent = 'ошибка загрузки';
+      badge.textContent = ui('ошибка загрузки');
+      I18N.render();
       badge.className = 'avds-theme-chip avds-theme-chip--danger';
       console.error(err);
       return;
@@ -2766,6 +2422,14 @@
     renderIncidents();
     renderPlaybook();
     setupModal();
+    if (STATE.rejectedPlaybookIds?.length) {
+      const warning = document.createElement('p'); warning.id = 'playbook-import-warning';
+      warning.className = 'avds-note'; warning.setAttribute('role', 'status');
+      warning.textContent = ui('Исключены неизвестные техники: {n}').replace('{n}', STATE.rejectedPlaybookIds.join(', '));
+      $('#panel-playbook')?.prepend(warning);
+    }
+    I18N.render();
+    for (const event of ['click', 'input', 'change', 'keydown']) document.addEventListener(event, () => queueMicrotask(() => I18N.render()));
 
     // Preserve a tab chosen while the data and panels were loading.
     const tabChosenBeforeReady = STATE.tabSelectedDuringLoad;

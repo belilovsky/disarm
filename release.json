@@ -2,14 +2,20 @@
   "schema_version": "disarm-release-identity-v1",
   "project_id": "disarm",
   "public_url": "https://disarm.qdev.run/",
-  "release_id": "content-2aa499b8d501e5b1b96e5a02",
+  "release_id": "content-e1c06f1f0bbcd8352f7a3254",
   "revision_kind": "content_sha256_manifest",
-  "source_revision": "e2ffc583cb395d523919604f122936dcff7a6206",
+  "source_revision": "9279a0eb942ac35ee81390ad37401017371ac62d",
   "source_revision_status": "git-commit",
-  "artifact_manifest_sha256": "2aa499b8d501e5b1b96e5a02a58a53d0b6d4e801ea44a26649edb54205b21f9f",
-  "generated_at": "2026-09-30T20:56:21Z",
+  "artifact_manifest_sha256": "e1c06f1f0bbcd8352f7a3254276b03e573ff9f3347e46ff9199a1fe1ea5318b5",
+  "generated_at": "2026-10-02T18:52:59Z",
   "deployment_contract": {
-    "mode": "immutable-static-files",
+    "mode": "atomic-static-release-directory",
+    "auth_source_sha256": "389afb17e7a65708e32ba810c06e285662ac0a0514a67b9d5d83dea2ed2ddaf9",
+    "systemd_unit_sha256": "1e77e7ec588cbd6e3d258b7f746c4441b3fd1726849c8a7cce4cc3fd269434b8",
+    "nginx_templates": {
+      "edge": "5eddde7f829bd1defe35556c9cfd038ff6fdd5105b95ff2d04d08d15c596dc1e",
+      "origin": "d1db40f16bd5c0a25b0311ba0a15c02afb31f5f9cae61ea7b28e24020998c095"
+    },
     "required_targets": [
       "edge",
       "origin"
@@ -35,14 +41,19 @@
         "sha256": "aa4a25141046f5309b0dd33d0a7065df3aef81a060e5f9f29bd3cd75bf7a1d88"
       },
       {
+        "path": "assets/analysis-core.js",
+        "bytes": 8517,
+        "sha256": "b643f2b08ee36f19170e7e180e87bbb5bdf49a018d9b1efd8f1c2ff8bf3a890e"
+      },
+      {
         "path": "assets/app.js",
-        "bytes": 150929,
-        "sha256": "7f20aaa26ef72d0d8a31b14830f6102485719ad4ba6c8048513b32df56a55bea"
+        "bytes": 120685,
+        "sha256": "d4c287462c2ddf8b86a40d4bf683a48b24790b18d364c896f8d47c877687353a"
       },
       {
         "path": "assets/avds-disarm-adapter.css",
-        "bytes": 103766,
-        "sha256": "fe222aeed3af6dea31e7c73e4df388229cf6c4d426698e067439e34a1507d59c"
+        "bytes": 104141,
+        "sha256": "544bbe04ebbb9e8ef758044c6e4316dbae9d0e7805f874aa4bcc4619df9ca03c"
       },
       {
         "path": "assets/avds-static-preview-bundle.css",
@@ -55,9 +66,34 @@
         "sha256": "b3135d07c6935c570910782ef4d513cda34d3405c36e69f6a292e0b0c8595772"
       },
       {
+        "path": "assets/data-core.js",
+        "bytes": 6185,
+        "sha256": "531c494cdac2db1961619cfe855b5611a5170ccbd34a687bc1d0963234c14bdf"
+      },
+      {
+        "path": "assets/disarm-login.css",
+        "bytes": 3798,
+        "sha256": "3fc200562a6bf40b4cfb522373ab821086148fb86d496942b14efd838bfcf046"
+      },
+      {
+        "path": "assets/disarm-login.js",
+        "bytes": 1860,
+        "sha256": "ad3025e9daca3519ce291368bfbb5a1b1d3c973d0de11c6c52626fb6bad5ccff"
+      },
+      {
+        "path": "assets/i18n-runtime.js",
+        "bytes": 3206,
+        "sha256": "8916c662283ca80f5e298077501f9adb9ff244e7d38e99f5a3b7fd3ca9ea8790"
+      },
+      {
+        "path": "assets/ui-locales.js",
+        "bytes": 79582,
+        "sha256": "395cf8cfecaef7cd31abaa3d30ee6b6f0627b3574155acac47202436aa800dc1"
+      },
+      {
         "path": "data/avds-adapter.json",
         "bytes": 1116,
-        "sha256": "ab957f8bc1e2f52fa69e2d653dd5f0d65fab98c67bc56511d572bc953e256aea"
+        "sha256": "e1650344e303afa29f69bf4002f87e29d984fa71d2e5f5fb5aa733264235b640"
       },
       {
         "path": "data/avds-component-contracts.json",
@@ -76,8 +112,8 @@
       },
       {
         "path": "data/avds-locale-contract.json",
-        "bytes": 3122,
-        "sha256": "c88af8c4bfe02187020b430e355a86b266a96ae121835837890d93d5d9ab8ac8"
+        "bytes": 3574,
+        "sha256": "889eb5d5988e330adb2715ecc5cdc6477bc504ea544b089d2434eccbd531aa81"
       },
       {
         "path": "data/avds-responsive-contract.json",
@@ -86,8 +122,8 @@
       },
       {
         "path": "data/avds-system-contract.json",
-        "bytes": 18509,
-        "sha256": "d69ca19a10ccedc1ca3e43b6829175a66ab2a39beaf35caea94e1a30a4ba5e03"
+        "bytes": 19443,
+        "sha256": "993ac4d8395b10dec92ef84de2453f2ff2fcec82a11d2a0db3339e5bf6c6033c"
       },
       {
         "path": "data/avds-visual-regression.json",
@@ -96,8 +132,8 @@
       },
       {
         "path": "data/disarm-provenance.json",
-        "bytes": 2486,
-        "sha256": "b21296fd3720f0eb4b66073264025cfa5ed1cd0282b3e5fa69a631217db92bb2"
+        "bytes": 2443,
+        "sha256": "f18678f4cb83342cac57752cc459acc0541cb5c071d5423a216e182b3d1b52f9"
       },
       {
         "path": "data/disarm.json",
@@ -106,8 +142,13 @@
       },
       {
         "path": "data/platform-capabilities.json",
-        "bytes": 6058,
-        "sha256": "1e134a81767d2381e6b6ff023a7414ac5149ea94a0d485365c0ae7cee6095bf3"
+        "bytes": 6059,
+        "sha256": "b795e9ee36679b0896eee61a4ca5a220104899fa7892e36de15ea961e427de9e"
+      },
+      {
+        "path": "data/ui-locales.json",
+        "bytes": 79478,
+        "sha256": "a1caaa0a6436ffd9575971396b437908f399b1f489c2811d19e4291a5290082a"
       },
       {
         "path": "favicon.ico",
@@ -411,13 +452,18 @@
       },
       {
         "path": "index.html",
-        "bytes": 38482,
-        "sha256": "314c91024ab10c316d8c4bb4283ae0f4b445cca5f5a5eed3f6548374269d7134"
+        "bytes": 38821,
+        "sha256": "ae5144d9a096857675d9bff0c027746f740e881bf572fcc769d168098c01ec04"
+      },
+      {
+        "path": "login.html",
+        "bytes": 2504,
+        "sha256": "94b8fa187c75e3a35e12d7c5031da4d831ae886871f4b385ac1943196a3c2023"
       },
       {
         "path": "qdev-project.json",
-        "bytes": 2902,
-        "sha256": "b4e2ed8d56148eaf586435191a7a06ddfd1bd15b5a855fc2a0f5d82dccc20ab1"
+        "bytes": 2868,
+        "sha256": "4bf59b852568f53d1bb312e87e9c89cdd7f4860a1f7c8476c39471f005637b9d"
       },
       {
         "path": "robots.txt",
@@ -429,6 +475,12 @@
         "bytes": 266,
         "sha256": "2e2919777df12549aff783e8cfe6fdfb5169134b09429bc440a53bf220457526"
       }
-    ]
+    ],
+    "runtime": {
+      "ops/auth/disarm_pin_auth.py": "389afb17e7a65708e32ba810c06e285662ac0a0514a67b9d5d83dea2ed2ddaf9",
+      "ops/auth/disarm-pin-auth.service": "1e77e7ec588cbd6e3d258b7f746c4441b3fd1726849c8a7cce4cc3fd269434b8",
+      "ops/nginx/edge.conf": "5eddde7f829bd1defe35556c9cfd038ff6fdd5105b95ff2d04d08d15c596dc1e",
+      "ops/nginx/origin.conf": "d1db40f16bd5c0a25b0311ba0a15c02afb31f5f9cae61ea7b28e24020998c095"
+    }
   }
 }

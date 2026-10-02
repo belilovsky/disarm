@@ -6,7 +6,15 @@ cd "$ROOT"
 
 echo "== DISARM static smoke =="
 
+python3 scripts/build_corpus.py --check
 node --check assets/app.js
+node --check assets/data-core.js
+node --check assets/i18n-runtime.js
+python3 scripts/build_ui_locales.py --check
+node scripts/check_product_regressions.cjs
+node --check assets/disarm-login.js
+python3 scripts/check_pin_contract.py
+python3 scripts/check_exports.py --output "${DISARM_EXPORT_EVIDENCE:-/tmp/disarm-export-contracts}"
 python3 -m json.tool data/disarm.json >/dev/null
 python3 -m json.tool data/avds-coverage.json >/dev/null
 python3 -m json.tool data/avds-adapter.json >/dev/null

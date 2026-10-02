@@ -1,0 +1,20 @@
+[Unit]
+Description=DISARM PIN authentication service
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+EnvironmentFile=/etc/disarm-pin-auth.env
+ExecStart=/usr/bin/python3 /opt/disarm-pin-auth/disarm_pin_auth.py --host 127.0.0.1 --port 18081 --root @SERVING_ROOT@
+Restart=on-failure
+RestartSec=2
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/run
+
+[Install]
+WantedBy=multi-user.target

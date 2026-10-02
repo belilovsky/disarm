@@ -424,11 +424,11 @@ def check_locale_contract() -> None:
     locales = contract.get("supported_locales", {})
     require(set(locales) == {"ru", "kk", "en"}, "AVDS locale set mismatch")
     require(locales["ru"].get("status") == "implemented", "RU locale is not marked implemented")
-    require(locales["kk"].get("status") == "partial" and locales["en"].get("status") == "partial", "KK/EN chrome locale status must remain explicit")
+    require(locales["kk"].get("status") == "implemented" and locales["en"].get("status") == "implemented", "KK/EN authored locale status must be implemented")
     for locale in ("ru", "kk", "en"):
         disclosure = locales[locale].get("visible_disclosure", "")
         require(bool(disclosure) and disclosure in js, f"{locale} visible locale disclosure is missing from the runtime copy")
-    require('id="locale-select"' in html and 'LOCALE_COPY' in js and 'setupLocale' in js, "partial KK/EN locale picker is missing")
+    require('id="locale-select"' in html and 'LOCALE_COPY' in js and 'setupLocale' in js, "RU/KK/EN locale picker is missing")
     require('TEXT_SCALE_KEY' in js and 'setupTextScale' in js, "text-scale persistence is missing")
     for ready_copy in [
         "Данные загружены из локального среза DISARM.",

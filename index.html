@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="/fonts/avds/avds-fonts.css">
 <link rel="stylesheet" href="assets/avds-static-token-contract.css?v=4.7.0-bda50683b32f">
 <link rel="stylesheet" href="assets/avds-static-preview-bundle.css?v=20260821-local-preview">
-    <link rel="stylesheet" href="assets/avds-disarm-adapter.css?v=1.3.10&sha=fe222aeed3af">
+    <link rel="stylesheet" href="assets/avds-disarm-adapter.css?v=1.3.10&sha=544bbe04ebbb">
 </head>
 <body>
 <a class="skip-link" id="skip-link" href="#main-content">Перейти к содержанию</a>
@@ -181,7 +181,7 @@
     <div class="filter-insight-bar" id="red-insight-bar"></div>
     <div id="red-legend" class="matrix-legend" hidden></div>
     <p id="red-matrix-help" class="avds-sr-only">Матрица интерактивна: Tab перемещает фокус по техникам, Enter или пробел открывает карточку, Escape закрывает карточку и возвращает фокус.</p>
-    <div class="matrix-wrap" aria-describedby="red-matrix-help">
+    <div class="matrix-wrap" tabindex="0" role="region" aria-label="Матрица атак" aria-describedby="red-matrix-help">
       <div class="matrix" id="red-matrix" role="grid" aria-label="Матрица техник DISARM"></div>
     </div>
   </section>
@@ -204,7 +204,7 @@
     <div class="compare-card-grid" id="blue-compare-grid"></div>
     <div class="filter-insight-bar" id="blue-insight-bar"></div>
     <p id="blue-matrix-help" class="avds-sr-only">Матрица интерактивна: Tab перемещает фокус по контрмерам, Enter или пробел открывает карточку, Escape закрывает карточку и возвращает фокус.</p>
-    <div class="matrix-wrap" aria-describedby="blue-matrix-help">
+    <div class="matrix-wrap" tabindex="0" role="region" aria-label="Матрица защиты" aria-describedby="blue-matrix-help">
       <div class="matrix" id="blue-matrix" role="grid" aria-label="Матрица контрмер DISARM"></div>
     </div>
   </section>
@@ -396,7 +396,7 @@
           <article><b>Контрмеры</b><span>Защитные меры, сопоставленные с техниками и тактиками.</span></article>
           <article><b>Индикаторы</b><span>Наблюдаемые признаки, по которым можно заметить технику.</span></article>
           <article><b>Инциденты</b><span>Задокументированные кампании с привязкой к техникам.</span></article>
-          <article><b>Инструменты и группы</b><span>Экосистема ресурсов, источников и связанных объектов.</span></article>
+          <article><b>Инструменты</b><span>Каталог ресурсов и инструментов, указанных в корпусе DISARM.</span></article>
         </div>
       </section>
 
@@ -512,7 +512,10 @@
 </div>
 <div id="a11y-transcript" class="avds-sr-only" aria-live="polite" aria-atomic="true"></div>
 
-<script src="assets/analysis-core.js?v=20260716-math1"></script>
-<script src="assets/app.js?v=20261001-navload&sha=7f20aaa26ef7"></script>
+<script src="assets/analysis-core.js?v=20261002&sha=b643f2b08ee3"></script>
+<script src="assets/ui-locales.js?v=1.7.0&sha=696c81212a4d"></script>
+  <script src="assets/i18n-runtime.js?v=1.7.0&sha=9dcfe6e1894a"></script>
+  <script src="assets/data-core.js?v=1.7.0&sha=531c494cdac2"></script>
+  <script src="assets/app.js?v=1.7.0&sha=1925a19fa143"></script>
 </body>
 </html>

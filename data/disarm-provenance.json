@@ -7,7 +7,7 @@
     "source": "https://github.com/DISARMFoundation/DISARMframeworks-17",
     "verified_at": "2026-09-30",
     "license": "CC-BY-SA-4.0",
-    "language_layer": "The Russian interface and authored guide copy are primary. Source-language DISARM names and descriptions remain where no reviewed translation exists; Kazakh and English cover navigation, workspace controls and data-state copy. Technical exports retain source-compatible identifiers.",
+    "language_layer": "Authored interface, guide and text reports are RU/KK/EN. Official DISARM records use only a reviewed dictionary for the selected language or their complete source wording; canonical identifiers and source names remain in technical exports.",
     "source_revision": "216a8828c7d0f6a67ad2a8867c716bf961914776",
     "source_artifact": "generated_files/DISARM_database.sqlite",
     "source_artifact_sha256": "753eef8df1ce9678c41e16f7f45ccc59fce095c7be00f81f832be689bf43ad38",

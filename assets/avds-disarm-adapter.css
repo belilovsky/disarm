@@ -1382,7 +1382,9 @@ h4 { font-size: var(--disarm-scaled-text-lg); }
   user-select: none;
   transition: all var(--motion-duration-fast);
 }
-.search-type-chip input { display: none; }
+.search-type-chip { position: relative; }
+.search-type-chip input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.search-type-chip:has(input:focus-visible) { outline: 2px solid var(--color-accent); outline-offset: 2px; }
 .search-type-chip:has(input:checked) {
   background: var(--color-accent);
   border-color: var(--color-accent);
@@ -1948,6 +1950,7 @@ h4 { font-size: var(--disarm-scaled-text-lg); }
   flex: 1;
   min-width: 0;
   color: var(--color-text);
+  overflow-wrap: anywhere;
 }
 
 .pb-counter-item {
@@ -3311,7 +3314,7 @@ html[data-avds-theme="map"] {
   }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 420px) {
   .masthead-meta-strip {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -3330,3 +3333,6 @@ html[data-avds-theme="map"] {
     align-items: center;
   }
 }
+
+/* Keep corpus totals as indivisible numbers in narrow locale layouts. */
+.overview-meta-row .overview-meta-count { white-space: nowrap; flex-shrink: 0; }

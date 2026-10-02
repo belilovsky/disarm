@@ -8,3 +8,6 @@ _avds
 *.key
 
 __pycache__/
+
+# macOS metadata is not source or a release artifact.
+._*

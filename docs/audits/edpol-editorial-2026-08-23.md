@@ -1,5 +1,8 @@
 # EdPol editorial audit — DISARM — 2026-08-23
 
+> Исторический срез. Текущее состояние DISARM 1.7 описано в docs/PREPRODUCTION_1_7.md; старые версии и незакрытые на дату отчёта задачи не являются текущим статусом.
+
+
 Mode: `rewrite`. Authority: `edpol-editorial-language-policy-v1` `1.1.0`, canonical checkout SHA `a22f16bc96aed09ed1ecfeffa3694e78293fbe67`, policy SHA-256 `3d2c66102da7f3066b6609581067a838035d7813a73366587a1437f55d2bdb76`.
 
 ## Result

@@ -13,6 +13,7 @@ import json
 import sys
 from pathlib import Path
 from urllib.error import HTTPError, URLError
+from urllib.parse import urlparse
 from urllib.request import HTTPRedirectHandler, Request, build_opener, urlopen
 
 
@@ -75,7 +76,7 @@ def main() -> int:
     else:
         location = root_headers.get("Location", root_headers.get("location", ""))
         observations["root"] = {"status": root_status, "location": location}
-        if root_status != 302 or location != "/login":
+        if root_status != 302 or urlparse(location).path != "/login":
             failures.append(f"root protection mismatch: expected 302 /login, got {root_status} {location or '<no location>'}")
 
     public: dict[str, dict] = {}

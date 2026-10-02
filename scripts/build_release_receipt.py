@@ -18,6 +18,14 @@ HEALTH_RECEIPT = ROOT / "health.json"
 FIXED_FILES = [
     "index.html",
     "assets/app.js",
+    "assets/analysis-core.js",
+    "assets/data-core.js",
+    "assets/i18n-runtime.js",
+    "assets/ui-locales.js",
+    "assets/disarm-login.js",
+    "assets/disarm-login.css",
+    "login.html",
+    "data/ui-locales.json",
     "assets/avds-disarm-adapter.css",
     "assets/avds-static-token-contract.css",
     "assets/avds-static-preview-bundle.css",
@@ -77,7 +85,7 @@ def build_manifest() -> dict:
         if not path.is_file():
             raise FileNotFoundError(relative)
         artifacts.append({"path": relative, "bytes": path.stat().st_size, "sha256": sha256(path)})
-    return {"project_id": "disarm", "artifacts": artifacts}
+    return {"project_id": "disarm", "artifacts": artifacts, "runtime": {relative: sha256(ROOT / relative) for relative in ["ops/auth/disarm_pin_auth.py", "ops/auth/disarm-pin-auth.service", "ops/nginx/edge.conf", "ops/nginx/origin.conf"]}}
 
 
 def expected_receipt() -> dict:
@@ -98,7 +106,10 @@ def expected_receipt() -> dict:
         "artifact_manifest_sha256": manifest_sha,
         "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
         "deployment_contract": {
-            "mode": "immutable-static-files",
+            "mode": "atomic-static-release-directory",
+            "auth_source_sha256": sha256(ROOT / "ops/auth/disarm_pin_auth.py"),
+            "systemd_unit_sha256": sha256(ROOT / "ops/auth/disarm-pin-auth.service"),
+            "nginx_templates": {role: sha256(ROOT / "ops/nginx" / f"{role}.conf") for role in ("edge", "origin")},
             "required_targets": ["edge", "origin"],
             "required_publish_files": ["release.json", "health.json"],
             "root_auth_boundary": "302 /login",

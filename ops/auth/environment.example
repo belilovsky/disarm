@@ -1,0 +1,6 @@
+# Populate this file only on the serving host at /etc/disarm-pin-auth.env.
+# Preserve existing protected values. Never commit a populated environment file.
+DISARM_AUTH_PIN=
+DISARM_AUTH_SECRET=
+DISARM_AUTH_ORIGIN=https://disarm.qdev.run
+DISARM_AUTH_SESSION_SECONDS=7776000

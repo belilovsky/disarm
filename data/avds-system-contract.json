@@ -35,7 +35,7 @@
     },
     {
       "path": "assets/avds-disarm-adapter.css",
-      "sha256": "fe222aeed3af6dea31e7c73e4df388229cf6c4d426698e067439e34a1507d59c"
+      "sha256": "544bbe04ebbb9e8ef758044c6e4316dbae9d0e7805f874aa4bcc4619df9ca03c"
     },
     {
       "path": "assets/avds-static-token-contract.css",
@@ -72,15 +72,15 @@
     },
     {
       "path": "assets/app.js",
-      "sha256": "7f20aaa26ef72d0d8a31b14830f6102485719ad4ba6c8048513b32df56a55bea"
+      "sha256": "1925a19fa14304cfbd023ecca63cae796fecc790469cf6ed8a1bcabdd3f99159"
     },
     {
       "path": "index.html",
-      "sha256": "314c91024ab10c316d8c4bb4283ae0f4b445cca5f5a5eed3f6548374269d7134"
+      "sha256": "6109a7909306da6be4d703d3e4cacebd705da48ebc7947cef9755e22bffd5cdb"
     },
     {
       "path": "data/avds-adapter.json",
-      "sha256": "ab957f8bc1e2f52fa69e2d653dd5f0d65fab98c67bc56511d572bc953e256aea"
+      "sha256": "e1650344e303afa29f69bf4002f87e29d984fa71d2e5f5fb5aa733264235b640"
     },
     {
       "path": "data/avds-coverage.json",
@@ -96,11 +96,11 @@
     },
     {
       "path": "data/disarm-provenance.json",
-      "sha256": "b21296fd3720f0eb4b66073264025cfa5ed1cd0282b3e5fa69a631217db92bb2"
+      "sha256": "f18678f4cb83342cac57752cc459acc0541cb5c071d5423a216e182b3d1b52f9"
     },
     {
       "path": "data/avds-locale-contract.json",
-      "sha256": "c88af8c4bfe02187020b430e355a86b266a96ae121835837890d93d5d9ab8ac8"
+      "sha256": "889eb5d5988e330adb2715ecc5cdc6477bc504ea544b089d2434eccbd531aa81"
     },
     {
       "path": "data/avds-data-visualization-contract.json",
@@ -113,6 +113,34 @@
     {
       "path": ".well-known/avds-adoption.json",
       "sha256": "aa4a25141046f5309b0dd33d0a7065df3aef81a060e5f9f29bd3cd75bf7a1d88"
+    },
+    {
+      "path": "assets/data-core.js",
+      "sha256": "531c494cdac2db1961619cfe855b5611a5170ccbd34a687bc1d0963234c14bdf"
+    },
+    {
+      "path": "assets/i18n-runtime.js",
+      "sha256": "9dcfe6e1894a4dfec5a161138bdf9068c195098d47dbc58322c4cd77e4344f26"
+    },
+    {
+      "path": "assets/ui-locales.js",
+      "sha256": "696c81212a4d6c69a7601edbff6c1eb31d025f97821a82b6a9b62580dd120306"
+    },
+    {
+      "path": "data/ui-locales.json",
+      "sha256": "09485ffaa9221e9cf4ed4379e29e8aabdeb27da8870c601d6c7d05edbb9d8399"
+    },
+    {
+      "path": "login.html",
+      "sha256": "8f31d49a89058a1bedb6a5b14eace25b64208e2935fd0c55b768d2407dfc5de8"
+    },
+    {
+      "path": "assets/disarm-login.js",
+      "sha256": "ad3025e9daca3519ce291368bfbb5a1b1d3c973d0de11c6c52626fb6bad5ccff"
+    },
+    {
+      "path": "assets/disarm-login.css",
+      "sha256": "3fc200562a6bf40b4cfb522373ab821086148fb86d496942b14efd838bfcf046"
     }
   ],
   "local_deviations": [

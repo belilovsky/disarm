@@ -1,5 +1,8 @@
 # Platform integration audit — DISARM — 2026-08-23
 
+> Исторический срез. Текущее состояние DISARM 1.7 описано в docs/PREPRODUCTION_1_7.md; старые версии и незакрытые на дату отчёта задачи не являются текущим статусом.
+
+
 ## Scope and authority
 
 - **Canonical source observed:** `/Users/belilovsky/Documents/Codex/2026-08-11/disarm-avds-coverage`; it is readable, clean, and has no `.git` metadata. Git SHA, default branch, repository URL and source authority are therefore **unverifiable**.
