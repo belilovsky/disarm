@@ -2,12 +2,12 @@
   "schema_version": "disarm-release-identity-v1",
   "project_id": "disarm",
   "public_url": "https://disarm.qdev.run/",
-  "release_id": "content-a2a19e20fd798e42cc2892c5",
+  "release_id": "content-03d4cd36c6f96ecfbb4d1686",
   "revision_kind": "content_sha256_manifest",
-  "source_revision": "bb94d61e2d9fef2804918fa282a378a96991d30c",
+  "source_revision": "b7fe37d90ad61dcc409c36492480cb4daf9f19ca",
   "source_revision_status": "git-commit",
-  "artifact_manifest_sha256": "a2a19e20fd798e42cc2892c58eed960b149febf5e511c33f1b0443ee75eec884",
-  "generated_at": "2026-10-02T19:35:19Z",
+  "artifact_manifest_sha256": "03d4cd36c6f96ecfbb4d1686e7d1b7ff79197e39f5305b94a3a938347f30979a",
+  "generated_at": "2026-10-02T19:39:23Z",
   "deployment_contract": {
     "mode": "atomic-static-release-directory",
     "auth_source_sha256": "389afb17e7a65708e32ba810c06e285662ac0a0514a67b9d5d83dea2ed2ddaf9",
@@ -47,8 +47,8 @@
       },
       {
         "path": "assets/app.js",
-        "bytes": 120994,
-        "sha256": "6682d45c500708988725977253ff704f26d991d00dd501800de81b822ed166bd"
+        "bytes": 121652,
+        "sha256": "9771120d6b611e363afefb6286aa0789d2a106dc7e3dcd6c7be1e1c141abec2a"
       },
       {
         "path": "assets/avds-disarm-adapter.css",
@@ -87,8 +87,8 @@
       },
       {
         "path": "assets/ui-locales.js",
-        "bytes": 80642,
-        "sha256": "696c81212a4d6c69a7601edbff6c1eb31d025f97821a82b6a9b62580dd120306"
+        "bytes": 81475,
+        "sha256": "36ff7960c2fdae6a2534fbdb332ca45d102d5778fbf3b66ba1cb38161e11bb90"
       },
       {
         "path": "data/avds-adapter.json",
@@ -123,7 +123,7 @@
       {
         "path": "data/avds-system-contract.json",
         "bytes": 19443,
-        "sha256": "2339244523bca37744b1e86315a6b773d708b72f0e2eaef70c072111b156ff28"
+        "sha256": "f2e449788c0bb06d24819dc9c459129e6ca00fddc9b93dd002104818d877859a"
       },
       {
         "path": "data/avds-visual-regression.json",
@@ -147,8 +147,8 @@
       },
       {
         "path": "data/ui-locales.json",
-        "bytes": 80538,
-        "sha256": "09485ffaa9221e9cf4ed4379e29e8aabdeb27da8870c601d6c7d05edbb9d8399"
+        "bytes": 81371,
+        "sha256": "e0632c3041a51bd498e6a1bcbc04d8e0ad256008eca3740e23d9f4583aa3398e"
       },
       {
         "path": "favicon.ico",
@@ -453,12 +453,12 @@
       {
         "path": "index.html",
         "bytes": 38821,
-        "sha256": "7e347e22ef07525d92b5b52328e526f2ee883bc73207a44967232a0ce9c69b07"
+        "sha256": "338f0bd6afaae6fcf7b3a5bac56a7e53a34fbbb344aa03eeb551f182bbca5710"
       },
       {
         "path": "login.html",
         "bytes": 2504,
-        "sha256": "8f31d49a89058a1bedb6a5b14eace25b64208e2935fd0c55b768d2407dfc5de8"
+        "sha256": "ed9cf14bf0b9127ae179b01390a5f6dc178e63508f0ce17d07687e7543f0e023"
       },
       {
         "path": "qdev-project.json",
