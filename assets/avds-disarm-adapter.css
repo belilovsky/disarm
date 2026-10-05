@@ -1315,6 +1315,11 @@ h4 { font-size: var(--disarm-scaled-text-lg); }
 .avds-export-btn {
   font-size: var(--disarm-scaled-text-sm);
 }
+#red-export-navigator {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
 .pb-btn-primary {
   background: var(--color-accent) !important;
   color: var(--color-text-on-accent) !important;

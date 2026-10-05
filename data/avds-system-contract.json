@@ -35,7 +35,7 @@
     },
     {
       "path": "assets/avds-disarm-adapter.css",
-      "sha256": "a830eae6664e590a3151c2ad00362f7f716542e2973c33009d78067751d5935f"
+      "sha256": "e2ddb11d689e21e80b2e7c3aae261e88c5a945a071db1ec598ef253c6a7f5e54"
     },
     {
       "path": "assets/avds-static-token-contract.css",
@@ -76,11 +76,11 @@
     },
     {
       "path": "index.html",
-      "sha256": "2c236af3ec3b8320fbade96de972ea38fc128ec76e60da5ee0ee1af7115c11cc"
+      "sha256": "79bb7e03735c9ae0040a9c02b11b31f15a174e30a42677a4a5bcb7bdb2a25853"
     },
     {
       "path": "data/avds-adapter.json",
-      "sha256": "39e34066abddfa7984aa3a50ba854d903b420ab23f8d6e8c6a90ab42cbbeb373"
+      "sha256": "72dc44bf38ab3c508aa15ab115866f02a748542729ed9ff77767a672c26e4c20"
     },
     {
       "path": "data/avds-coverage.json",
