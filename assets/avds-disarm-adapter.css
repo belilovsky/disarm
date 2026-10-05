@@ -2882,6 +2882,7 @@ html[data-density="compact"] .pb-counter-item {
     padding: calc(var(--disarm-unit) * 7) calc(var(--disarm-unit) * 8);
     font-size: var(--disarm-scaled-text-xs);
     white-space: normal;
+    overflow-wrap: anywhere;
     line-height: 1.2;
   }
   .pb-toolbar .avds-export-btn:disabled {
