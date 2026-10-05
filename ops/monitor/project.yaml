@@ -16,7 +16,7 @@
     lifecycle: active
     runtime_role: static-site
     data_class: public
-    notes: 'Оба serving host проверяются disarm_runtime: свежесть PIN-сервиса, digest корпуса, parity релиза, редирект и содержательная страница входа. GitHub CI заблокирован оплатой; независимая визуальная оценка ожидается.'
+    notes: 'Оба serving host проверяются disarm_runtime: свежесть PIN-сервиса, digest корпуса, parity релиза, редирект и содержательная страница входа. GitHub CI заблокирован оплатой; независимая оценка агента для релиза 7dc64643 получена; человеческое принятие не утверждается.'
     key_pages:
       - url: https://disarm.qdev.run/login?locale=en
         label: Защищённый доступ
