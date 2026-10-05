@@ -2093,6 +2093,12 @@ h4 { font-size: var(--disarm-scaled-text-lg); }
   border-top: var(--disarm-unit) solid var(--color-divider);
   border-bottom: var(--disarm-unit) solid var(--color-divider);
 }
+.obj-actions .avds-export-btn {
+  min-height: calc(var(--disarm-unit) * 44);
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
 .obj-summary {
   font-size: var(--disarm-scaled-text-base);
   line-height: 1.6;

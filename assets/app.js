@@ -2129,10 +2129,10 @@
     if (o._type === 'technique') {
       const inPb = PLAYBOOK.selected.has(o.disarm_id);
       body += `<div class="obj-actions">
-        <button class="avds-btn ${inPb ? 'avds-btn-success' : 'avds-btn-primary'}" data-pb-toggle="${escape(o.disarm_id)}">
+        <button class="avds-export-btn ${inPb ? '' : 'pb-btn-primary'}" data-pb-toggle="${escape(o.disarm_id)}">
           ${inPb ? 'В плане — убрать' : 'Добавить в план'}
         </button>
-        <button class="avds-btn" data-deeplink="${escape(o.disarm_id)}">Скопировать ссылку</button>
+        <button class="avds-export-btn" data-deeplink="${escape(o.disarm_id)}">Скопировать ссылку</button>
       </div>`;
     }
 
