@@ -1898,6 +1898,7 @@ h4 { font-size: var(--disarm-scaled-text-lg); }
   line-height: 1;
 }
 .pb-group {
+  flex: 0 0 auto;
   border: var(--disarm-unit) solid var(--color-divider);
   border-radius: var(--radius-md);
   overflow: hidden;

@@ -116,6 +116,9 @@ def check_accessibility_preferences() -> None:
 
 def check_layout_token_governance() -> None:
     css = STYLE_PATH.read_text(encoding="utf-8")
+    playbook_group = re.search(r"\.pb-group\s*\{([^}]+)\}", css)
+    require(playbook_group is not None and re.search(r"flex:\s*0\s+0\s+auto\s*;", playbook_group.group(1)) is not None,
+            "playbook phase groups must not shrink and clip techniques inside the scrolling list")
     require("--disarm-unit: 1px" in css, "missing local AVDS scalar length token")
     require("--disarm-motion-unit: 1ms" in css, "missing local AVDS scalar motion token")
     require("--disarm-z-raised: 1" in css and "--disarm-z-sticky: 20" in css, "missing local AVDS z-index tokens")

@@ -4,7 +4,7 @@
   "avds_release_version": "4.7.0",
   "design_package_version": "4.5.1",
   "mode": "static-product-adapter",
-  "asset": "/assets/avds-disarm-adapter.css?v=1.3.10&sha=c3b2dcd2df0f",
+  "asset": "/assets/avds-disarm-adapter.css?v=1.3.10&sha=a830eae6664e",
   "component_contract": "/data/avds-component-contracts.json",
   "responsive_contract": "/data/avds-responsive-contract.json",
   "data_provenance": "/data/disarm-provenance.json",
