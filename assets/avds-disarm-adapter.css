@@ -2888,6 +2888,9 @@ html[data-density="compact"] .pb-counter-item {
   .pb-toolbar .avds-export-btn:disabled {
     display: none;
   }
+  html:is([data-text-scale="150"], [data-text-scale="200"]) .pb-toolbar {
+    grid-template-columns: minmax(0, 1fr);
+  }
   .pb-selected {
     margin-bottom: var(--space-2);
   }
