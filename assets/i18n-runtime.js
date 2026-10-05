@@ -21,12 +21,22 @@
     for (const pattern of patterns) {
       const match = key.match(pattern.regex);
       // Bare count patterns must not partially translate arbitrary sentences.
-      if (match && /^\{n\} (?:тактик[аи]?|техник[аи]?|контрмер|кейс(?:а|ов)?|стран[аы]?|год[а]?|лет)$/.test(pattern.key) && !/^\d[\d.,\s]*$/.test(match[1])) continue;
+      if (match && /^\{n\} (?:тактик[аи]?|техник[аи]?|контрмер[аы]?|кейс(?:а|ов)?|стран[аы]?|год[а]?|лет)$/.test(pattern.key) && !/^\d[\d.,\s]*$/.test(match[1])) continue;
       if (match) { let i=1; let result = pattern.value[locale].replaceAll('{n}', () => text(match[i++]));
-        if (locale === 'en') result = result.replace(/\b1 (techniques|tactics|cases|incidents|countermeasures|years|countries)\b/g, (_, word) => '1 '+(word === 'countries' ? 'country' : word.slice(0,-1)));
+        if (locale === 'en') result = result.replace(/\b1 (techniques|tactics|cases|incidents|countermeasures|counters|years|countries)\b/g, (_, word) => '1 '+(word === 'countries' ? 'country' : word.slice(0,-1)));
         return padding(result); }
     }
     return value;
+  }
+  function reportDate(value) {
+    const date = new Date(value);
+    // Some browser ICU builds emit "M10" for kk-KZ medium dates.
+    // Use the reviewed Kazakh month names consistently in this authored output.
+    if (locale === 'kk') {
+      const months = ['қаңтар','ақпан','наурыз','сәуір','мамыр','маусым','шілде','тамыз','қыркүйек','қазан','қараша','желтоқсан'];
+      return `${date.getFullYear()} ж. ${date.getDate()} ${months[date.getMonth()]}`;
+    }
+    return new Intl.DateTimeFormat(locale === 'en' ? 'en-GB' : 'ru-RU', {dateStyle:'medium'}).format(date);
   }
   function project(node, key, value, setter) {
     const map = originals.get(node) || new Map();
@@ -47,5 +57,5 @@
       for (const key of ['title','placeholder','aria-label','content','data-label']) if(node.hasAttribute(key)) project(node,key,node.getAttribute(key),value=>node.setAttribute(key,value));
     });
   }
-  root.DisarmI18n = { text, render, setLocale: value => { locale=value; } };
+  root.DisarmI18n = { text, render, reportDate, setLocale: value => { locale=value; } };
 })(globalThis);

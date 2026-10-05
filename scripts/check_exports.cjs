@@ -5,7 +5,7 @@ const root=path.resolve(__dirname,'..'), output=path.resolve(process.argv[2]); f
 async function localeExports(locale) {
  const files=[]; const context={console,Blob,TextEncoder,Date,Intl,Map,Set,Math,URLSearchParams,structuredClone,crypto:require('node:crypto').webcrypto,navigator:{},localStorage:{getItem:()=>null,setItem:()=>{}},location:{pathname:'/',search:'?locale='+locale,origin:'https://disarm.qdev.run'},history:{replaceState:()=>{}},requestAnimationFrame:()=>{},setTimeout:()=>{},alert:message=>{throw Error(message)}};
  context.URL={createObjectURL:blob=>{files.push({blob});return 'blob:isolated-export'},revokeObjectURL:()=>{}};
- context.window={setTimeout:()=>{}};
+ context.window={setTimeout:()=>{},addEventListener:()=>{}};
  context.document={addEventListener:()=>{},querySelector:()=>null,querySelectorAll:()=>[],createElement:()=>({click:()=>{},set download(value){files.at(-1).name=value;}}),body:{appendChild:()=>{},removeChild:()=>{}}};
  vm.createContext(context);
  for(const asset of ['analysis-core.js','data-core.js','ui-locales.js','i18n-runtime.js'])vm.runInContext(fs.readFileSync(path.join(root,'assets',asset),'utf8'),context,{filename:asset});

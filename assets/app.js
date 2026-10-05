@@ -46,7 +46,7 @@
       density: { compact: 'Компактно', comfortable: 'Обычный режим' }, theme: 'Тема', textScale: 'Масштаб текста',
       themes: { institutional: 'Институциональная', editorial: 'Редакционная', analytics: 'Данные', map: 'Карта', dark: 'Тёмная' },
       retry: 'Повторить', skeleton: 'Загрузка данных DISARM',
-      states: { loading: 'Загрузка проверенного среза DISARM…', ready: 'Данные загружены из локального среза DISARM.', stale: 'Показана сохранённая копия; требуется обновление.', degraded: 'Показана сохранённая копия; часть функций работает с ограничениями.', offline: 'Нет сети. Показана сохранённая копия.', error: 'Не удалось загрузить данные. Проверьте подключение и повторите попытку.' },
+      states: { loading: 'Загрузка проверенного среза DISARM…', ready: 'Срез DISARM загружен.', stale: 'Показана сохранённая копия; требуется обновление.', degraded: 'Показана сохранённая копия; часть функций работает с ограничениями.', offline: 'Нет сети. Показана сохранённая копия.', error: 'Не удалось загрузить данные. Проверьте подключение и повторите попытку.' },
       localeScope: 'Полного перевода корпуса нет: часть названий и описаний DISARM остаётся на английском, если проверенный перевод отсутствует.',
       statusBadge: (version, techniques, counters) => `${version} · ${techniques} техник · ${counters} контрмер`,
       missingAttribution: 'нет сведений',
@@ -59,7 +59,7 @@
       density: { compact: 'Ықшам', comfortable: 'Қалыпты режим' }, theme: 'Тақырып', textScale: 'Мәтін масштабы',
       themes: { institutional: 'Институционалдық', editorial: 'Редакциялық', analytics: 'Деректер', map: 'Карта', dark: 'Қараңғы' },
       retry: 'Қайталау', skeleton: 'DISARM деректері жүктелуде',
-      states: { loading: 'Тексерілген DISARM үзіндісі жүктелуде…', ready: 'Деректер жергілікті DISARM үзіндісінен жүктелді.', stale: 'Сақталған көшірме көрсетілуде; жаңарту қажет.', degraded: 'Сақталған көшірме көрсетілуде; кей функциялар шектеулі.', offline: 'Желі жоқ. Сақталған көшірме көрсетілуде.', error: 'Деректер жүктелмеді. Байланысты тексеріп, қайталап көріңіз.' },
+      states: { loading: 'Тексерілген DISARM үзіндісі жүктелуде…', ready: 'DISARM үзіндісі жүктелді.', stale: 'Сақталған көшірме көрсетілуде; жаңарту қажет.', degraded: 'Сақталған көшірме көрсетілуде; кей функциялар шектеулі.', offline: 'Желі жоқ. Сақталған көшірме көрсетілуде.', error: 'Деректер жүктелмеді. Байланысты тексеріп, қайталап көріңіз.' },
       statusBadge: (version, techniques, counters) => `${version} · ${techniques} техника · ${counters} қарсы шара`,
       missingAttribution: 'дерек жоқ',
     },
@@ -71,7 +71,7 @@
       density: { compact: 'Compact', comfortable: 'Comfortable mode' }, theme: 'Theme', textScale: 'Text scale',
       themes: { institutional: 'Institutional', editorial: 'Editorial', analytics: 'Data', map: 'Map', dark: 'Dark' },
       retry: 'Retry', skeleton: 'Loading DISARM data',
-      states: { loading: 'Loading the verified DISARM snapshot…', ready: 'Data loaded from the local DISARM snapshot.', stale: 'Showing a cached copy; refresh required.', degraded: 'Showing a cached copy; some functions are limited.', offline: 'No network. Showing a cached copy.', error: 'Data could not be loaded. Check the connection and try again.' },
+      states: { loading: 'Loading the verified DISARM snapshot…', ready: 'DISARM snapshot loaded.', stale: 'Showing a cached copy; refresh required.', degraded: 'Showing a cached copy; some functions are limited.', offline: 'No network. Showing a cached copy.', error: 'Data could not be loaded. Check the connection and try again.' },
       statusBadge: (version, techniques, counters) => `${version} · ${techniques} techniques · ${counters} countermeasures`,
       missingAttribution: 'no attribution',
     },
@@ -302,11 +302,11 @@
   function renderSummaryStrip(el, items = []) {
     if (!el) return;
     el.innerHTML = items.map(item => `
-      <article class="summary-card avds-surface-card">
-        ${item.eyebrow ? `<div class="summary-card__eyebrow">${escape(item.eyebrow)}</div>` : ''}
-        <div class="summary-card__title">${escape(item.title)}</div>
+      <details class="summary-card avds-surface-card">
+        <summary>${item.eyebrow ? `<span class="summary-card__eyebrow">${escape(item.eyebrow)}</span>` : ''}
+        <span class="summary-card__title">${escape(item.title)}</span></summary>
         ${item.description ? `<div class="summary-card__desc">${escape(item.description)}</div>` : ''}
-      </article>
+      </details>
     `).join('');
   }
   function renderCompareCards(el, cards = []) {
@@ -668,6 +668,15 @@
   const SEARCH_PAGE = { limit: 18, shown: 18, query: '', filters: '' };
   const INCIDENT_FILTERS = { year: '', country: '', tactic: '', periodA: '', periodB: '' };
   const MATRIX_FILTERS = { redPhase: '', bluePhase: '' };
+  const MATRIX_COLLAPSED = { red: new Set(), blue: new Set() };
+  function syncMatrixHeaders() {
+    const compact = window.matchMedia('(max-width: 760px)').matches;
+    $$('.matrix-col-head').forEach(head => {
+      head.disabled = !compact;
+      head.setAttribute('aria-expanded', String(!compact || !head.parentElement.classList.contains('collapsed')));
+    });
+  }
+  window.addEventListener('resize', syncMatrixHeaders);
 
   function saveAnnotations() {
     try {
@@ -875,6 +884,11 @@
     };
     const setTab = (name, opts={}) => {
       STATE.tabSelectedDuringLoad = name;
+      document.documentElement.dataset.activeTab = name;
+      const intro = $('#masthead-intro');
+      if (intro) intro.open = name === 'overview' || name === 'about';
+      const quick = $('.workspace-search');
+      if (quick) quick.hidden = name === 'search';
       tabs.forEach(t => {
         const active = t.dataset.tab === name;
         t.classList.toggle('active', active);
@@ -979,8 +993,9 @@
       const editing = target && ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName);
       if (e.key === '/' && !editing && !e.metaKey && !e.ctrlKey && !e.altKey) {
         e.preventDefault();
-        quickSearch?.focus();
-        quickSearch?.select();
+        const searchTarget = $('.tabpanel.active')?.dataset.panel === 'search' ? $('#global-search') : quickSearch;
+        searchTarget?.focus();
+        searchTarget?.select();
         return;
       }
       if (!editing && /^[1-7]$/.test(e.key)) {
@@ -1044,10 +1059,11 @@
       { label: 'Матрица атак', href: tabHref('red'), meta: `${d.techniques.length}` },
       { label: 'Матрица защиты', href: tabHref('blue'), meta: `${d.counters.length}` },
       { label: 'Инциденты', href: tabHref('incidents'), meta: `${d.incidents.length}` },
+      { label: 'Поиск', href: tabHref('search') },
       { label: 'План реагирования', href: tabHref('playbook') },
       { label: 'DISARM 1.7', href: 'https://github.com/DISARMFoundation/DISARMframeworks-17', external: true },
       { label: 'Navigator', href: 'https://github.com/DISARMFoundation/disarm-navigator-mv', external: true },
-    ]);
+    ], { wrap: true });
     renderQuickLinksRail($('#about-quick-links'), [
       { label: '1.7.0', href: 'https://github.com/DISARMFoundation/DISARMframeworks-17', external: true, active: true },
       { label: '2.0 Observations', href: 'https://github.com/DISARMFoundation/DISARMframeworks-20-observable', external: true },
@@ -1116,16 +1132,17 @@
     const phasePills = $('#red-phase-pills');
     if (phasePills) {
       phasePills.innerHTML = [
-        `<button class="mini-pill ${!MATRIX_FILTERS.redPhase ? 'active' : ''}" data-phase="">Все фазы</button>`,
-        ...d.phases.map(p => `<button class="mini-pill ${MATRIX_FILTERS.redPhase === p.disarm_id ? 'active' : ''}" data-phase="${escape(p.disarm_id)}">${escape(PHASE_RU[p.name] || p.name)}</button>`)
+        `<button class="mini-pill ${!MATRIX_FILTERS.redPhase ? 'active' : ''}" aria-pressed="${Boolean(!MATRIX_FILTERS.redPhase)}" data-phase="">Все фазы</button>`,
+        ...d.phases.map(p => `<button class="mini-pill ${MATRIX_FILTERS.redPhase === p.disarm_id ? 'active' : ''}" aria-pressed="${Boolean(MATRIX_FILTERS.redPhase === p.disarm_id)}" data-phase="${escape(p.disarm_id)}">${escape(PHASE_RU[p.name] || p.name)}</button>`)
       ].join('');
     }
     const tactics = MATRIX_FILTERS.redPhase ? d.tactics.filter(t => t.phase_id === MATRIX_FILTERS.redPhase) : d.tactics;
+    const query = $('#red-filter').value.trim().toLowerCase();
     const cols = tactics.map(tac => {
       const techIds = (d.tactic_to_techniques[tac.disarm_id] || []);
-      const techs = techIds.map(id => STATE.byId.get(id)).filter(Boolean);
+      const techs = techIds.map(id => STATE.byId.get(id)).filter(Boolean).filter(t => !query || `${t.disarm_id} ${tName(t)} ${ui(`${(STATE.incidentByTech.get(t.disarm_id) || []).length} инц.`)}`.toLowerCase().includes(query));
       return { tac, techs };
-    });
+    }).filter(col => !query || col.techs.length);
     const visibleTechs = cols.flatMap(col => col.techs);
     const tacticRows = topRows(
       cols.map(col => ({ label: tName(col.tac), count: col.techs.length })),
@@ -1165,11 +1182,11 @@
     );
 
     grid.innerHTML = cols.map(({tac, techs}) => `
-      <div class="matrix-col" data-tactic="${escape(tac.disarm_id)}">
-        <div class="matrix-col-head" title="${escape(tac.summary || '')}">
+      <div class="matrix-col${MATRIX_COLLAPSED.red.has(tac.disarm_id) ? ' collapsed' : ''}" data-tactic="${escape(tac.disarm_id)}">
+        <button type="button" class="matrix-col-head" title="${escape(tac.summary || '')}">
           <span class="mc-id">${escape(tac.disarm_id)}</span>
-          ${escape(tName(tac))}
-        </div>
+          <span class="matrix-col-title">${escape(tName(tac))}</span>
+        </button>
         ${techs.map(t => `
           <div class="matrix-cell red ${t.disarm_id.includes('.') ? 'subtech' : ''}" data-id="${escape(t.disarm_id)}" role="button" tabindex="0" aria-label="${escape(`${t.disarm_id} — ${tName(t)}, ${(STATE.incidentByTech.get(t.disarm_id) || []).length} инцидентов`)}">
             <span class="mc-id">${escape(t.disarm_id)}</span>
@@ -1179,11 +1196,16 @@
       </div>
     `).join('');
 
+    syncMatrixHeaders();
     grid.onclick = e => {
       // Mobile accordion: header click toggles collapse on narrow screens
       const head = e.target.closest('.matrix-col-head');
-      if (head && window.matchMedia('(max-width: 720px)').matches) {
-        head.parentElement.classList.toggle('collapsed');
+      if (head && window.matchMedia('(max-width: 760px)').matches) {
+        const col = head.parentElement;
+        const collapsed = col.classList.toggle('collapsed');
+        const id = col.dataset.tactic;
+        if (collapsed) MATRIX_COLLAPSED.red.add(id); else MATRIX_COLLAPSED.red.delete(id);
+        head.setAttribute('aria-expanded', String(!collapsed));
         return;
       }
       const cell = e.target.closest('.matrix-cell');
@@ -1197,18 +1219,19 @@
       }
     };
 
-    $('#red-filter').oninput = e => {
-      const q = e.target.value.trim().toLowerCase();
-      $$('#red-matrix .matrix-cell').forEach(c => {
-        const txt = c.textContent.toLowerCase();
-        c.classList.toggle('hidden', q && !txt.includes(q));
-      });
-    };
+    $('#red-filter').oninput = renderRedMatrix;
     if (phasePills) phasePills.onclick = e => {
       const btn = e.target.closest('[data-phase]');
       if (!btn) return;
-      MATRIX_FILTERS.redPhase = btn.dataset.phase || '';
+      const selectedPhase = btn.dataset.phase || '';
+      const restoreFocus = document.activeElement === btn;
+      MATRIX_FILTERS.redPhase = selectedPhase;
       renderRedMatrix();
+      if (restoreFocus) {
+        [...phasePills.querySelectorAll('[data-phase]')]
+          .find(pill => pill.dataset.phase === selectedPhase)
+          ?.focus({ preventScroll: true });
+      }
     };
 
     // Heatmap toggle
@@ -1247,14 +1270,15 @@
     const phasePills = $('#blue-phase-pills');
     if (phasePills) {
       phasePills.innerHTML = [
-        `<button class="mini-pill ${!MATRIX_FILTERS.bluePhase ? 'active' : ''}" data-phase="">Все фазы</button>`,
-        ...d.phases.map(p => `<button class="mini-pill ${MATRIX_FILTERS.bluePhase === p.disarm_id ? 'active' : ''}" data-phase="${escape(p.disarm_id)}">${escape(PHASE_RU[p.name] || p.name)}</button>`)
+        `<button class="mini-pill ${!MATRIX_FILTERS.bluePhase ? 'active' : ''}" aria-pressed="${Boolean(!MATRIX_FILTERS.bluePhase)}" data-phase="">Все фазы</button>`,
+        ...d.phases.map(p => `<button class="mini-pill ${MATRIX_FILTERS.bluePhase === p.disarm_id ? 'active' : ''}" aria-pressed="${Boolean(MATRIX_FILTERS.bluePhase === p.disarm_id)}" data-phase="${escape(p.disarm_id)}">${escape(PHASE_RU[p.name] || p.name)}</button>`)
       ].join('');
     }
 
+    const query = $('#blue-filter').value.trim().toLowerCase();
     const cols = d.tactics.filter(tac => !MATRIX_FILTERS.bluePhase || tac.phase_id === MATRIX_FILTERS.bluePhase).map(tac => {
       const counterIds = d.tactic_to_counters[tac.disarm_id] || [];
-      const counters = counterIds.map(id => STATE.byId.get(id)).filter(Boolean);
+      const counters = counterIds.map(id => STATE.byId.get(id)).filter(Boolean).filter(c => !query || `${c.disarm_id} ${tName(c)} ${ui(`${(c.techniques || []).length} тех.`)}`.toLowerCase().includes(query));
       return { tac, counters };
     }).filter(c => c.counters.length > 0);
     const visibleCounters = cols.flatMap(col => col.counters);
@@ -1295,12 +1319,12 @@
     );
 
     grid.innerHTML = cols.map(({tac, counters}) => `
-      <div class="matrix-col">
-        <div class="matrix-col-head" title="${escape(tac.summary || '')}">
+      <div class="matrix-col${MATRIX_COLLAPSED.blue.has(tac.disarm_id) ? ' collapsed' : ''}" data-tactic="${escape(tac.disarm_id)}">
+        <button type="button" class="matrix-col-head" title="${escape(tac.summary || '')}">
           <span class="mc-id">${escape(tac.disarm_id)}</span>
-          ${escape(tName(tac))}
+          <span class="matrix-col-title">${escape(tName(tac))}</span>
           <span class="mc-count">${counters.length} контр.</span>
-        </div>
+        </button>
         ${counters.map(c => `
           <div class="matrix-cell blue" data-id="${escape(c.disarm_id)}" role="button" tabindex="0" aria-label="${escape(`${c.disarm_id} — ${tName(c)}, ${(c.techniques || []).length} техник`)}">
             <span class="mc-id">${escape(c.disarm_id)}</span>
@@ -1310,19 +1334,15 @@
       </div>
     `).join('');
 
-    const applyTextFilter = () => {
-      const q = $('#blue-filter').value.trim().toLowerCase();
-      $$('#blue-matrix .matrix-cell').forEach(c => {
-        const txt = c.textContent.toLowerCase();
-        c.classList.toggle('hidden', q && !txt.includes(q));
-      });
-    };
-    applyTextFilter();
-
+    syncMatrixHeaders();
     grid.onclick = e => {
       const head = e.target.closest('.matrix-col-head');
-      if (head && window.matchMedia('(max-width: 720px)').matches) {
-        head.parentElement.classList.toggle('collapsed');
+      if (head && window.matchMedia('(max-width: 760px)').matches) {
+        const col = head.parentElement;
+        const collapsed = col.classList.toggle('collapsed');
+        const id = col.dataset.tactic;
+        if (collapsed) MATRIX_COLLAPSED.blue.add(id); else MATRIX_COLLAPSED.blue.delete(id);
+        head.setAttribute('aria-expanded', String(!collapsed));
         return;
       }
       const cell = e.target.closest('.matrix-cell');
@@ -1336,7 +1356,7 @@
       }
     };
 
-    $('#blue-filter').oninput = applyTextFilter;
+    $('#blue-filter').oninput = renderBlueMatrix;
     if (phasePills) phasePills.onclick = e => {
       const btn = e.target.closest('[data-phase]');
       if (!btn) return;
@@ -1466,9 +1486,9 @@
     const tactics = uniq(d.incidents.flatMap(i => (i.techniques || []).map(tid => STATE.byId.get(tid)?.tactic_id)))
       .map(id => STATE.byId.get(id))
       .filter(Boolean);
-    $('#incident-year-pills').innerHTML = [`<button class="mini-pill ${!INCIDENT_FILTERS.year ? 'active' : ''}" data-year="">Все годы</button>`, ...years.map(y => `<button class="mini-pill ${INCIDENT_FILTERS.year === y ? 'active' : ''}" data-year="${escape(y)}">${escape(y)}</button>`)].join('');
-    $('#incident-country-pills').innerHTML = [`<button class="mini-pill ${!INCIDENT_FILTERS.country ? 'active' : ''}" data-country="">Все страны</button>`, ...countries.slice(0, 16).map(c => `<button class="mini-pill ${countryFilterIncludes(c) ? 'active' : ''}" data-country="${escape(c)}">${escape(localizeCountry(c))}</button>`)].join('');
-    $('#incident-tactic-pills').innerHTML = [`<button class="mini-pill ${!INCIDENT_FILTERS.tactic ? 'active' : ''}" data-tactic="">Все тактики</button>`, ...tactics.slice(0, 12).map(t => `<button class="mini-pill ${INCIDENT_FILTERS.tactic === t.disarm_id ? 'active' : ''}" data-tactic="${escape(t.disarm_id)}">${escape(tName(t))}</button>`)].join('');
+    $('#incident-year-pills').innerHTML = [`<button class="mini-pill ${!INCIDENT_FILTERS.year ? 'active' : ''}" aria-pressed="${Boolean(!INCIDENT_FILTERS.year)}" data-year="">Все годы</button>`, ...years.map(y => `<button class="mini-pill ${INCIDENT_FILTERS.year === y ? 'active' : ''}" aria-pressed="${Boolean(INCIDENT_FILTERS.year === y)}" data-year="${escape(y)}">${escape(y)}</button>`)].join('');
+    $('#incident-country-pills').innerHTML = [`<button class="mini-pill ${!INCIDENT_FILTERS.country ? 'active' : ''}" aria-pressed="${Boolean(!INCIDENT_FILTERS.country)}" data-country="">Все страны</button>`, ...countries.slice(0, 16).map(c => `<button class="mini-pill ${INCIDENT_FILTERS.country && countryFilterIncludes(c) ? 'active' : ''}" aria-pressed="${Boolean(INCIDENT_FILTERS.country && countryFilterIncludes(c))}" data-country="${escape(c)}">${escape(localizeCountry(c))}</button>`)].join('');
+    $('#incident-tactic-pills').innerHTML = [`<button class="mini-pill ${!INCIDENT_FILTERS.tactic ? 'active' : ''}" aria-pressed="${Boolean(!INCIDENT_FILTERS.tactic)}" data-tactic="">Все тактики</button>`, ...tactics.slice(0, 12).map(t => `<button class="mini-pill ${INCIDENT_FILTERS.tactic === t.disarm_id ? 'active' : ''}" aria-pressed="${Boolean(INCIDENT_FILTERS.tactic === t.disarm_id)}" data-tactic="${escape(t.disarm_id)}">${escape(tName(t))}</button>`)].join('');
     renderIncidentPeriodComparison(d.incidents, years);
     const render = (q=$('#incident-filter')?.value || '') => {
       q = q.trim().toLowerCase();
@@ -1726,7 +1746,7 @@
       counters.innerHTML = ordered.map(({counter, matched}) => {
         const portfolio = portfolioRank.get(counter.disarm_id);
         return `
-        <div class="pb-counter-item${portfolio ? ' is-portfolio' : ''}" data-id="${escape(counter.disarm_id)}">
+        <div class="pb-counter-item${portfolio ? ' is-portfolio' : ''}" data-id="${escape(counter.disarm_id)}" role="button" tabindex="0" aria-haspopup="dialog">
           <span class="pb-id">${escape(counter.disarm_id)}</span>
           <span class="pb-name">${escape(tName(counter))}${portfolio ? `<small>Опорная мера ${portfolio.rank} · новый охват +${portfolio.marginal}</small>` : ''}</span>
           <span class="pb-coverage">${matched.length}/${PLAYBOOK.selected.size}</span>
@@ -1768,6 +1788,13 @@
     $('#pb-counters').addEventListener('click', e => {
       const c = e.target.closest('.pb-counter-item');
       if (c) openModal(c.dataset.id);
+    });
+
+    $('#pb-counters').addEventListener('keydown', e => {
+      const counter = e.target.closest('.pb-counter-item[role="button"]');
+      if (!counter || (e.key !== 'Enter' && e.key !== ' ')) return;
+      e.preventDefault();
+      openModal(counter.dataset.id);
     });
 
     $('#pb-clear').addEventListener('click', () => {
@@ -1825,7 +1852,7 @@
     const analysis = ANALYSIS.analyzeCounterCoverage(Array.from(PLAYBOOK.selected), d.counters);
 
     const dt = new Date().toISOString().slice(0, 10);
-    const displayDate = new Intl.DateTimeFormat({ru:'ru-RU',kk:'kk-KZ',en:'en-GB'}[STATE.locale], {dateStyle:'medium'}).format(new Date());
+    const displayDate = DisarmI18n.reportDate(new Date());
     let md = `# ${uiFormat('DISARM Плейбук · {n}', displayDate)}\n\n`;
     md += `_${ui('Сгенерировано обозревателем для выбранных техник DISARM 1.7.0 и связанных контрмер.')}_\n\n`;
     md += `## ${uiFormat('Выбранные наблюдаемые техники ({n})', techs.length)}\n\n`;
@@ -2102,7 +2129,7 @@
     }
 
     let body = `<div class="modal-body" id="modal-content">`;
-    body += `<div class="obj-id">${escape(o.disarm_id)}</div>`;
+    body += `<header class="obj-header"><div class="obj-id">${escape(o.disarm_id)}</div>`;
     body += `<h2 id="modal-title">${escape(tName(o) || '—')}</h2>`;
     body += `<div class="obj-meta">`;
     body += `<span class="result-type ${TYPE_CSS[o._type] || ''}">${escape(TYPE_LABELS[o._type] || o._type)}</span>`;
@@ -2124,6 +2151,8 @@
       if (incCount) body += `<span class="avds-chip chip-warn">${incCount} инцидентов</span>`;
     }
     body += `</div>`;
+
+    body += `</header>`;
 
     // Action toolbar (techniques only — Add to Playbook)
     if (o._type === 'technique') {
@@ -2414,6 +2443,13 @@
 
     setupTabs();
     setupIncidentPeriodTableScroll();
+    $('.incident-analytics-link')?.addEventListener('click', e => {
+      e.preventDefault();
+      const analytics = $('#incident-analytics');
+      analytics.open = true;
+      analytics.querySelector('summary').focus({ preventScroll: true });
+      analytics.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    });
     setupWorkspaceToolbar();
 
     try {

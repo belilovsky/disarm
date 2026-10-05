@@ -350,7 +350,7 @@ def check_avds_component_contracts() -> None:
     css = STYLE_PATH.read_text(encoding="utf-8")
     components = contract.get("components", [])
     require(contract.get("schema_version") == "disarm-avds-component-contracts-v1", "unexpected AVDS component contract schema")
-    require(contract.get("adapter_version") == "1.3.10", "component contract adapter mismatch")
+    require(contract.get("adapter_version") == "1.4.0", "component contract adapter mismatch")
     require(len(components) == 10, "AVDS component registry must contain ten components")
     require(len({item.get("id") for item in components}) == 10, "AVDS component ids must be unique")
     for component in components:
@@ -381,7 +381,12 @@ def check_avds_responsive_contract() -> None:
         require(bool(viewport.get("composition")), f"responsive composition missing: {viewport.get('width')}")
         require(viewport.get("order") == ["masthead", "tabs", "workspace", "active panel", "footer"], f"responsive order mismatch: {viewport.get('width')}")
         require(bool(viewport.get("rails")), f"responsive rail rule missing: {viewport.get('width')}")
-        require(viewport.get("status") == "verified-local", f"responsive browser proof missing: {viewport.get('width')}")
+        require(viewport.get("status") in {"verified-local", "historical-proof-only"}, f"responsive proof disposition missing: {viewport.get('width')}")
+    current = contract.get("current_acceptance", {})
+    required_cells = {(320, 844), (390, 844), (768, 1024), (1440, 900)}
+    require({(v.get("width"), v.get("height")) for v in current.get("viewports", [])} == required_cells, "current responsive acceptance denominator must contain four exact viewports")
+    require(current.get("base_cells") == 84 and current.get("status") == "verified-local", "current 84 responsive cells require personal verification")
+    require(required_cells <= {(v.get("width"), v.get("height")) for v in contract.get("viewports", []) if v.get("status") == "verified-local"}, "historical proof cannot replace current required viewport evidence")
 
 
 def check_disarm_provenance() -> None:
@@ -434,9 +439,9 @@ def check_locale_contract() -> None:
     require('id="locale-select"' in html and 'LOCALE_COPY' in js and 'setupLocale' in js, "RU/KK/EN locale picker is missing")
     require('TEXT_SCALE_KEY' in js and 'setupTextScale' in js, "text-scale persistence is missing")
     for ready_copy in [
-        "Данные загружены из локального среза DISARM.",
-        "Деректер жергілікті DISARM үзіндісінен жүктелді.",
-        "Data loaded from the local DISARM snapshot.",
+        "Срез DISARM загружен.",
+        "DISARM үзіндісі жүктелді.",
+        "DISARM snapshot loaded.",
     ]:
         require(ready_copy in js, "locale ready-state copy must not imply unproven freshness")
     require(contract.get("number_rules", {}).get("grouping"), "locale number rules missing")
@@ -497,7 +502,7 @@ def check_visual_regression_contract() -> None:
 def check_avds_adapter() -> None:
     adapter = load_json(AVDS_ADAPTER_PATH)
     require(adapter.get("schema_version") == "disarm-avds-static-adapter-v1", "unexpected AVDS adapter schema")
-    require(adapter.get("adapter_version") == "1.3.10", "unexpected AVDS adapter version")
+    require(adapter.get("adapter_version") == "1.4.0", "unexpected AVDS adapter version")
     require(adapter.get("avds_release_version") == "4.7.0", "AVDS adapter release version mismatch")
     require(adapter.get("design_package_version") == "4.5.1", "AVDS adapter package version mismatch")
     require(adapter.get("asset") == expected_adapter_asset(), "AVDS adapter asset mismatch")

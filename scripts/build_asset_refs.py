@@ -8,8 +8,8 @@ for filename in ['index.html','login.html']:
  p=ROOT/filename;s=p.read_text()
  for asset in ['assets/app.js','assets/ui-locales.js','assets/disarm-login.js','assets/i18n-runtime.js','assets/data-core.js']:
   s=re.sub(re.escape(asset)+r'\?[^" ]+',asset+'?v=1.7.0&sha='+digest(asset)[:12],s)
- s=re.sub(r'assets/avds-disarm-adapter.css\?[^" ]+','assets/avds-disarm-adapter.css?v=1.3.10&sha='+digest('assets/avds-disarm-adapter.css')[:12],s);p.write_text(s)
-p=ROOT/'data/avds-adapter.json';d=json.loads(p.read_text());d['asset']='/assets/avds-disarm-adapter.css?v=1.3.10&sha='+digest('assets/avds-disarm-adapter.css')[:12];p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n')
+ s=re.sub(r'assets/avds-disarm-adapter.css\?[^" ]+','assets/avds-disarm-adapter.css?v=1.4.0&sha='+digest('assets/avds-disarm-adapter.css')[:12],s);p.write_text(s)
+p=ROOT/'data/avds-adapter.json';d=json.loads(p.read_text());d['asset']='/assets/avds-disarm-adapter.css?v=1.4.0&sha='+digest('assets/avds-disarm-adapter.css')[:12];p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n')
 p=ROOT/'data/avds-system-contract.json';d=json.loads(p.read_text())
 for item in d['connected_files']:
  if 'path' in item and (ROOT/item['path']).is_file():item['sha256']=digest(item['path'])

@@ -37,7 +37,7 @@
         "/data/avds-coverage.json",
         "/.well-known/avds-adoption.json"
       ],
-      "boundary": "The local candidate uses AVDS 4.7.0 with adapter 1.3.10. Runtime proof is release-specific: every changed candidate requires separately authorized promotion plus check_runtime_evidence.py, smoke_live.sh and public browser evidence before parity is claimed.",
+      "boundary": "The local candidate uses AVDS 4.7.0 with adapter 1.4.0. Runtime proof is release-specific: every changed candidate requires separately authorized promotion plus check_runtime_evidence.py, smoke_live.sh and public browser evidence before parity is claimed.",
       "review_by": "at every AVDS or release change"
     },
     {

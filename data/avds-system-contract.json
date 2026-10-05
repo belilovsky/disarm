@@ -35,7 +35,7 @@
     },
     {
       "path": "assets/avds-disarm-adapter.css",
-      "sha256": "4686a4cfabc6f8d89b0071d83de0db66dcf6b8b71988b074b9cc2eec7654f021"
+      "sha256": "ef209f990517feb125213d63ebed49b89849461f8958c647cf230c401580b986"
     },
     {
       "path": "assets/avds-static-token-contract.css",
@@ -72,15 +72,15 @@
     },
     {
       "path": "assets/app.js",
-      "sha256": "cdb6c34ee0069db4ebc8894fc66af53efa2524e931942d2f234da950d8b7bc43"
+      "sha256": "82b596356380b994a594ec86cbbd9478c5455f8950464c50270bebd3f4dca632"
     },
     {
       "path": "index.html",
-      "sha256": "366b98169c7788f835ed03d9b5dee50ae626e8042a99d3f8ae222f4b172901f9"
+      "sha256": "ee1621193af6636d742b4119af39bd2e05f058aa9a09087e3ac86bd20410711d"
     },
     {
       "path": "data/avds-adapter.json",
-      "sha256": "ac26227bc2cb5aa57a02b8f0936adc47cffe8fcc96f7074bc739310cd1118fc8"
+      "sha256": "d4f78f36434053c62b1a06becdb45a7e2e4f72fe80f9b10a6b3f8f046cfbe5c8"
     },
     {
       "path": "data/avds-coverage.json",
@@ -88,11 +88,11 @@
     },
     {
       "path": "data/avds-component-contracts.json",
-      "sha256": "27a9d2654595f391ed4805ac617b8406c6ba32ae5d868593cfa57f647f5853da"
+      "sha256": "e59f482762d60185a6c192e61df2b40e6d70bb347e97986f97740f979138c28a"
     },
     {
       "path": "data/avds-responsive-contract.json",
-      "sha256": "687133a4d07c4d37d01f58208ac393191c560b9a598ab86e429f48ceaf551f2a"
+      "sha256": "98b81039874ce13d9c0749d3e47742c4556211d8b6391bc3b26b0e907178408a"
     },
     {
       "path": "data/disarm-provenance.json",
@@ -108,7 +108,7 @@
     },
     {
       "path": "data/avds-visual-regression.json",
-      "sha256": "b061dfe1e687f68adb0a3b39d16099999e34cbceadf51992ff3d192a9ee092a8"
+      "sha256": "bc5bff876c10b3577d27b94941f53ad78a84ae911fe5f91e1310fa46bb8c3ff4"
     },
     {
       "path": ".well-known/avds-adoption.json",
@@ -120,19 +120,19 @@
     },
     {
       "path": "assets/i18n-runtime.js",
-      "sha256": "9dcfe6e1894a4dfec5a161138bdf9068c195098d47dbc58322c4cd77e4344f26"
+      "sha256": "ba1336d75f328dfbdc09bcfdafba2d227da370ff741dae14458ec6a4a91236ee"
     },
     {
       "path": "assets/ui-locales.js",
-      "sha256": "36ff7960c2fdae6a2534fbdb332ca45d102d5778fbf3b66ba1cb38161e11bb90"
+      "sha256": "be5c02408616a428d320807a7e0eb1ff7c9812be63017578790dcfde4a4e5eb3"
     },
     {
       "path": "data/ui-locales.json",
-      "sha256": "e0632c3041a51bd498e6a1bcbc04d8e0ad256008eca3740e23d9f4583aa3398e"
+      "sha256": "da070d4779c137b01c62121dc9a52e04304ff9258d560247c81bd8f97099a3df"
     },
     {
       "path": "login.html",
-      "sha256": "ed9cf14bf0b9127ae179b01390a5f6dc178e63508f0ce17d07687e7543f0e023"
+      "sha256": "90e2b1c9df88360c8511369bf75e58260d01bdb8a54d0ddda1b6a964368a6a1b"
     },
     {
       "path": "assets/disarm-login.js",
@@ -457,6 +457,15 @@
       "canvas"
     ],
     "verified_widths": [
+      320,
+      390,
+      768,
+      1440
+    ],
+    "required_unverified_widths": [],
+    "recomposition_manifest": true,
+    "contract": "/data/avds-responsive-contract.json",
+    "historical_verified_widths": [
       390,
       768,
       1280,
@@ -464,9 +473,7 @@
       1920,
       2560
     ],
-    "required_unverified_widths": [],
-    "recomposition_manifest": true,
-    "contract": "/data/avds-responsive-contract.json"
+    "current_review": "evolve-20261006: primary personally verified; independent agent mean9.02/min8.8"
   },
   "data_visualization_contract": {
     "semantic_palette": "verified-local",

@@ -152,6 +152,14 @@ globalThis.DisarmLocaleCatalog = {
     "en": "{n} countermeasures",
     "kk": "{n} қарсы шара"
   },
+  "{n} контрмера": {
+    "en": "{n} countermeasures",
+    "kk": "{n} қарсы шара"
+  },
+  "{n} контрмеры": {
+    "en": "{n} countermeasures",
+    "kk": "{n} қарсы шара"
+  },
   "{n} лет": {
     "en": "{n} years",
     "kk": "{n} жыл"
@@ -263,6 +271,10 @@ globalThis.DisarmLocaleCatalog = {
   "Бета-модель наблюдаемых признаков FIMI, организованных по активам, поведению и содержанию, а не по цепочке техник 1.x.": {
     "en": "A beta model of observable FIMI indicators organised by assets, behaviour and content rather than the 1.x technique chain.",
     "kk": "Активтер, әрекеттер және мазмұн бойынша құрылған бақыланатын FIMI белгілерінің бета-моделі; оның құрылымы 1.x техникалар тізбегінен өзгеше."
+  },
+  "Быстрый поиск по корпусу DISARM": {
+    "en": "Quick search in the DISARM corpus",
+    "kk": "DISARM корпусы бойынша жылдам іздеу"
   },
   "Быстрый поиск: T0049, нарратив, контрмера…": {
     "en": "Quick search: T0049, narrative, countermeasure…",
@@ -416,6 +428,10 @@ globalThis.DisarmLocaleCatalog = {
     "en": "Access is restricted to authorised users. The session remains on this device for 90 days.",
     "kk": "Тек уәкілетті пайдаланушыларға қол жеткізуге рұқсат етілген. Сессия осы құрылғыда 90 күн сақталады."
   },
+  "Другие форматы": {
+    "en": "Other formats",
+    "kk": "Басқа пішімдер"
+  },
   "Загрузка данных DISARM": {
     "en": "Loading DISARM data",
     "kk": "DISARM деректері жүктелуде"
@@ -518,7 +534,7 @@ globalThis.DisarmLocaleCatalog = {
   },
   "Инцидентов": {
     "en": "Incidents",
-    "kk": "Оқиғалар"
+    "kk": "Оқиға"
   },
   "Инциденты": {
     "en": "Incidents",
@@ -625,8 +641,8 @@ globalThis.DisarmLocaleCatalog = {
     "kk": "Әрекет жоспарын құрастыру"
   },
   "Контрмер": {
-    "en": "Countermeasures",
-    "kk": "Қарсы шаралар"
+    "en": "Counter­measures",
+    "kk": "Қарсы шара"
   },
   "Контрмера": {
     "en": "Countermeasure",
@@ -764,6 +780,10 @@ globalThis.DisarmLocaleCatalog = {
     "en": "Found: {n} · shown: {n} · filters: {n}",
     "kk": "Табылды: {n} · көрсетілді: {n} · сүзгілер: {n}"
   },
+  "Настройки отображения": {
+    "en": "Display settings",
+    "kk": "Көрсету параметрлері"
+  },
   "Нет выраженного лидера": {
     "en": "No clear leader",
     "kk": "Айқын көшбасшы жоқ"
@@ -783,6 +803,10 @@ globalThis.DisarmLocaleCatalog = {
   "Ничего не найдено. Проверьте запрос или включите больше типов объектов.": {
     "en": "No results found. Check the query or enable more object types.",
     "kk": "Ештеңе табылмады. Сұрауды тексеріңіз немесе қосымша нысан түрлерін қосыңыз."
+  },
+  "О фреймворке DISARM": {
+    "en": "About the DISARM framework",
+    "kk": "DISARM фреймворкі туралы"
   },
   "Обзор": {
     "en": "Overview",
@@ -807,6 +831,10 @@ globalThis.DisarmLocaleCatalog = {
   "Объект": {
     "en": "Object",
     "kk": "Нысан"
+  },
+  "Описание": {
+    "en": "Description",
+    "kk": "Сипаттама"
   },
   "Опорная мера {n} · новый охват +{n}": {
     "en": "Core measure {n} · new coverage +{n}",
@@ -908,6 +936,10 @@ globalThis.DisarmLocaleCatalog = {
     "en": "First comparison year",
     "kk": "Салыстыруға арналған бірінші жыл"
   },
+  "Перейти к аналитике корпуса": {
+    "en": "Go to corpus analysis",
+    "kk": "Корпус талдауына өту"
+  },
   "Перейти к содержанию": {
     "en": "Skip to content",
     "kk": "Мазмұнға өту"
@@ -959,6 +991,10 @@ globalThis.DisarmLocaleCatalog = {
   "Поиск по всем объектам DISARM": {
     "en": "Search all DISARM objects",
     "kk": "Барлық DISARM нысандарынан іздеу"
+  },
+  "Поиск по корпусу DISARM": {
+    "en": "Search the DISARM corpus",
+    "kk": "DISARM корпусы бойынша іздеу"
   },
   "Поиск по техникам, контрмерам, инцидентам, тактикам, индикаторам, задачам и инструментам DISARM.": {
     "en": "Search DISARM techniques, countermeasures, incidents, tactics, detections, tasks and tools.",
@@ -1019,6 +1055,10 @@ globalThis.DisarmLocaleCatalog = {
   "Рабочий контур анализа": {
     "en": "Analysis workspace",
     "kk": "Талдау кеңістігі"
+  },
+  "Разделы DISARM": {
+    "en": "DISARM sections",
+    "kk": "DISARM бөлімдері"
   },
   "Раскрасить техники по числу задокументированных инцидентов": {
     "en": "Colour techniques by documented incident count",
@@ -1152,6 +1192,14 @@ globalThis.DisarmLocaleCatalog = {
     "en": "Period comparison",
     "kk": "Кезеңдерді салыстыру"
   },
+  "Сравнение периодов и география корпуса": {
+    "en": "Period comparison and corpus geography",
+    "kk": "Кезеңдерді салыстыру және корпус географиясы"
+  },
+  "Сравнения по корпусу": {
+    "en": "Corpus comparisons",
+    "kk": "Корпус бойынша салыстыру"
+  },
   "Сравниваются записи текущего корпуса DISARM по полю": {
     "en": "Records in the current DISARM corpus are compared using",
     "kk": "Қолданыстағы DISARM корпусындағы жазбалар мына өріс бойынша салыстырылады:"
@@ -1206,7 +1254,7 @@ globalThis.DisarmLocaleCatalog = {
   },
   "Тактик": {
     "en": "Tactics",
-    "kk": "Тактикалар"
+    "kk": "Тактика"
   },
   "Тактика": {
     "en": "Tactic",
@@ -1254,7 +1302,7 @@ globalThis.DisarmLocaleCatalog = {
   },
   "Техник": {
     "en": "Techniques",
-    "kk": "Техникалар"
+    "kk": "Техника"
   },
   "Техника": {
     "en": "Technique",
@@ -1308,9 +1356,17 @@ globalThis.DisarmLocaleCatalog = {
     "en": "Phases",
     "kk": "Кезеңдер"
   },
+  "Фильтр инцидентов": {
+    "en": "Filter incidents",
+    "kk": "Оқиғаларды сүзу"
+  },
   "Фильтр контрмер по фазе": {
     "en": "Countermeasure phase filter",
     "kk": "Қарсы шараларды кезең бойынша сүзу"
+  },
+  "Фильтр мер защиты": {
+    "en": "Filter countermeasures",
+    "kk": "Қарсы шараларды сүзу"
   },
   "Фильтр по году": {
     "en": "Year filter",
@@ -1327,6 +1383,14 @@ globalThis.DisarmLocaleCatalog = {
   "Фильтр по фазе": {
     "en": "Phase filter",
     "kk": "Кезең бойынша сүзгі"
+  },
+  "Фильтр техник атак": {
+    "en": "Filter attack techniques",
+    "kk": "Шабуыл техникаларын сүзу"
+  },
+  "Фильтр техник плейбука": {
+    "en": "Filter playbook techniques",
+    "kk": "Әрекет жоспарының техникаларын сүзу"
   },
   "Фонд DISARM": {
     "en": "DISARM Foundation",
@@ -1366,7 +1430,7 @@ globalThis.DisarmLocaleCatalog = {
   },
   "Этапов": {
     "en": "Phases",
-    "kk": "Кезеңдер"
+    "kk": "Кезең"
   },
   "Язык": {
     "en": "Language",

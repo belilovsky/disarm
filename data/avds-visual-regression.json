@@ -72,5 +72,16 @@
         "max_mean_channel_delta": 0
       }
     }
-  ]
+  ],
+  "historical_baseline_notice": "The 2026-09-28 pixel baselines remain immutable historical regression artifacts. They do not accept the authorized 2026-10-06 evolve candidate.",
+  "current_review": {
+    "mode": "evolve",
+    "baseline_release": "content-7dc64643dc9d041d0fc71c90",
+    "status": "independent-agent-review-passed",
+    "evidence": "docs/UI_EVOLVE_2026_10_06.md",
+    "reviewer": "separate independent visual agent",
+    "mean_score": 9.02,
+    "min_score": 8.8,
+    "owner_human_acceptance": "not_claimed"
+  }
 }
