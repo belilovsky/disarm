@@ -2,12 +2,12 @@
   "schema_version": "disarm-release-identity-v1",
   "project_id": "disarm",
   "public_url": "https://disarm.qdev.run/",
-  "release_id": "content-7dc64643dc9d041d0fc71c90",
+  "release_id": "content-42cdae7dea4918c46faa91c0",
   "revision_kind": "content_sha256_manifest",
-  "source_revision": "ec319db690289075904e92d12e650dd9901b74b7",
+  "source_revision": "87635db2a246b2bb09ea8ac434a5db4a0f39bdac",
   "source_revision_status": "git-commit",
-  "artifact_manifest_sha256": "7dc64643dc9d041d0fc71c9047aca8d93206cc3458a79482b8418ee8cd73c605",
-  "generated_at": "2026-10-05T18:10:49Z",
+  "artifact_manifest_sha256": "42cdae7dea4918c46faa91c0743d04428634c16921f917e475a0e5af56335855",
+  "generated_at": "2026-10-05T20:30:45Z",
   "deployment_contract": {
     "mode": "atomic-static-release-directory",
     "auth_source_sha256": "389afb17e7a65708e32ba810c06e285662ac0a0514a67b9d5d83dea2ed2ddaf9",
@@ -29,7 +29,7 @@
   },
   "avds": {
     "version": "4.7.0",
-    "adapter_version": "1.3.10",
+    "adapter_version": "1.4.0",
     "coverage_percent": 97
   },
   "manifest": {
@@ -47,13 +47,13 @@
       },
       {
         "path": "assets/app.js",
-        "bytes": 121648,
-        "sha256": "cdb6c34ee0069db4ebc8894fc66af53efa2524e931942d2f234da950d8b7bc43"
+        "bytes": 124726,
+        "sha256": "82b596356380b994a594ec86cbbd9478c5455f8950464c50270bebd3f4dca632"
       },
       {
         "path": "assets/avds-disarm-adapter.css",
-        "bytes": 104637,
-        "sha256": "4686a4cfabc6f8d89b0071d83de0db66dcf6b8b71988b074b9cc2eec7654f021"
+        "bytes": 109597,
+        "sha256": "ef209f990517feb125213d63ebed49b89849461f8958c647cf230c401580b986"
       },
       {
         "path": "assets/avds-static-preview-bundle.css",
@@ -82,23 +82,23 @@
       },
       {
         "path": "assets/i18n-runtime.js",
-        "bytes": 3824,
-        "sha256": "9dcfe6e1894a4dfec5a161138bdf9068c195098d47dbc58322c4cd77e4344f26"
+        "bytes": 4498,
+        "sha256": "ba1336d75f328dfbdc09bcfdafba2d227da370ff741dae14458ec6a4a91236ee"
       },
       {
         "path": "assets/ui-locales.js",
-        "bytes": 81475,
-        "sha256": "36ff7960c2fdae6a2534fbdb332ca45d102d5778fbf3b66ba1cb38161e11bb90"
+        "bytes": 83648,
+        "sha256": "be5c02408616a428d320807a7e0eb1ff7c9812be63017578790dcfde4a4e5eb3"
       },
       {
         "path": "data/avds-adapter.json",
-        "bytes": 1116,
-        "sha256": "ac26227bc2cb5aa57a02b8f0936adc47cffe8fcc96f7074bc739310cd1118fc8"
+        "bytes": 1114,
+        "sha256": "d4f78f36434053c62b1a06becdb45a7e2e4f72fe80f9b10a6b3f8f046cfbe5c8"
       },
       {
         "path": "data/avds-component-contracts.json",
-        "bytes": 5976,
-        "sha256": "27a9d2654595f391ed4805ac617b8406c6ba32ae5d868593cfa57f647f5853da"
+        "bytes": 7905,
+        "sha256": "e59f482762d60185a6c192e61df2b40e6d70bb347e97986f97740f979138c28a"
       },
       {
         "path": "data/avds-coverage.json",
@@ -117,18 +117,18 @@
       },
       {
         "path": "data/avds-responsive-contract.json",
-        "bytes": 3161,
-        "sha256": "687133a4d07c4d37d01f58208ac393191c560b9a598ab86e429f48ceaf551f2a"
+        "bytes": 4877,
+        "sha256": "98b81039874ce13d9c0749d3e47742c4556211d8b6391bc3b26b0e907178408a"
       },
       {
         "path": "data/avds-system-contract.json",
-        "bytes": 19443,
-        "sha256": "176dfeb2c2eb8cd3869afecb7e0d305bba1d16ecb91da61b978598580bc96c6b"
+        "bytes": 19635,
+        "sha256": "51d995604234712d75eb6e778c0fe9fe0a521b28ec86960feab7c6f4c412b266"
       },
       {
         "path": "data/avds-visual-regression.json",
-        "bytes": 2659,
-        "sha256": "b061dfe1e687f68adb0a3b39d16099999e34cbceadf51992ff3d192a9ee092a8"
+        "bytes": 3187,
+        "sha256": "bc5bff876c10b3577d27b94941f53ad78a84ae911fe5f91e1310fa46bb8c3ff4"
       },
       {
         "path": "data/disarm-provenance.json",
@@ -142,13 +142,13 @@
       },
       {
         "path": "data/platform-capabilities.json",
-        "bytes": 6059,
-        "sha256": "b795e9ee36679b0896eee61a4ca5a220104899fa7892e36de15ea961e427de9e"
+        "bytes": 6058,
+        "sha256": "c161a8d461d6e48a9c2a7d721e1a9557057d09aa75faff1e719c5db4018f61f5"
       },
       {
         "path": "data/ui-locales.json",
-        "bytes": 81371,
-        "sha256": "e0632c3041a51bd498e6a1bcbc04d8e0ad256008eca3740e23d9f4583aa3398e"
+        "bytes": 83544,
+        "sha256": "da070d4779c137b01c62121dc9a52e04304ff9258d560247c81bd8f97099a3df"
       },
       {
         "path": "favicon.ico",
@@ -452,13 +452,13 @@
       },
       {
         "path": "index.html",
-        "bytes": 38821,
-        "sha256": "366b98169c7788f835ed03d9b5dee50ae626e8042a99d3f8ae222f4b172901f9"
+        "bytes": 41206,
+        "sha256": "ee1621193af6636d742b4119af39bd2e05f058aa9a09087e3ac86bd20410711d"
       },
       {
         "path": "login.html",
         "bytes": 2504,
-        "sha256": "ed9cf14bf0b9127ae179b01390a5f6dc178e63508f0ce17d07687e7543f0e023"
+        "sha256": "90e2b1c9df88360c8511369bf75e58260d01bdb8a54d0ddda1b6a964368a6a1b"
       },
       {
         "path": "qdev-project.json",
