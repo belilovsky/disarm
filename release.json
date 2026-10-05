@@ -2,12 +2,12 @@
   "schema_version": "disarm-release-identity-v1",
   "project_id": "disarm",
   "public_url": "https://disarm.qdev.run/",
-  "release_id": "content-cea3e4e1a2ff6de74e1533af",
+  "release_id": "content-7dc64643dc9d041d0fc71c90",
   "revision_kind": "content_sha256_manifest",
-  "source_revision": "7b30fc3b25ed18dcfacd48bf0e497ef49151ea2c",
+  "source_revision": "ec319db690289075904e92d12e650dd9901b74b7",
   "source_revision_status": "git-commit",
-  "artifact_manifest_sha256": "cea3e4e1a2ff6de74e1533afd29da2d8780d35a29b8e8f36e14f270adce3f232",
-  "generated_at": "2026-10-05T18:07:41Z",
+  "artifact_manifest_sha256": "7dc64643dc9d041d0fc71c9047aca8d93206cc3458a79482b8418ee8cd73c605",
+  "generated_at": "2026-10-05T18:10:49Z",
   "deployment_contract": {
     "mode": "atomic-static-release-directory",
     "auth_source_sha256": "389afb17e7a65708e32ba810c06e285662ac0a0514a67b9d5d83dea2ed2ddaf9",
@@ -52,8 +52,8 @@
       },
       {
         "path": "assets/avds-disarm-adapter.css",
-        "bytes": 104516,
-        "sha256": "c678ba9c34adfc6d33662eaca50da618716dd2426536c5e57758f8c1dbed9254"
+        "bytes": 104637,
+        "sha256": "4686a4cfabc6f8d89b0071d83de0db66dcf6b8b71988b074b9cc2eec7654f021"
       },
       {
         "path": "assets/avds-static-preview-bundle.css",
@@ -93,7 +93,7 @@
       {
         "path": "data/avds-adapter.json",
         "bytes": 1116,
-        "sha256": "efeb7d768db296a8ab983ac77ecf39432b095080303f0cabe32ec6735bb98446"
+        "sha256": "ac26227bc2cb5aa57a02b8f0936adc47cffe8fcc96f7074bc739310cd1118fc8"
       },
       {
         "path": "data/avds-component-contracts.json",
@@ -123,7 +123,7 @@
       {
         "path": "data/avds-system-contract.json",
         "bytes": 19443,
-        "sha256": "c87169d1b871d46b8a09c683e8f3be4e8031306dcfef0be55f6a6ce4b596fa68"
+        "sha256": "176dfeb2c2eb8cd3869afecb7e0d305bba1d16ecb91da61b978598580bc96c6b"
       },
       {
         "path": "data/avds-visual-regression.json",
@@ -453,7 +453,7 @@
       {
         "path": "index.html",
         "bytes": 38821,
-        "sha256": "88db7a5c68adb29ca0338018be0827e657c94fa39663fad00c8f2afd44d8ab52"
+        "sha256": "366b98169c7788f835ed03d9b5dee50ae626e8042a99d3f8ae222f4b172901f9"
       },
       {
         "path": "login.html",
